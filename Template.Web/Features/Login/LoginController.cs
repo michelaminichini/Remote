@@ -30,10 +30,10 @@ namespace Template.Web.Features.Login
         private ActionResult LoginAndRedirect(UserDetailDTO utente, string returnUrl, bool rememberMe)
         {
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, utente.Id.ToString()),
-                new Claim(ClaimTypes.Email, utente.Email)
-            };
+        {
+            new Claim(ClaimTypes.NameIdentifier, utente.Id.ToString()),
+            new Claim(ClaimTypes.Email, utente.Email)
+        };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -43,10 +43,11 @@ namespace Template.Web.Features.Login
                 IsPersistent = rememberMe,
             });
 
-            if (string.IsNullOrWhiteSpace(returnUrl) == false)
+            // Redirect to the requested URL or Home/Index if no return URL
+            if (!string.IsNullOrWhiteSpace(returnUrl))
                 return Redirect(returnUrl);
 
-            return RedirectToAction(MVC.Example.Users.Index());
+            return RedirectToAction("Index", "Home"); // Explicit redirect to "Home"
         }
 
         [HttpGet]
@@ -54,10 +55,8 @@ namespace Template.Web.Features.Login
         {
             if (HttpContext.User != null && HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
             {
-                if (string.IsNullOrWhiteSpace(returnUrl) == false)
-                    return Redirect(returnUrl);
-
-                return RedirectToAction(MVC.Example.Users.Index());
+                // If already authenticated, redirect to Home
+                return RedirectToAction("Index", "Home");
             }
 
             var model = new LoginViewModel
@@ -89,16 +88,16 @@ namespace Template.Web.Features.Login
                 }
             }
 
-            return RedirectToAction(MVC.Login.Login());
+            return View(model); // Return to login view if authentication fails
         }
 
         [HttpPost]
         public virtual IActionResult Logout()
         {
             HttpContext.SignOutAsync();
-
             Alerts.AddSuccess(this, "Utente scollegato correttamente");
-            return RedirectToAction(MVC.Login.Login());
+            return RedirectToAction("Login", "Login");
         }
     }
+
 }

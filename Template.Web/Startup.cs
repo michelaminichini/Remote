@@ -112,8 +112,17 @@ namespace Template.Web
                 // ROUTING PER HUB
                 endpoints.MapHub<TemplateHub>("/templateHub");
 
+                // Define routes for the Example area
                 endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
+
+                // Default route
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
+
+                // Route for authenticated users (Home)
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                ).RequireAuthorization();
             });
         }
     }
