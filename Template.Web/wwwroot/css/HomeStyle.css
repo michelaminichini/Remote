@@ -1,0 +1,148 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.container {
+    margin: 20px auto;
+    max-width: 1200px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Sezione immagine profilo */
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Selettori di data */
+.date-selectors {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 20px;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+}
+
+    .tabs .btn {
+        background-color: #4da3ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .tabs .btn:hover {
+            background-color: #2a8be7;
+        }
+
+/* Calendario */
+.calendar {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+    .table th,
+    .table td {
+        text-align: center;
+        vertical-align: top;
+        border: 1px solid #ddd;
+        padding: 10px;
+        height: 100px;
+        position: relative;
+    }
+
+    .table th {
+        background-color: #4da3ff;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table td {
+        background-color: #fdfdfd;
+        transition: background-color 0.3s ease;
+    }
+
+        .table td .day-header {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .table td .events {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+/* Pulsante aggiunta evento */
+.add-event-button {
+    margin-top: 0.5rem;
+    background-color: #4da3ff;
+    color: white;
+    border: none;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease;
+}
+
+    .add-event-button:hover {
+        background-color: #2a8be7;
+    }
+
+/* Menu evento */
+.event-menu {
+    display: none;
+    margin-top: 0.5rem;
+}
+
+    .event-menu.active {
+        display: block;
+    }
+
+    .event-menu .form-select {
+        width: 100%;
+    }
+
+    .event-menu .btn {
+        display: block;
+        margin-top: 0.5rem;
+        background-color: #4da3ff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+        .event-menu .btn:hover {
+            background-color: #2a8be7;
+        }
