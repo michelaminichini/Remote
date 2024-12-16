@@ -11,8 +11,8 @@ namespace Template.Services.Shared
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string NickName { get; set; }
         public string Role { get; set; }
+        public string TeamName { get; set; }
     }
 
     public partial class SharedService
@@ -34,7 +34,10 @@ namespace Template.Services.Shared
 
             user.FirstName = cmd.FirstName;
             user.LastName = cmd.LastName;
-            user.NickName = cmd.NickName;
+            //user.Email = cmd.Email;
+            user.Role = cmd.Role;
+            user.TeamName = cmd.TeamName;
+           
 
             await _dbContext.SaveChangesAsync();
 

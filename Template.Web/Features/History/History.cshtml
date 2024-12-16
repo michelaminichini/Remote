@@ -1,4 +1,4 @@
-@model Template.Web.Features.History.HistoryViewModel
+@model List<Template.Web.Features.History.HistoryViewModel>
 @{
     ViewData["Title"] = "Storico delle richieste";
 }
@@ -8,9 +8,10 @@
     </div>
 
     <div class="info mb-4">
-        <p><strong>Nome:</strong> @Model.Nome</p>
-        <p><strong>Nome Team:</strong> @Model.NomeTeam</p> - <p><strong>Ruolo:</strong> @Model.Ruolo</p>
-        <p><strong>Indirizzo e-mail:</strong> @Model.Email</p>
+        <p><strong>Nome:</strong> @Model.FirstOrDefault()?.Nome</p>
+        <p><strong>Nome Team:</strong> @Model.FirstOrDefault()?.NomeTeam</p>
+        <p><strong>Ruolo:</strong> @Model.FirstOrDefault()?.Ruolo</p>
+        <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
     </div>
 
     @if (!Model.Any())

@@ -60,7 +60,7 @@ namespace Template.Web.Features.Home
         }
 
         [HttpGet]
-        public async Task<IActionResult> History()
+        public async virtual Task<IActionResult> History()
         {
             
             var userEmail = User.Identity.Name; // ottengo email dell'utente loggato
@@ -81,20 +81,40 @@ namespace Template.Web.Features.Home
                 return NotFound("Utente non trovato");
             }
 
-            var allData = DataGenerator.GenerateStoricoData();
-            var userData = allData.Where(data => data.Email == userEmail).ToList();
+            var allData = await _dbContext.Users
+                .Where(x => x.Email == userEmail)
+                .Select(x => new
+                {
+                    x.Email,
+                    x.FirstName,
+                    x.TeamName,
+                    x.Role,
+                    x.DataRichiesta,
+                    x.Tipologia,
+                    x.DataInizio,
+                    x.DataFine,
+                    x.Durata
+                }).ToListAsync();
 
 
-            var model = userData.Select(data => new HistoryViewModel
+
+            //var userData = allData.Where(data => data.Email == userEmail).ToList();
+
+
+            var model = allData.Select(data => new HistoryViewModel
             {
-                Nome = user.Nome,
-                NomeTeam = user.TeamName,
-                Ruolo = user.Role,
-                Email = user.Email,
+                Nome = data.FirstName,
+                NomeTeam = data.TeamName,
+                Ruolo = data.Role,
+                Email = data.Email,
                 DataRichiesta = data.DataRichiesta,
                 Tipologia = data.Tipologia,
                 DataInizio = data.DataInizio,
-                DataFine = data.DataFine
+                DataFine = data.DataFine,
+
+                // Calcolo della durata in ore e la conversione in stringa
+                Durata = (data.DataFine - data.DataInizio).TotalHours.ToString("F2")
+                
             }).ToList();
 
             return View(model);

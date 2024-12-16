@@ -38,7 +38,7 @@ namespace Template.Infrastructure
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
                     DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = "2 ore"
+                    Durata = new TimeSpan(2, 0, 0)
 
                 },
                 new User
@@ -54,7 +54,7 @@ namespace Template.Infrastructure
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-2).AddDays(2),  // Inizio ferie il 2 del mese
                     DataFine = DateTime.Now.AddMonths(-2).AddDays(3),   // Fine ferie il 3 del mese
-                    Durata = "2 giorni"
+                    Durata = new TimeSpan(2, 0, 0)
 
                 },
                 new User
@@ -70,7 +70,7 @@ namespace Template.Infrastructure
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
                     DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = "2 ore"
+                    Durata = new TimeSpan(2, 0, 0)
                 },
                 new User
                 {
@@ -85,7 +85,7 @@ namespace Template.Infrastructure
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
                     DataFine = DateTime.Now.AddMonths(-1).AddDays(10),   // Fine ferie il 10 del mese
-                    Durata = "5 giorni"
+                    Durata = new TimeSpan(5, 0, 0, 0)
                 },
                 new User
                 {
@@ -100,7 +100,7 @@ namespace Template.Infrastructure
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
                     DataFine = DateTime.Now.AddMonths(-1).AddHours(12),   // Fine permesso alle 12
-                    Durata = "Mezza giornata"
+                    Durata = new TimeSpan(0, 5, 0)
                 },
                 new User
                 {
