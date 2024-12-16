@@ -1,0 +1,44 @@
+@model Template.Web.Features.History.HistoryViewModel
+@{
+    ViewData["Title"] = "Storico delle richieste";
+}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Storico delle tue richieste</h1>
+    </div>
+
+    <div class="info mb-4">
+        <p><strong>Nome:</strong> @Model.Nome</p>
+        <p><strong>Nome Team:</strong> @Model.NomeTeam</p> - <p><strong>Ruolo:</strong> @Model.Ruolo</p>
+        <p><strong>Indirizzo e-mail:</strong> @Model.Email</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p>Non ci sono richieste passate</p>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Data della richiesta</th>
+                    <th>Tipologia</th>
+                    <th>Data inizio</th>
+                    <th>Data fine</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.DataRichiesta.ToShortDateString()</td>
+                        <td>@item.Tipologia</td>
+                        <td>@item.DataInizio.ToShortDateString()</td>
+                        <td>@item.DataFine.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

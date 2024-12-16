@@ -1,4 +1,4 @@
-@model Template.Web.Features.Home.HomeViewModel
+@model Template.Web.Features.Home.HistoryViewModel
 @{
     ViewData["Title"] = "Remote";
 }
@@ -13,7 +13,7 @@
     <div class="tabs">
         <button class="btn btn-primary">Team</button>
         <button class="btn btn-primary">Richieste</button>
-        <button class="btn btn-primary">Storico</button>
+        <button class="btn btn-primary" onclick="location.href='/Storico'">Storico</button>
     </div>
 
     <div class="date-selectors mb-4">

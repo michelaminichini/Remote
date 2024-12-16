@@ -44,6 +44,8 @@ namespace Template.Services.Shared
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public string Role { get; set; }
+            public string TeamName { get; set; }
         }
     }
 
@@ -58,7 +60,9 @@ namespace Template.Services.Shared
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string NickName { get; set; }
+        public string Role { get; set; }
+        public string TeamName { get; set; }
+       
     }
 
     public class CheckLoginCredentialsQuery
@@ -143,7 +147,7 @@ namespace Template.Services.Shared
                     Email = x.Email,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
-                    NickName = x.NickName
+                    
                 })
                 .FirstOrDefaultAsync();
         }
@@ -169,7 +173,6 @@ namespace Template.Services.Shared
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                NickName = user.NickName
             };
         }
     }
