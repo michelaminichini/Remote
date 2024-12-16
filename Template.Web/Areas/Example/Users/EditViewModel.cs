@@ -17,10 +17,16 @@ namespace Template.Web.Areas.Example.Users
 
         [Display(Name = "Nome")]
         public string FirstName { get; set; }
+
         [Display(Name = "Cognome")]
         public string LastName { get; set; }
-        [Display(Name = "Nickname")]
-        public string NickName { get; set; }
+
+        [Display(Name = "Ruolo")]
+        public string Role {  get; set; }
+
+        [Display(Name = "Nome Team")]
+        public string TeamName { get; set; }
+
 
         public string ToJson()
         {
@@ -35,7 +41,9 @@ namespace Template.Web.Areas.Example.Users
                 Email = userDetailDTO.Email;
                 FirstName = userDetailDTO.FirstName;
                 LastName = userDetailDTO.LastName;
-                NickName = userDetailDTO.NickName;
+                Role = userDetailDTO.Role;
+                TeamName = userDetailDTO.TeamName;
+
             }
         }
 
@@ -47,7 +55,8 @@ namespace Template.Web.Areas.Example.Users
                 Email = Email,
                 FirstName = FirstName,
                 LastName = LastName,
-                NickName = NickName
+                Role = Role,
+                TeamName = TeamName
             };
         }
     }

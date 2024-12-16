@@ -1,4 +1,4 @@
-﻿module Example.Users {
+﻿ module Example.Users {
     export class editVueModel {
         constructor(public hub: any, public model: Example.Users.Server.editViewModel) {
             if (this.hub) {

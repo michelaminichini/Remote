@@ -17,7 +17,13 @@ namespace Template.Services.Shared
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string NickName { get; set; }
+        public string Role { get; set; }
+        public string TeamName { get; set; }
+        public string DataRichiesta { get; set; }
+        public string Tipologia { get; set; }
+        public string DataInizio { get; set; }
+        public string DataFine { get; set; }
+        public string Durata { get; set; }
 
         /// <summary>
         /// Checks if password passed as parameter matches with the Password of the current user
