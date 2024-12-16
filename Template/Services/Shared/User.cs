@@ -24,7 +24,7 @@ namespace Template.Services.Shared
         public string Tipologia { get; set; }
         public DateTime DataInizio { get; set; }
         public DateTime DataFine { get; set; }
-        public TimeSpan Durata { get; set; }
+        public TimeSpan Durata { get; set; } 
 
         /// <summary>
         /// Checks if password passed as parameter matches with the Password of the current user

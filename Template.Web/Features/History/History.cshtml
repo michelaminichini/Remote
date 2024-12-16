@@ -14,7 +14,7 @@
         <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
     </div>
 
-    @if (!Model.Any())
+    @if (Model == null || !Model.Any())
     {
         <p>Non ci sono richieste passate</p>
     }
