@@ -47,7 +47,7 @@ namespace Template.Web.Features.Login
             if (!string.IsNullOrWhiteSpace(returnUrl))
                 return Redirect(returnUrl);
 
-            return RedirectToAction("Index", "Home"); // Explicit redirect to "Home"
+            return RedirectToAction("Home", "Home"); // Explicit redirect to "Home"
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace Template.Web.Features.Login
             if (HttpContext.User != null && HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
             {
                 // If already authenticated, redirect to Home
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Home", "Home");
             }
 
             var model = new LoginViewModel

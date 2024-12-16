@@ -121,7 +121,7 @@ namespace Template.Web
                 // Route for authenticated users (Home)
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    pattern: "{controller=Home}/{action=Home}"
                 ).RequireAuthorization();
             });
         }
