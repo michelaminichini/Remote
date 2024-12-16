@@ -1,19 +1,26 @@
 @model Template.Web.Features.Home.HomeViewModel
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Remote";
 }
 <div class="container">
+    <head>
+        <link rel="stylesheet" href="/css/HomeStyle.css" />
+    </head>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>@ViewData["Title"]</h1>
-        <div>
-            <a href="/Account/Logout" class="btn btn-secondary">Logout</a>
-        </div>
+        <h1 class="title-center">@ViewData["Title"]</h1>
     </div>
 
     <div class="tabs">
         <button class="btn btn-primary">Team</button>
         <button class="btn btn-primary">Richieste</button>
         <button class="btn btn-primary" onclick="location.href='@Url.Action("History", "Home")'">Storico</button>
+    </div>
+
+    <div class="date-selectors mb-4">
+        <label for="dateFrom">Dal:</label>
+        <input type="date" id="dateFrom" class="form-control" />
+        <label for="dateTo" class="ms-3">Al:</label>
+        <input type="date" id="dateTo" class="form-control" />
     </div>
 
     <div class="calendar mt-4">
@@ -45,6 +52,17 @@
                                     {
                                         <div>@eventItem</div>
                                     }
+                                </div>
+                                <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this)">
+                                    +
+                                </button>
+                                <div class="event-menu">
+                                    <select class="form-select">
+                                        <option value="smartworking">Smartworking</option>
+                                        <option value="ferie">Ferie</option>
+                                        <option value="permessi">Permessi</option>
+                                    </select>
+                                    <button class="btn btn-primary">Aggiungi</button>
                                 </div>
                             </td>
                         }

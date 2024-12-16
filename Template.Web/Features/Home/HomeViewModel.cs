@@ -7,9 +7,14 @@ namespace Template.Web.Features.Home
     public class HomeViewModel
     {
         public List<List<DayViewModel>> Weeks { get; set; } = new();
+        public string CurrentMonthName { get; set; }
+        public int CurrentYear { get; set; }
 
         public HomeViewModel(DateTime monthStart)
         {
+            CurrentMonthName = monthStart.ToString("MMMM");
+            CurrentYear = monthStart.Year;
+
             var current = monthStart;
             var week = new List<DayViewModel>();
 

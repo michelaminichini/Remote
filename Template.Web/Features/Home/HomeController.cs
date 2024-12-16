@@ -31,20 +31,14 @@ namespace Template.Web.Features.Home
             _sharedLocalizer = sharedLocalizer;
         }
 
-        // Azione GET per visualizzare la Home
         [HttpGet]
-        public  virtual IActionResult Home()
+        public virtual IActionResult Home()
         {
-            // Data di inizio del mese 
+            // Data di inizio del mese (puoi cambiarla a seconda delle tue esigenze)
             var monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-
-            // Crea il modello HomeViewModel
-            var model = new HomeViewModel(monthStart); // Passa la data di inizio del mese al modello
-
-            // Ritorna la view passando il modello
+            var model = new HomeViewModel(monthStart);
             return View(model);
         }
-
 
         // Azione per cambiare la lingua
         [HttpPost]
@@ -55,7 +49,6 @@ namespace Template.Web.Features.Home
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cultureName)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), Secure = true }
             );
-
             return Redirect(Request.GetTypedHeaders().Referer.ToString());
         }
 
