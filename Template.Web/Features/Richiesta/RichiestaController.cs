@@ -42,7 +42,7 @@ namespace Template.Web.Features.Richiesta
                     };
 
                     // Salva la richiesta usando il tuo servizio
-                    var id = await _sharedService.Handle(cmd);
+                    var id = await _sharedService.HandleRequest(cmd);
 
                     TempData["Message"] = "Richiesta inviata con successo!";
                     return RedirectToAction("Richiesta");

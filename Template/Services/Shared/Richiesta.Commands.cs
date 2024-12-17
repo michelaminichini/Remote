@@ -20,7 +20,7 @@ namespace Template.Services.Shared
 
     public partial class SharedService
     {
-        public async Task<Guid> Handle(AddRequestCommand cmd)
+        public async Task<Guid> HandleRequest(AddRequestCommand cmd)
         {
             var request = new Request
             {
