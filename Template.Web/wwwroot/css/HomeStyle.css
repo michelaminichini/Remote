@@ -74,7 +74,7 @@ h1 {
         border: 1px solid #ddd;
         padding: 10px;
         height: 100px;
-        position: relative;
+        position: relative; /* Aggiunto per posizionare elementi figli assoluti */
     }
 
     .table th {
@@ -93,16 +93,20 @@ h1 {
             font-weight: bold;
             color: #333;
             margin-bottom: 5px;
+            position: relative; /* Aggiunto per contenere pulsante "+" */
         }
 
         .table td .events {
             font-size: 0.9rem;
             color: #666;
+            margin-top: 10px;
         }
 
 /* Pulsante aggiunta evento */
 .add-event-button {
-    margin-top: 0.5rem;
+    position: absolute; /* Posizionamento assoluto */
+    top: 0; /* Allineato in alto */
+    right: 0; /* Allineato a destra */
     background-color: #4da3ff;
     color: white;
     border: none;

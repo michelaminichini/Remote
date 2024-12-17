@@ -38,31 +38,30 @@
             </thead>
             <tbody>
                 @foreach (var week in Model.Weeks)
-
                 {
                     <tr>
                         @foreach (var day in week)
-
                         {
                             <td>
-                                <div class="day-header">@day.Date.Day</div>
-                                <div class="events">
+                                <div class="day-header d-flex justify-content-between align-items-start">
+                                    <span>@day.Date.Day</span>
+                                    <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this)">
+                                        +
+                                    </button>
+                                </div>
+                                <div class="events mt-2">
                                     @foreach (var eventItem in day.Events)
-
                                     {
                                         <div>@eventItem</div>
                                     }
                                 </div>
-                                <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this)">
-                                    +
-                                </button>
                                 <div class="event-menu">
                                     <select class="form-select">
                                         <option value="smartworking">Smartworking</option>
                                         <option value="ferie">Ferie</option>
                                         <option value="permessi">Permessi</option>
                                     </select>
-                                    <button class="btn btn-primary">Aggiungi</button>
+                                    <button class="btn btn-primary mt-1">Aggiungi</button>
                                 </div>
                             </td>
                         }
