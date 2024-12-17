@@ -31,12 +31,27 @@ namespace Template.Web.Features.Home
             _sharedLocalizer = sharedLocalizer;
         }
 
-        [HttpGet]
+        //[HttpGet]
+        //public virtual IActionResult Home()
+        //{
+        //    // Ottieni il mese corrente
+        //    var monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        //    var model = new HomeViewModel(monthStart);
+        //    return View(model);
+        //}
+
         public virtual IActionResult Home()
         {
-            // Data di inizio del mese (puoi cambiarla a seconda delle tue esigenze)
-            var monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var model = new HomeViewModel(monthStart);
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+
+            var model = new HomeViewModel
+            {
+                CurrentMonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
+                CurrentYear = currentYear,
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth)
+            };
+
             return View(model);
         }
 
