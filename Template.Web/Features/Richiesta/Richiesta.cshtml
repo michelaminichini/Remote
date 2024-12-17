@@ -1,0 +1,151 @@
+﻿@model Template.Web.Features.Richiesta.RichiestaViewModel
+@{
+     ViewData["Title"] = "Richiesta Permessi/Ferie";
+}
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richiesta Permessi/Ferie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+        .custom-container {
+            max-width: 800px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container custom-container mt-5" id="app">
+        <h1 class="text-center mb-4">Richiesta Permessi/Ferie</h1>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Successo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @TempData["Message"]
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Area per mostrare i messaggi di errore -->
+        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+        </div>
+
+        <form id="formRichiesta" asp-action="InviaRichiesta" method="post" class="needs-validation" novalidate>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Tipologia" class="form-label">Tipologia:</label>
+                    <select v-model="tipologia" class="form-select">
+                        <option value="Permessi">Permessi</option>
+                        <option value="Ferie">Ferie</option>
+                    </select>
+                    <input type="hidden" name="Tipologia" :value="tipologia" />
+                </div>
+            </div>
+
+            <!-- Mostra i campi orari solo se la tipologia è "Permessi" -->
+            <div v-if="tipologia === 'Permessi'" class="row mb-3">
+                <div class="col-sm-6">
+                    <label asp-for="OraInizio" class="form-label">Dalle:</label>
+                    <input v-model="oraInizio" asp-for="OraInizio" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                    <label asp-for="OraFine" class="form-label">Alle:</label>
+                    <input v-model="oraFine" asp-for="OraFine" type="time" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label asp-for="DataInizio" class="form-label">Data Inizio:</label>
+                    <input v-model="dataInizio" asp-for="DataInizio" type="date" class="form-control" value="" />
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="DataFine" class="form-label">Data Fine:</label>
+                    <input v-model="dataFine" asp-for="DataFine" type="date" class="form-control" value="" />
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btn-lg">Invia</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                tipologia: 'Permessi',
+                oraInizio: null,
+                oraFine: null,
+                dataInizio: '',
+                dataFine: '',
+                errorMessage: '' // Variabile per mostrare i messaggi di errore
+            },
+            methods: {
+                validateForm(event) {
+                    this.errorMessage = ''; // Resetta il messaggio di errore
+
+                    // Validazione della data fine rispetto alla data inizio
+                    if (this.dataFine && this.dataInizio && new Date(this.dataFine) < new Date(this.dataInizio)) {
+                        this.errorMessage = "La data fine non può essere precedente alla data inizio.";
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    // Validazione dell'ora fine rispetto all'ora inizio per i permessi
+                    if (this.tipologia === 'Permessi' && this.oraFine && this.oraInizio && new Date('1970-01-01T' + this.oraFine) < new Date('1970-01-01T' + this.oraInizio)) {
+                        this.errorMessage = "L'ora fine non può essere precedente all'ora inizio.";
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    // Controllo campi vuoti
+                    if (!this.dataInizio || !this.dataFine) {
+                        this.errorMessage = "Data Inizio e Data Fine sono obbligatorie.";
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    if (this.tipologia === 'Permessi' && (!this.oraInizio || !this.oraFine)) {
+                        this.errorMessage = "Gli orari di inizio e fine sono obbligatori per Permessi.";
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    return true; // Se tutto va bene
+                }
+            },
+            mounted() {
+               var tempMessage = '@TempData["Message"]';
+                if (tempMessage !== '') {
+                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+                }
+                document.getElementById('formRichiesta').addEventListener('submit', this.validateForm);
+            }
+        });
+    </script>
+
+ 
+
+
+</body>
+</html>
