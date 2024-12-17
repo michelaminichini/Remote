@@ -18,6 +18,9 @@
         <div class="profile-container">
             <img src="~/@Model.UserProfileImage" alt="Profilo" class="profile-img-large" />
             <div class="logout-button-container">
+                <h4 class="user-name">
+                    @Model.UserEmail
+                </h4>
                 <!-- Form for Logout to redirect properly to the Login page -->
                 <form method="post" action="@Url.Action("Logout", "Login")">
                     <button class="btn btn-danger" type="submit">Logout</button>

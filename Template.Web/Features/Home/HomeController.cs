@@ -31,24 +31,21 @@ namespace Template.Web.Features.Home
             _sharedLocalizer = sharedLocalizer;
         }
 
-        //[HttpGet]
-        //public virtual IActionResult Home()
-        //{
-        //    // Ottieni il mese corrente
-        //    var monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        //    var model = new HomeViewModel(monthStart);
-        //    return View(model);
-        //}
-
         public virtual IActionResult Home()
         {
             var currentMonth = DateTime.Now.Month;
             var currentYear = DateTime.Now.Year;
 
-            var currentUser = _dbContext.Users.FirstOrDefault(u => u.Email == "email1@test.it"); // Simulazione user loggato
+            // Ottieni l'email dell'utente loggato dal contesto di autenticazione
+            var userEmail = User.Identity?.Name;
+
+            // Recupera l'utente dal database
+            var currentUser = _dbContext.Users
+                .FirstOrDefault(u => u.Email == userEmail);
 
             var model = new HomeViewModel
             {
+                UserEmail = currentUser ?.Email,
                 CurrentMonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
                 CurrentYear = currentYear,
                 Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth),

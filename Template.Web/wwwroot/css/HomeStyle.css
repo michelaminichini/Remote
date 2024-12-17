@@ -57,12 +57,22 @@ h1 {
     top: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    padding: 5px;
+    padding: 10px; /* Aumentato per contenere l'email */
     border-radius: 5px;
+    text-align: center; /* Allineamento al centro */
+    color: white; /* Testo bianco */
+    width: 150px; /* Larghezza fissa */
 }
 
 .profile-container:hover .logout-button-container {
     display: block;
+}
+
+.logout-button-container h4 {
+    margin: 0;
+    font-size: 0.9rem; /* Dimensioni testo email */
+    color: white; /* Testo bianco */
+    font-weight: normal;
 }
 
 .logout-button-container button {
@@ -70,28 +80,16 @@ h1 {
     color: white;
     border: none;
     padding: 5px 10px;
+    margin-top: 5px; /* Distanza tra email e bottone */
     cursor: pointer;
+    border-radius: 4px;
 }
 
     .logout-button-container button:hover {
         background-color: #c82333;
     }
 
-/* Sezione immagine profilo */
-.profile-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.profile-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%; /* Bordo tondo */
-    object-fit: cover; /* Adatta l'immagine senza distorsioni */
-}
-
-/* Selettori di data */
+/* Selezione date */
 .date-selectors {
     display: flex;
     align-items: center;
