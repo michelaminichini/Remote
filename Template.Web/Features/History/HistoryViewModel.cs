@@ -14,5 +14,8 @@ namespace Template.Web.Features.History
         public DateTime? DataInizio { get; set; }
         public DateTime? DataFine { get; set; }
         public string Durata { get; set; }
+
+       
     }
+
 }

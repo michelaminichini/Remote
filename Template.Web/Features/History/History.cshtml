@@ -6,7 +6,7 @@
 <div class="container">
 
     <head>
-        <link rel="stylesheet" href="/css/History.css"/>
+        <link rel="stylesheet" href="/css/History.css" />
     </head>
 
 
@@ -14,14 +14,58 @@
         <h1 class="title-center">@ViewData["Title"]</h1>
     </div>
 
-    <div class="info mb-4">
-        <p><strong>Nome:</strong> @Model.FirstOrDefault()?.Nome</p>
-        <p><strong>Nome Team:</strong> @Model.FirstOrDefault()?.NomeTeam</p>
-        <p><strong>Ruolo:</strong> @Model.FirstOrDefault()?.Ruolo</p>
-        <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
+    <div class="container-info">
+        <div class="profile-img"></div>
+        
+            <div class="info-details">
+                <p><strong>Nome:</strong> @Model.FirstOrDefault()?.Nome</p>
+                <p><strong>Nome Team:</strong> @Model.FirstOrDefault()?.NomeTeam</p>
+                <p><strong>Ruolo:</strong> @Model.FirstOrDefault()?.Ruolo</p>
+                <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
+            </div>
+            
+       
     </div>
 
-    @if (Model != null && Model.Any())
+    @*
+    Controlla se il modello contiene almeno un elemento con dati validi.
+    La condizione verifica che almeno uno degli elementi della lista `Model` abbia
+    informazioni significative in almeno uno dei campi.
+    `Any()` restituirà `true` se almeno uno degli oggetti nella lista
+    soddisfa una delle condizioni sopra indicate. In tal caso, il codice all'interno
+    del blocco `if` verrà eseguito.
+    Se nessun elemento soddisfa questa condizione, il blocco `else` verrà eseguito.
+    *@
+
+    @if (Model != null && Model.Any(item =>
+    item.DataRichiesta.HasValue ||
+    !string.IsNullOrEmpty(item.Tipologia?.Trim()) ||
+    item.DataInizio.HasValue ||
+    item.DataFine.HasValue ||
+    !string.IsNullOrEmpty(item.Durata?.Trim())))
+    {
+        <div class="no-request-message">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Data della richiesta</th>
+                        <th>Tipologia</th>
+                        <th>Data inizio</th>
+                        <th>Data fine</th>
+                        <th>Durata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center">N/A</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="no-request-text">Non ci sono richieste passate</p>
+        </div>
+    }
+    else
     {
         <table class="table table-striped">
             <thead>
@@ -38,34 +82,20 @@
                 {
                     <tr>
                         <td>@(item.DataRichiesta?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(string.IsNullOrEmpty(item.Tipologia) ? "N/A" : item.Tipologia)</td>
+                        <td>@(string.IsNullOrEmpty(item.Tipologia?.Trim()) ? "N/A" : item.Tipologia)</td>
                         <td>@(item.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                         <td>@(item.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(string.IsNullOrEmpty(item.Durata) ? "N/A" : item.Durata)</td>
+                        <td>@(string.IsNullOrEmpty(item.Durata?.Trim()) ? "N/A" : item.Durata)</td>
                     </tr>
                 }
             </tbody>
         </table>
+
+
     }
-    else
-    {
-        <div class="no-request-message">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Data della richiesta</th>
-                        <th>Tipologia</th>
-                        <th>Data inizio</th>
-                        <th>Data fine</th>
-                        <th>Durata</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="5" class="text-center no-request-message">Non ci sono richieste passate.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    }
+
+    <!-- Bottone sotto la tabella, allineato a destra -->
+    <div class="button-container">
+        <a href="/" class="btn-primary">Torna alla home</a>
+    </div>
 </div>

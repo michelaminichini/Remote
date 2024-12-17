@@ -3,21 +3,57 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    margin-bottom: 50px;
 }
 
 /* Intestazione principale */
 h1 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
     margin-bottom: 30px;
+    text-align: center;
+}
+
+.container-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.info-details {
+    background-color: #f0f0f0; /* Colore di sfondo grigio chiaro */
+    padding: 20px;
+    border-radius: 8px; /* Angoli arrotondati */
+    width: 50%; /* Imposta la larghezza del box */
 }
 
 /* Info utente */
 .info p {
     font-size: 16px;
     margin: 5px 0;
-    color: #555;
+    color: #000000;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background-color: #4da3ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #1e90ff;
+}
+
+/* Contenitore del bottone */
+.button-container {
+    text-align: right; /* Allinea il bottone a destra */
+    margin-top: 20px; /* Distanza tra la tabella e il bottone */
 }
 
 /* Profilo utente (cerchio con immagine) */
@@ -39,11 +75,12 @@ h1 {
 
     /* Intestazioni della tabella */
     .table th {
-        background-color: #f2f2f2;
+        background-color: #4da3ff;
         padding: 12px;
         text-align: center;
         font-weight: bold;
         border: 1px solid #000;
+        color: #ffffff;
     }
 
     /* Celle della tabella */
@@ -53,16 +90,25 @@ h1 {
         border: 1px solid #000;
     }
 
-/* Stile per il messaggio "Non ci sono richieste passate" */
+    /* Righe alternate per la tabella */
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+/* Stile per il messaggio di nessuna richiesta */
 .no-request-message {
-    color: #d9534f; /* Colore rosso scuro per il messaggio */
-    font-size: 18px; /* Aumenta la dimensione del font */
-    font-weight: bold; /* Grassetto per il messaggio */
-    padding: 15px; /* Padding per dare un po' di spazio attorno al testo */
-    background-color: #f8d7da; /* Colore di sfondo rosato per il messaggio */
-    border-radius: 5px; /* Aggiunge angoli arrotondati */
+    text-align: center;
     margin-top: 20px;
 }
+
+.no-request-text {
+    color: #8b0000; /* Colore rosso scuro */
+    font-size: 16px; /* Dimensione del font più grande */
+    font-weight: bold; /* Grassetto */
+    margin-top: 20px; /* Spazio sopra il messaggio */
+    text-align: left;
+}
+
 
 /* Centratura della tabella e messaggi */
 .text-center {
@@ -77,7 +123,7 @@ h1 {
 
 /* Aggiungere bordi visibili alla tabella */
 .table, .table th, .table td {
-    border: 1px solid #000;
+    border: 2px solid #000;
 }
 
 /* Responsività: assicurati che la tabella si adatti su dispositivi mobili */
@@ -89,4 +135,12 @@ h1 {
     h1 {
         font-size: 20px;
     }
+    .button-container {
+        text-align: center; /* Centra il bottone su schermi piccoli */
+    }
+
+    .btn-primary {
+        width: 100%; /* Rende il bottone a larghezza piena su schermi piccoli */
+    }
+
 }
