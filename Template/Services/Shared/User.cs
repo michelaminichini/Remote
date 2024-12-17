@@ -24,13 +24,10 @@ namespace Template.Services.Shared
         public string Tipologia { get; set; }
         public DateTime DataInizio { get; set; }
         public DateTime DataFine { get; set; }
-        public TimeSpan Durata { get; set; } 
+        public TimeSpan Durata { get; set; }
 
-        /// <summary>
-        /// Checks if password passed as parameter matches with the Password of the current user
-        /// </summary>
-        /// <param name="password">password to check</param>
-        /// <returns>True if passwords match. False otherwise.</returns>
+        public string Img { get; set; } // Campo per immagine profilo
+
         public bool IsMatchWithPassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password)) return false;

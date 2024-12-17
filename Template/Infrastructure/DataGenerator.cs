@@ -24,6 +24,7 @@ namespace Template.Infrastructure
                     LastName = "Cognome1",
                     TeamName = "Team A",
                     Role = "Dipendente",
+                    Img = "images/User1.png",
                     DataRichiesta = DateTime.Now.AddMonths(-3),
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
@@ -38,7 +39,8 @@ namespace Template.Infrastructure
                     FirstName = "Nome2",
                     LastName = "Cognome2",
                     TeamName = "Team A",
-                    Role = "Manager"
+                    Role = "Manager",
+                    Img = "images/User2.png"
                 },
                 new User
                 {
@@ -49,6 +51,7 @@ namespace Template.Infrastructure
                     LastName = "Cognome3",
                     TeamName = "Team A",
                     Role = "Dipendente",
+                    Img = "images/User3.png",
                     DataRichiesta = DateTime.Now.AddMonths(-2),
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-2).AddDays(2),  // Inizio ferie il 2 del mese
@@ -65,6 +68,7 @@ namespace Template.Infrastructure
                     LastName = "Rossi",
                     TeamName = "Team A",
                     Role = "Dipendente",
+                    Img = "images/User4.png",
                     DataRichiesta = DateTime.Now.AddMonths(-3),
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
@@ -80,6 +84,7 @@ namespace Template.Infrastructure
                     LastName = "Ferrari",
                     TeamName = "Team A",
                     Role = "Dipendente",
+                    Img = "images/User5.png",
                     DataRichiesta = DateTime.Now.AddMonths(-1),
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
@@ -95,6 +100,7 @@ namespace Template.Infrastructure
                     LastName = "Conti",
                     TeamName = "Team B",
                     Role = "Dipendente",
+                    Img = "images/User6.png",
                     DataRichiesta = DateTime.Now.AddMonths(-1),
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
@@ -109,7 +115,8 @@ namespace Template.Infrastructure
                     FirstName = "Sara",
                     LastName = "Moretti",
                     TeamName = "Team B",
-                    Role = "Manager"
+                    Role = "Manager",
+                    Img = "images/User7.png"
                 });
 
             context.SaveChanges();

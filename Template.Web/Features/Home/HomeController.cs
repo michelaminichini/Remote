@@ -45,11 +45,14 @@ namespace Template.Web.Features.Home
             var currentMonth = DateTime.Now.Month;
             var currentYear = DateTime.Now.Year;
 
+            var currentUser = _dbContext.Users.FirstOrDefault(u => u.Email == "email1@test.it"); // Simulazione user loggato
+
             var model = new HomeViewModel
             {
                 CurrentMonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
                 CurrentYear = currentYear,
-                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth)
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth),
+                UserProfileImage = currentUser?.Img // Aggiunta immagine profilo
             };
 
             return View(model);
