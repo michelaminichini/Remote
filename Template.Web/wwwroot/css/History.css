@@ -1,0 +1,92 @@
+﻿/* Stile generale per la pagina */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Intestazione principale */
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Info utente */
+.info p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Profilo utente (cerchio con immagine) */
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+/* Stile per la tabella */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    /* Intestazioni della tabella */
+    .table th {
+        background-color: #f2f2f2;
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid #000;
+    }
+
+    /* Celle della tabella */
+    .table td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #000;
+    }
+
+/* Stile per il messaggio "Non ci sono richieste passate" */
+.no-request-message {
+    color: #d9534f; /* Colore rosso scuro per il messaggio */
+    font-size: 18px; /* Aumenta la dimensione del font */
+    font-weight: bold; /* Grassetto per il messaggio */
+    padding: 15px; /* Padding per dare un po' di spazio attorno al testo */
+    background-color: #f8d7da; /* Colore di sfondo rosato per il messaggio */
+    border-radius: 5px; /* Aggiunge angoli arrotondati */
+    margin-top: 20px;
+}
+
+/* Centratura della tabella e messaggi */
+.text-center {
+    text-align: center;
+}
+
+/* Stile per le righe della tabella vuota */
+.table td {
+    font-style: italic;
+    color: #777;
+}
+
+/* Aggiungere bordi visibili alla tabella */
+.table, .table th, .table td {
+    border: 1px solid #000;
+}
+
+/* Responsività: assicurati che la tabella si adatti su dispositivi mobili */
+@media (max-width: 768px) {
+    .table {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+}
