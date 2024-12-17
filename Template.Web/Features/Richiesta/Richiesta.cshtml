@@ -24,6 +24,12 @@
             <i class="bi bi-house-door"></i> Torna alla Home
         </a>
 
+
+        <div class="d-flex justify-content-end">
+            <button onclick="window.location.href='@Url.Action("Storico", "Richiesta")'" class="btn btn-primary btn-mg">Storico (solo per verifica)</button>
+        </div>
+
+
         <h1 class="text-center mb-4">Richiesta Permessi/Ferie</h1>
 
         @if (TempData["Message"] != null)
@@ -51,7 +57,7 @@
             {{ errorMessage }}
         </div>
 
-        <form id="formRichiesta" asp-action="InviaRichiesta" method="post" class="needs-validation" novalidate>
+        <form id="formRichiesta" asp-action="PostRequest" method="post" class="needs-validation" novalidate>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label asp-for="Tipologia" class="form-label">Tipologia:</label>

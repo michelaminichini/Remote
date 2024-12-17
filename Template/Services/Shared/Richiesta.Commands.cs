@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,5 +36,11 @@ namespace Template.Services.Shared
 
             return request.Id;
         }
+
+        public async Task<List<Request>> GetAllRequests()
+        {
+            return await _dbContext.Requests.ToListAsync();
+        }
+
     }
 }

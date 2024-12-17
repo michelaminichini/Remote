@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Template.Services.Shared.Request>
+
+<h1>Richieste Salvate</h1>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipologia</th>
+                <th>Data Inizio</th>
+                <th>Data Fine</th>
+                <th>Ora Inizio</th>
+                <th>Ora Fine</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var richiesta in Model)
+            {
+                <tr>
+                    <td>@richiesta.Id</td>
+                    <td>@richiesta.Tipologia</td>
+                    <td>@richiesta.DataInizio.ToString("yyyy-MM-dd")</td>
+                    <td>@richiesta.DataFine.ToString("yyyy-MM-dd")</td>
+                    <td>@richiesta.OraInizio</td>
+                    <td>@richiesta.OraFine</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Non ci sono richieste salvate.</p>
+}
