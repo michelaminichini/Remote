@@ -14,31 +14,48 @@
         <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
     </div>
 
-    @if (Model == null || !Model.Any())
+    @if (Model != null && Model.Any())
     {
-        <p>Non ci sono richieste passate</p>
-    }
-    else
-    {
-        <table class="table table-bordered">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Data della richiesta</th>
                     <th>Tipologia</th>
                     <th>Data inizio</th>
                     <th>Data fine</th>
+                    <th>Durata</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.DataRichiesta.ToShortDateString()</td>
-                        <td>@item.Tipologia</td>
-                        <td>@item.DataInizio.ToShortDateString()</td>
-                        <td>@item.DataFine.ToShortDateString()</td>
+                        <td>@(item.DataRichiesta?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                        <td>@(string.IsNullOrEmpty(item.Tipologia) ? "N/A" : item.Tipologia)</td>
+                        <td>@(item.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                        <td>@(item.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                        <td>@(string.IsNullOrEmpty(item.Durata) ? "N/A" : item.Durata)</td>
                     </tr>
                 }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Data della richiesta</th>
+                    <th>Tipologia</th>
+                    <th>Data inizio</th>
+                    <th>Data fine</th>
+                    <th>Durata</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" class="text-center">Non ci sono richieste passate.</td>
+                </tr>
             </tbody>
         </table>
     }

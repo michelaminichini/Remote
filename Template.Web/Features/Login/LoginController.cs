@@ -32,6 +32,7 @@ namespace Template.Web.Features.Login
             var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, utente.Id.ToString()),
+            new Claim(ClaimTypes.Name, utente.Email),
             new Claim(ClaimTypes.Email, utente.Email)
         };
 

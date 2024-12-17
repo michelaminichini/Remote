@@ -23,7 +23,12 @@ namespace Template.Infrastructure
                     FirstName = "Nome1",
                     LastName = "Cognome1",
                     TeamName = "Team A",
-                    Role = "Manager"
+                    Role = "Dipendente",
+                    DataRichiesta = DateTime.Now.AddMonths(-3),
+                    Tipologia = "Permesso",
+                    DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
+                    DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
+                    Durata = new TimeSpan(2, 0, 0)
                 },
                 new User
                 {
@@ -33,13 +38,7 @@ namespace Template.Infrastructure
                     FirstName = "Nome2",
                     LastName = "Cognome2",
                     TeamName = "Team A",
-                    Role = "Dipendente",
-                    DataRichiesta = DateTime.Now.AddMonths(-3),
-                    Tipologia = "Permesso",
-                    DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
-                    DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = new TimeSpan(2, 0, 0)
-
+                    Role = "Manager"
                 },
                 new User
                 {

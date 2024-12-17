@@ -5,6 +5,7 @@ using Template.Web.Features.History;
 using System.Linq;
 using System.Threading.Tasks;
 using Template.Services;
+using System;
 
 namespace Template.Web.Features.History
 {
@@ -24,7 +25,11 @@ namespace Template.Web.Features.History
 
             if (string.IsNullOrEmpty(userEmail))
             {
-                return NotFound("Email dell'utente non trovata.");
+                Console.WriteLine("User.Identity.Name è null o vuoto");
+            }
+            else
+            {
+                Console.WriteLine($"User.Identity.Name: {userEmail}");
             }
 
             var user = await _dbContext.Users
@@ -61,13 +66,15 @@ namespace Template.Web.Features.History
                 NomeTeam = data.TeamName,
                 Ruolo = data.Role,
                 Email = data.Email,
-                DataRichiesta = data.DataRichiesta,
+                DataRichiesta = data.DataRichiesta != DateTime.MinValue ? data.DataRichiesta : (DateTime?)null,
                 Tipologia = data.Tipologia,
-                DataInizio = data.DataInizio,
-                DataFine = data.DataFine,
+                DataInizio = data.DataInizio != DateTime.MinValue ? data.DataInizio : (DateTime?)null,
+                DataFine = data.DataFine != DateTime.MinValue ? data.DataFine : (DateTime?)null,
 
                 // Calcola la durata in ore
-                Durata = (data.DataFine - data.DataInizio).TotalHours.ToString("F2") // La durata in ore come stringa
+                Durata = (data.DataInizio != DateTime.MinValue && data.DataFine != DateTime.MinValue)
+             ? (data.DataFine - data.DataInizio).TotalHours.ToString("F2") : "N/A"
+
             }).ToList();
 
             return View(model); // Restituisce la vista con il modello
