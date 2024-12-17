@@ -109,20 +109,11 @@ namespace Template.Web
 
             app.UseEndpoints(endpoints =>
             {
-                // ROUTING PER HUB
-                endpoints.MapHub<TemplateHub>("/templateHub");
-
-                // Define routes for the Example area
-                endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
-
-                // Default route
-                endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
-
-                // Route for authenticated users (Home)
+                endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}"); // Login è il punto di partenza predefinito
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Home}"
-                ).RequireAuthorization();
+                ).RequireAuthorization(); // RequireAuthorization assicura che solo gli utenti autenticati possano accedere alla Home
             });
         }
     }

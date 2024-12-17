@@ -97,7 +97,7 @@ namespace Template.Web.Features.Login
         {
             HttpContext.SignOutAsync();
             Alerts.AddSuccess(this, "Utente scollegato correttamente");
-            return RedirectToAction("Login", "Login");
+            return RedirectToAction("Login", "Login");  // Redirect alla pagina di login
         }
     }
 

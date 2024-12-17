@@ -36,13 +36,46 @@ h1 {
     text-align: center; /* Centra il testo */
 }
 
+/* Profilo utente con hover per logout */
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
 .profile-img-large {
     width: 5rem;
     height: 5rem; /* Altezza uguale alla larghezza */
     object-fit: cover; /* Adatta senza distorsioni */
     border-radius: 50%; /* Bordo tondo */
     border: 4px solid black;
+    cursor: pointer;
 }
+
+.logout-button-container {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.profile-container:hover .logout-button-container {
+    display: block;
+}
+
+.logout-button-container button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+    .logout-button-container button:hover {
+        background-color: #c82333;
+    }
 
 /* Sezione immagine profilo */
 .profile-section {

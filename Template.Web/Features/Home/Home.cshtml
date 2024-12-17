@@ -13,7 +13,17 @@
         <h1 class="title-text">
             @ViewData["Title"]
         </h1>
-        <img src="~/@Model.UserProfileImage" alt="Profilo" class="profile-img-large" />
+
+        <!-- Profile Image with Logout Hover Option -->
+        <div class="profile-container">
+            <img src="~/@Model.UserProfileImage" alt="Profilo" class="profile-img-large" />
+            <div class="logout-button-container">
+                <!-- Form for Logout to redirect properly to the Login page -->
+                <form method="post" action="@Url.Action("Logout", "Login")">
+                    <button class="btn btn-danger" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div class="tabs">
@@ -31,7 +41,6 @@
     </div>
 
     <div class="calendar text-center mt-4">
-        <!-- Mese e anno sopra ai giorni -->
         <div class="calendar mt-4">
             <h2>@Model.CurrentMonthName @Model.CurrentYear</h2>
         </div>
@@ -53,7 +62,7 @@
                     <tr>
                         @foreach (var day in week)
                         {
-                            if (day.IsCurrentMonth) // Mostra solo i giorni del mese corrente
+                            if (day.IsCurrentMonth)
                             {
                                 <td>
                                     <div class="day-header d-flex justify-content-between align-items-start">
@@ -80,7 +89,7 @@
                             }
                             else
                             {
-                                <td></td> <!-- Giorni fuori dal mese, quindi non visualizzati -->
+                                <td></td>
                             }
                         }
                     </tr>
