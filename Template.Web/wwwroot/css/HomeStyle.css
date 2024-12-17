@@ -20,6 +20,30 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Titolo e immagine profilo */
+.title-container {
+    display: flex;
+    justify-content: center; /* Centra il titolo */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-text {
+    font-size: 3rem; /* Grandezza del titolo */
+    font-weight: bold;
+    margin: 0;
+    flex-grow: 1; /* Permette al titolo di crescere e occupare spazio */
+    text-align: center; /* Centra il testo */
+}
+
+.profile-img-large {
+    width: 5rem;
+    height: 5rem; /* Altezza uguale alla larghezza */
+    object-fit: cover; /* Adatta senza distorsioni */
+    border-radius: 50%; /* Bordo tondo */
+    border: 4px solid black;
+}
+
 /* Sezione immagine profilo */
 .profile-section {
     display: flex;
@@ -27,12 +51,12 @@ h1 {
     gap: 1rem;
 }
 
-    .profile-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%; /* Bordo tondo */
-        object-fit: cover; /* Adatta l'immagine senza distorsioni */
-    }
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Bordo tondo */
+    object-fit: cover; /* Adatta l'immagine senza distorsioni */
+}
 
 /* Selettori di data */
 .date-selectors {
@@ -94,12 +118,6 @@ h1 {
         background-color: #fdfdfd;
         transition: background-color 0.3s ease;
     }
-
-        /* Modifica per i giorni fuori dal mese corrente */
-        .table td.not-current-month {
-            background-color: #E4E5E0; /* Colore di sfondo più chiaro */
-            color: #b0b0b0; /* Colore del testo più chiaro */
-        }
 
         .table td .day-header {
             font-size: 1rem;

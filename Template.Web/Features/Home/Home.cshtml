@@ -9,9 +9,11 @@
         <link rel="stylesheet" href="/css/HomeStyle.css" />
     </head>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="title-center">@ViewData["Title"]</h1>
-        <img src="~/@Model.UserProfileImage" alt="Profilo" class="profile-img" />
+    <div class="title-container">
+        <h1 class="title-text">
+            @ViewData["Title"]
+        </h1>
+        <img src="~/@Model.UserProfileImage" alt="Profilo" class="profile-img-large" />
     </div>
 
     <div class="tabs">
