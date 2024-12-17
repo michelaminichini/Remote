@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Template.Services;
+using Template.Services.Shared;
 using Template.Web.Infrastructure;
 using Template.Web.SignalR.Hubs;
 
@@ -31,7 +32,7 @@ namespace Template.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
+            services.AddScoped<SharedService>();
             services.AddDbContext<TemplateDbContext>(options =>
             {
                 options.UseInMemoryDatabase(databaseName: "Template");
@@ -114,6 +115,7 @@ namespace Template.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Home}"
                 ).RequireAuthorization(); // RequireAuthorization assicura che solo gli utenti autenticati possano accedere alla Home
+                endpoints.MapControllerRoute("default", "{controller=Richiesta}/{action=Richiesta}"); 
             });
         }
     }
