@@ -2,9 +2,16 @@
 @{
     ViewData["Title"] = "Storico delle richieste";
 }
+
 <div class="container">
+
+    <head>
+        <link rel="stylesheet" href="/css/History.css"/>
+    </head>
+
+
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Storico delle tue richieste</h1>
+        <h1 class="title-center">@ViewData["Title"]</h1>
     </div>
 
     <div class="info mb-4">
@@ -42,21 +49,23 @@
     }
     else
     {
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Data della richiesta</th>
-                    <th>Tipologia</th>
-                    <th>Data inizio</th>
-                    <th>Data fine</th>
-                    <th>Durata</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="5" class="text-center">Non ci sono richieste passate.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="no-request-message">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Data della richiesta</th>
+                        <th>Tipologia</th>
+                        <th>Data inizio</th>
+                        <th>Data fine</th>
+                        <th>Durata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center no-request-message">Non ci sono richieste passate.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     }
 </div>
