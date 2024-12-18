@@ -139,17 +139,30 @@ h1 {
         position: relative;
     }
 
+    /* Intestazioni della tabella (giorni della settimana) */
     .table th {
         background-color: #4da3ff;
         color: white;
         font-weight: bold;
     }
 
+    /* Cella dei giorni normali */
     .table td {
         background-color: #fdfdfd;
         transition: background-color 0.3s ease;
     }
 
+        /* Giorni fuori mese */
+        .table td.other-month-day {
+            background-color: #f4f4f4; /* Colore di sfondo per i giorni prima/dopo il mese */
+        }
+
+        /* Cella del giorno odierno */
+        .table td.today {
+            background-color: #add8e6; /* Colore per il giorno odierno */
+        }
+
+        /* Intestazione dei giorni */
         .table td .day-header {
             font-size: 1rem;
             font-weight: bold;
@@ -158,6 +171,13 @@ h1 {
             position: relative;
         }
 
+        /* Nascondi il numero del giorno e il pulsante '+' per i giorni fuori mese */
+        .table td.other-month-day .day-header,
+        .table td.other-month-day .add-event-button {
+            display: none;
+        }
+
+        /* Eventi dei giorni */
         .table td .events {
             font-size: 0.9rem;
             color: #666;

@@ -26,11 +26,13 @@ namespace Template.Infrastructure
                 for (int i = 0; i < 7; i++)
                 {
                     bool isCurrentMonth = currentDay.Month == month;
+                    bool isToday = currentDay.Date == DateTime.Today.Date;
 
                     week.Add(new DayViewModel
                     {
                         Date = currentDay,
                         IsCurrentMonth = isCurrentMonth,
+                        IsToday = isToday,  // Aggiunta proprietà IsToday 
                         Events = new List<string>()
                     });
 
@@ -48,6 +50,7 @@ namespace Template.Infrastructure
     {
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
+        public bool IsToday { get; set; }  // Aggiunta proprietà IsToday
         public List<string> Events { get; set; }
     }
 }
