@@ -11,11 +11,10 @@ namespace Template.Infrastructure
             var firstDayOfMonth = new DateTime(year, month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
-            // Trova il primo lunedì della settimana del primo giorno del mese
             var startOfWeek = firstDayOfMonth.AddDays(-(int)firstDayOfMonth.DayOfWeek + (int)DayOfWeek.Monday);
             if (startOfWeek > firstDayOfMonth)
             {
-                startOfWeek = startOfWeek.AddDays(-7); // Se il primo lunedì è dopo il 1° del mese, torna indietro di una settimana
+                startOfWeek = startOfWeek.AddDays(-7);
             }
 
             var currentDay = startOfWeek;
@@ -24,7 +23,6 @@ namespace Template.Infrastructure
             {
                 var week = new List<DayViewModel>();
 
-                // Crea la settimana da lunedì a domenica
                 for (int i = 0; i < 7; i++)
                 {
                     bool isCurrentMonth = currentDay.Month == month;
@@ -49,7 +47,7 @@ namespace Template.Infrastructure
     public class DayViewModel
     {
         public DateTime Date { get; set; }
-        public bool IsCurrentMonth { get; set; } // Aggiunto per determinare se il giorno è nel mese corrente
+        public bool IsCurrentMonth { get; set; }
         public List<string> Events { get; set; }
     }
 }

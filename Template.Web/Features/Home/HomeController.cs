@@ -31,25 +31,35 @@ namespace Template.Web.Features.Home
             _sharedLocalizer = sharedLocalizer;
         }
 
-        public virtual IActionResult Home()
+        public virtual IActionResult Home(int? year, int? month)
         {
-            var currentMonth = DateTime.Now.Month;
-            var currentYear = DateTime.Now.Year;
+            var currentMonth = month ?? DateTime.Now.Month;
+            var currentYear = year ?? DateTime.Now.Year;
 
-            // Ottieni l'email dell'utente loggato dal contesto di autenticazione
+            if (currentMonth < 1)
+            {
+                currentMonth = 12;
+                currentYear--;
+            }
+            else if (currentMonth > 12)
+            {
+                currentMonth = 1;
+                currentYear++;
+            }
+
             var userEmail = User.Identity?.Name;
 
-            // Recupera l'utente dal database
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);
 
             var model = new HomeViewModel
             {
-                UserEmail = currentUser ?.Email,
+                UserEmail = currentUser?.Email,
                 CurrentMonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
                 CurrentYear = currentYear,
+                CurrentMonth = currentMonth,
                 Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth),
-                UserProfileImage = currentUser?.Img // Aggiunta immagine profilo
+                UserProfileImage = currentUser?.Img
             };
 
             return View(model);

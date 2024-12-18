@@ -7,8 +7,9 @@ namespace Template.Web.Features.Home
     {
         public string CurrentMonthName { get; set; }
         public int CurrentYear { get; set; }
+        public int CurrentMonth { get; set; }
         public List<List<DayViewModel>> Weeks { get; set; }
-        public string UserProfileImage { get; set; } // Percorso immagine profilo
-        public string UserEmail { get; set; } // visualizzata con logout
+        public string UserProfileImage { get; set; }
+        public string UserEmail { get; set; }
     }
 }

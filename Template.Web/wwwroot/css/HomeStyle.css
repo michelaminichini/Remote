@@ -136,7 +136,7 @@ h1 {
         border: 1px solid #ddd;
         padding: 10px;
         height: 100px;
-        position: relative; /* Aggiunto per posizionare elementi figli assoluti */
+        position: relative;
     }
 
     .table th {
@@ -155,7 +155,7 @@ h1 {
             font-weight: bold;
             color: #333;
             margin-bottom: 5px;
-            position: relative; /* Aggiunto per contenere pulsante "+" */
+            position: relative;
         }
 
         .table td .events {
@@ -166,9 +166,9 @@ h1 {
 
 /* Pulsante aggiunta evento */
 .add-event-button {
-    position: absolute; /* Posizionamento assoluto */
-    top: 0; /* Allineato in alto */
-    right: 0; /* Allineato a destra */
+    position: absolute;
+    top: 0;
+    right: 0;
     background-color: #4da3ff;
     color: white;
     border: none;
@@ -212,3 +212,47 @@ h1 {
         .event-menu .btn:hover {
             background-color: #2a8be7;
         }
+
+/* Contenitore mese con frecce */
+.month-navigation {
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.month-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-button {
+    background-color: #4da3ff;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    position: absolute;
+}
+
+    .nav-button:hover {
+        background-color: #2a8be7;
+    }
+
+.left-arrow {
+    left: -40px; /* Posizionamento a sinistra */
+    border-radius: 50%;
+}
+
+.right-arrow {
+    right: -40px; /* Posizionamento a destra */
+}
