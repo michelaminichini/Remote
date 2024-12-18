@@ -24,7 +24,7 @@ namespace Template.Infrastructure
                     LastName = "Cognome1",
                     TeamName = "Team A",
                     Role = "Dipendente",
-                    Img = "images/User1.png",
+                    Img = "images/User/User1.png",
                     DataRichiesta = DateTime.Now.AddMonths(-3),
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
@@ -40,18 +40,18 @@ namespace Template.Infrastructure
                     LastName = "Cognome2",
                     TeamName = "Team A",
                     Role = "Manager",
-                    Img = "images/User2.png"
+                    Img = "images/User/User2.png"
                 },
                 new User
                 {
                     Id = Guid.Parse("bfdef48b-c7ea-4227-8333-c635af267354"), // Forced to specific Guid for tests
                     Email = "email3@test.it",
-                    Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
                     FirstName = "Nome3",
                     LastName = "Cognome3",
                     TeamName = "Team A",
                     Role = "Dipendente",
-                    Img = "images/User3.png",
+                    Img = "images/User/User3.png",
                     DataRichiesta = DateTime.Now.AddMonths(-2),
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-2).AddDays(2),  // Inizio ferie il 2 del mese
@@ -63,12 +63,12 @@ namespace Template.Infrastructure
                 {
                     Id = Guid.NewGuid(),
                     Email = "mario.rossi@teama.it",
-                    Password = "Password123!", // Usando una password semplice per il test
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
                     FirstName = "Mario",
                     LastName = "Rossi",
                     TeamName = "Team A",
                     Role = "Dipendente",
-                    Img = "images/User4.png",
+                    Img = "images/User/User4.png",
                     DataRichiesta = DateTime.Now.AddMonths(-3),
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
@@ -79,12 +79,12 @@ namespace Template.Infrastructure
                 {
                     Id = Guid.NewGuid(),
                     Email = "anna.ferrari@company.com",
-                    Password = "Password1",
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
                     FirstName = "Anna",
                     LastName = "Ferrari",
                     TeamName = "Team A",
                     Role = "Dipendente",
-                    Img = "images/User5.png",
+                    Img = "images/User/User5.png",
                     DataRichiesta = DateTime.Now.AddMonths(-1),
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
@@ -95,12 +95,12 @@ namespace Template.Infrastructure
                 {
                     Id = Guid.NewGuid(),
                     Email = "giuseppe.conti@company.com",
-                    Password = "Password8",
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
                     FirstName = "Giuseppe",
                     LastName = "Conti",
                     TeamName = "Team B",
                     Role = "Dipendente",
-                    Img = "images/User6.png",
+                    Img = "images/User/User6.png",
                     DataRichiesta = DateTime.Now.AddMonths(-1),
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
@@ -111,12 +111,12 @@ namespace Template.Infrastructure
                 {
                     Id = Guid.NewGuid(),
                     Email = "sara.moretti@company.com",
-                    Password = "Password5",
+                    Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
                     FirstName = "Sara",
                     LastName = "Moretti",
                     TeamName = "Team B",
                     Role = "Manager",
-                    Img = "images/User7.png"
+                    Img = "images/User/User7.png"
                 });
 
             context.SaveChanges();
