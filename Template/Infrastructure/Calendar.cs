@@ -5,7 +5,7 @@ namespace Template.Infrastructure
 {
     public class Calendar
     {
-        public static List<List<DayViewModel>> GetWeeksInMonth(int year, int month)
+        public static List<List<DayViewModel>> GetWeeksInMonth(int year, int month, DateTime? dateFrom, DateTime? dateTo) //per gestione dal-al e delle settimane/mesi
         {
             var weeks = new List<List<DayViewModel>>();
             var firstDayOfMonth = new DateTime(year, month, 1);
@@ -32,7 +32,8 @@ namespace Template.Infrastructure
                     {
                         Date = currentDay,
                         IsCurrentMonth = isCurrentMonth,
-                        IsToday = isToday,  // Aggiunta proprietà IsToday 
+                        IsToday = isToday,
+                        IsInRange = (dateFrom == null || currentDay >= dateFrom) && (dateTo == null || currentDay <= dateTo),
                         Events = new List<string>()
                     });
 
@@ -50,7 +51,8 @@ namespace Template.Infrastructure
     {
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
-        public bool IsToday { get; set; }  // Aggiunta proprietà IsToday
+        public bool IsToday { get; set; }
+        public bool IsInRange { get; set; }  // Aggiunto per il filtro dell'intervallo
         public List<string> Events { get; set; }
     }
 }

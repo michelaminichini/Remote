@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Threading.Tasks;
 using Template.Infrastructure;
 using Template.Services;
 using Template.Services.Shared;
@@ -31,7 +30,7 @@ namespace Template.Web.Features.Home
             _sharedLocalizer = sharedLocalizer;
         }
 
-        public virtual IActionResult Home(int? year, int? month)
+        public virtual IActionResult Home(int? year, int? month, DateTime? dateFrom, DateTime? dateTo)
         {
             var currentMonth = month ?? DateTime.Now.Month;
             var currentYear = year ?? DateTime.Now.Year;
@@ -58,11 +57,29 @@ namespace Template.Web.Features.Home
                 CurrentMonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
                 CurrentYear = currentYear,
                 CurrentMonth = currentMonth,
-                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth),
-                UserProfileImage = currentUser?.Img
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo),
+                UserProfileImage = currentUser?.Img,
+                DateFrom = dateFrom,
+                DateTo = dateTo
             };
 
             return View(model);
+        }
+
+        private List<List<DayViewModel>> FilterWeeksByDateRange(List<List<DayViewModel>> weeks, DateTime? dateFrom, DateTime? dateTo)
+        {
+            if (dateFrom == null && dateTo == null)
+                return weeks;
+
+            foreach (var week in weeks)
+            {
+                foreach (var day in week)
+                {
+                    day.IsInRange = (dateFrom == null || day.Date >= dateFrom) && (dateTo == null || day.Date <= dateTo);
+                }
+            }
+
+            return weeks;
         }
 
         // Azione per cambiare la lingua
