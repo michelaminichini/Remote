@@ -43,9 +43,9 @@
     <div class="calendar text-center mt-4">
         <div class="month-navigation">
             <h2 class="month-title">
-                <button class="nav-button left-arrow" onclick="location.href='@Url.Action("Home", new { year = Model.CurrentYear, month = Model.CurrentMonth - 1 })'">&lt;</button>
+                <button class="nav-button left-arrow" onclick="location.href='@Url.Action("Home", new { year = Model.CurrentYear, month = Model.CurrentMonth - 1, dateFrom = Model.DateFrom?.ToString("yyyy-MM-dd"), dateTo = Model.DateTo?.ToString("yyyy-MM-dd") })'">&lt;</button>
                 @Model.CurrentMonthName @Model.CurrentYear
-                <button class="nav-button right-arrow" onclick="location.href='@Url.Action("Home", new { year = Model.CurrentYear, month = Model.CurrentMonth + 1 })'">&gt;</button>
+                <button class="nav-button right-arrow" onclick="location.href='@Url.Action("Home", new { year = Model.CurrentYear, month = Model.CurrentMonth + 1, dateFrom = Model.DateFrom?.ToString("yyyy-MM-dd"), dateTo = Model.DateTo?.ToString("yyyy-MM-dd") })'">&gt;</button>
             </h2>
         </div>
 

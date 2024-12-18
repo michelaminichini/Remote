@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
@@ -47,7 +46,6 @@ namespace Template.Web.Features.Home
             }
 
             var userEmail = User.Identity?.Name;
-
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);
 
@@ -57,29 +55,13 @@ namespace Template.Web.Features.Home
                 CurrentMonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
                 CurrentYear = currentYear,
                 CurrentMonth = currentMonth,
-                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo),
-                UserProfileImage = currentUser?.Img,
                 DateFrom = dateFrom,
-                DateTo = dateTo
+                DateTo = dateTo,
+                UserProfileImage = currentUser?.Img,
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo)
             };
 
             return View(model);
-        }
-
-        private List<List<DayViewModel>> FilterWeeksByDateRange(List<List<DayViewModel>> weeks, DateTime? dateFrom, DateTime? dateTo)
-        {
-            if (dateFrom == null && dateTo == null)
-                return weeks;
-
-            foreach (var week in weeks)
-            {
-                foreach (var day in week)
-                {
-                    day.IsInRange = (dateFrom == null || day.Date >= dateFrom) && (dateTo == null || day.Date <= dateTo);
-                }
-            }
-
-            return weeks;
         }
 
         // Azione per cambiare la lingua
