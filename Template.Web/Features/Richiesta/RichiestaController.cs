@@ -24,9 +24,29 @@ namespace Template.Web.Features.Richiesta
             return View(model);
         }
 
+        [HttpGet]
+        public virtual async Task<IActionResult> Storico()
+        {
+            try
+            {
+                // Recupera tutte le richieste dal database usando SharedService
+                var richieste = await _sharedService.GetAllRequests();
+
+                // Passa i dati alla vista
+                return View(richieste);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Errore durante il recupero delle richieste: " + ex.Message);
+                TempData["ErrorMessage"] = "Si è verificato un errore durante il recupero delle richieste.";
+                return RedirectToAction("Richiesta");
+            }
+        }
+
+
 
         [HttpPost]
-        public virtual async Task<IActionResult> InviaRichiesta(RichiestaViewModel richiesta)
+        public virtual async Task<IActionResult> PostRequest(RichiestaViewModel richiesta)
         {
             if (ModelState.IsValid)
             {
