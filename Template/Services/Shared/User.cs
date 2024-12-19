@@ -25,6 +25,7 @@ namespace Template.Services.Shared
         public DateTime? DataInizio { get; set; }
         public DateTime? DataFine { get; set; }
         public TimeSpan? Durata { get; set; }
+        public string Stato { get; set; }
 
         public string Img { get; set; } // Campo per immagine profilo
 

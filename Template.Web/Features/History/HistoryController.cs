@@ -51,14 +51,16 @@ namespace Template.Web.Features.History
                     x.FirstName,
                     x.TeamName,
                     x.Role,
+                    x.Img,
                     x.DataRichiesta,
                     x.Tipologia,
                     x.DataInizio,
                     x.DataFine,
-                    x.Durata
+                    x.Durata,
+                    x.Stato
                 })
                 .ToListAsync();
-            
+
             // Crea il modello per la vista
             var model = allData.Select(data => new HistoryViewModel
             {
@@ -66,6 +68,7 @@ namespace Template.Web.Features.History
                 NomeTeam = data.TeamName,
                 Ruolo = data.Role,
                 Email = data.Email,
+                Img = data.Img,
                 DataRichiesta = data.DataRichiesta != DateTime.MinValue ? data.DataRichiesta : (DateTime?)null,
                 Tipologia = data.Tipologia,
                 DataInizio = data.DataInizio != DateTime.MinValue ? data.DataInizio : (DateTime?)null,
@@ -73,7 +76,9 @@ namespace Template.Web.Features.History
 
                 // Calcola la durata in ore
                 Durata = (data.DataInizio.HasValue && data.DataFine.HasValue)
-                ? (data.DataFine.Value - data.DataInizio.Value).TotalHours.ToString("F2") : "N/A"
+                ? (data.DataFine.Value - data.DataInizio.Value).TotalHours.ToString("F2") : "N/A",
+
+                Stato = data.Stato
 
             }).ToList();
 

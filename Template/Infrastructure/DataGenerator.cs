@@ -78,7 +78,8 @@ namespace Template.Infrastructure
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
                     DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = new TimeSpan(2, 0, 0)
+                    Durata = new TimeSpan(2, 0, 0),
+                    Stato = "Accettata"
                 },
                 new User
                 {
@@ -94,7 +95,8 @@ namespace Template.Infrastructure
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
                     DataFine = DateTime.Now.AddMonths(-1).AddDays(10),   // Fine ferie il 10 del mese
-                    Durata = new TimeSpan(5, 0, 0, 0)
+                    Durata = new TimeSpan(5, 0, 0, 0),
+                    Stato = "Rifiutata"
                 },
                 new User
                 {

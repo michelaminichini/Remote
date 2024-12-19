@@ -21,8 +21,11 @@
         <h1 class="title-center">@ViewData["Title"]</h1>
     </div>
 
-    <div class="container-info">
-        <div class="profile-img"></div>
+    @foreach(var item in Model){
+        <div class="container-info">
+            <div class="profile-img">
+                <img src="~/@item.Img" alt="Profile Picture" class="img-fluid rounded-circle" />
+            </div>
         
             <div class="info-details">
                 <p><strong>Nome:</strong> @Model.FirstOrDefault()?.Nome</p>
@@ -30,12 +33,32 @@
                 <p><strong>Ruolo:</strong> @Model.FirstOrDefault()?.Ruolo</p>
                 <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
             </div>
-    </div>
+        </div>
+    }
 
     <!-- Parte di debug 
     <p>@Model.Count</p>
     <pre>@Html.Raw(Json.Serialize(Model))</pre>  
     <p>Numero di elementi nel modello: @Model?.Count</p> -->
+
+    <div id="filter-box" class="d-flex mb-4">
+
+        <button class="btn btn-outline-primary" onclick="toggleFilterPanel()">
+            <i class="bi bi-filter-left"></i>
+        </button>
+
+        <div>
+            <div id="filterPanel" class="filter-panel d-none">
+                <select id="filterStatus" class="form-select" onchange="applyFilter()">
+                    <option value="Tutti">Tutti</option>
+                    <option value="Accettata">Accettata</option>
+                    <option value="Rifiutata">Rifiutata</option>
+                </select>
+            </div>
+        </div>
+
+        
+    </div>
 
 
     <table class="table table-striped">
@@ -46,17 +69,19 @@
                 <th>Data inizio</th>
                 <th>Data fine</th>
                 <th>Durata</th>
+                <th>Stato</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="historyTableBody">
             @foreach (var item in Model)
             {
-                <tr>
+                <tr class="historyRow" data-stato="@item.Stato">
                     <td>@(item.DataRichiesta?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                     <td>@(string.IsNullOrEmpty(item.Tipologia?.Trim()) ? "N/A" : item.Tipologia)</td>
                     <td>@(item.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                     <td>@(item.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                     <td>@(string.IsNullOrEmpty(item.Durata?.Trim()) ? "N/A" : item.Durata)</td>
+                    <td>@item.Stato</td>
                 </tr>
             }
         </tbody>
@@ -83,3 +108,25 @@
        
     }
 </div>
+
+<script>
+    function applyFilter(){
+        const selectedStatus = document.getElementById('filterStatus').value;
+        const rows = document.querySelectorAll('.historyRow');
+        rows.forEach(row => {
+            const stato = row.getAttribute('data-stato');
+            if (selectedStatus === 'Tutti' || stato === selectedStatus) {
+                row.style.display = '';
+
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function toggleFilterPanel() {
+        const filterPanel = document.getElementById('filterPanel');
+        filterPanel.classList.toggle('d-none');
+
+    }
+</script>
