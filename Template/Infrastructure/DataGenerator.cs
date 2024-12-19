@@ -43,8 +43,8 @@ namespace Template.Infrastructure
                     Img = "images/User/User2.png",
                     DataRichiesta = null,
                     Tipologia = null,
-                    DataInizio = null,  // Inizio ferie il 2 del mese
-                    DataFine = null,   // Fine ferie il 3 del mese
+                    DataInizio = null,
+                    DataFine = null,
                     Durata = null
                 },
                 new User
@@ -121,7 +121,12 @@ namespace Template.Infrastructure
                     LastName = "Moretti",
                     TeamName = "Team B",
                     Role = "Manager",
-                    Img = "images/User/User7.png"
+                    Img = "images/User/User7.png",
+                    DataRichiesta = null,
+                    Tipologia = null,
+                    DataInizio = null,
+                    DataFine = null,
+                    Durata = null
                 });
 
             context.SaveChanges();
