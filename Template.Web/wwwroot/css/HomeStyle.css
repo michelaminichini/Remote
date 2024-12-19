@@ -277,3 +277,13 @@ h1 {
     right: -40px; /* Posizionamento a destra */
     border-radius: 50%;
 }
+
+/* Event icon visibile solo nei giorni del mese */
+.table td .event-icon {
+    display: block; /* Assicurati che l'icona sia visibile */
+}
+
+/* Nascondi l'icona dell'evento per i giorni fuori mese */
+.table td.other-month-day .event-icon {
+    display: none;
+}
