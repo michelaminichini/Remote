@@ -37,16 +37,6 @@
     <pre>@Html.Raw(Json.Serialize(Model))</pre>  
     <p>Numero di elementi nel modello: @Model?.Count</p> -->
 
-    @*
-    Controlla se il modello contiene almeno un elemento con dati validi.
-    La condizione verifica che almeno uno degli elementi della lista `Model` abbia
-    informazioni significative in almeno uno dei campi.
-    `Any()` restituirà `true` se almeno uno degli oggetti nella lista
-    soddisfa una delle condizioni sopra indicate. In tal caso, il codice all'interno
-    del blocco `if` verrà eseguito.
-    Se nessun elemento soddisfa questa condizione, il blocco `else` verrà eseguito.
-    *@
-
 
     <table class="table table-striped">
         <thead>
@@ -72,12 +62,20 @@
         </tbody>
     </table>
 
+    @*
+    Controlla se il modello è null o se tutti gli elementi nella lista non hanno dati validi (nulli o "N/A").
+    Se è vero, mostra il messaggio presente nel div sottostante, che verrà posizionato al di sotto della tabella.
+
+    Dunque, questa condizione assicura che il messaggio venga 
+    visualizzato solo quando nessun dato valido è presente nel modello.
+    *@
+
     @if (Model == null || !Model.Any(item =>
-    item.DataRichiesta.HasValue ||
+    item.DataRichiesta.HasValue || // verifica se DataRichiesta è valorizzato (così per gli altri a seguire)
     !string.IsNullOrWhiteSpace(item.Tipologia) ||
     item.DataInizio.HasValue ||
     item.DataFine.HasValue ||
-    item.Durata != "N/A"))
+    item.Durata != "N/A")) // verifica se Durata è diversa da "N/A"
 
     
     {
