@@ -49,6 +49,18 @@ namespace Template.Web.Features.Home
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);
 
+            // Recupera gli eventi (Tipologia) relativi all'utente
+            var events = _dbContext.Users
+                .Where(u => u.Email == userEmail)  // Filtra l'utente per email
+                .Select(u => new
+                {
+                    u.Tipologia,
+                    u.DataInizio,
+                    u.DataFine
+                })
+                .ToList();
+
+            // Crea il modello per la vista
             var model = new HomeViewModel
             {
                 UserEmail = currentUser?.Email,
@@ -61,8 +73,44 @@ namespace Template.Web.Features.Home
                 Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo)
             };
 
+            // Aggiungi eventi per ciascun giorno della settimana
+            foreach (var week in model.Weeks)
+            {
+                foreach (var day in week)
+                {
+                    // Filtra gli eventi per ogni giorno
+                    var dayEvents = events.Where(e =>
+                        e.DataInizio.HasValue && e.DataFine.HasValue &&  // Verifica la presenza delle date
+                        e.DataInizio.Value.Date <= day.Date.Date && // Verifica che la data di inizio sia prima del giorno corrente
+                        e.DataFine.Value.Date >= day.Date.Date) // Verifica che la data di fine sia successiva o uguale al giorno corrente
+                        .Select(e => e.Tipologia) // Ottieni la tipologia dell'evento
+                        .ToList();
+
+                    foreach (var eventType in dayEvents)
+                    {
+                        // Aggiungi icone per ogni evento
+                        day.Events.Add(GetEventIcon(eventType));
+                    }
+                }
+            }
+
             return View(model);
         }
+
+        private string GetEventIcon(string eventType)
+        {
+            // Restituisce il percorso dell'icona in base alla tipologia
+            return eventType switch
+            {
+                "ferie" => "/images/Logo/ferie.png",
+                "in presenza" => "/images/Logo/in_presenza.png",
+                "trasferta" => "/images/Logo/trasferta.png",
+                "permessi" => "/images/Logo/permessi.png",
+                "smartworking" => "/images/Logo/smartworking.png",
+                _ => "/images/Logo/default.png", // Icona di default
+            };
+        }
+
 
         // Azione per cambiare la lingua
         [HttpPost]

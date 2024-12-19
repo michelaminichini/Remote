@@ -52,7 +52,8 @@ namespace Template.Infrastructure
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
         public bool IsToday { get; set; }
-        public bool IsInRange { get; set; } // Aggiunto per il filtro dell'intervallo
-        public List<string> Events { get; set; }
+        public bool IsInRange { get; set; }
+        public List<string> Events { get; set; }  // Aggiunto per memorizzare gli eventi
     }
+
 }

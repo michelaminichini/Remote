@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System;
 using Template.Infrastructure;
 
 namespace Template.Web.Features.Home
@@ -16,3 +16,4 @@ namespace Template.Web.Features.Home
         public DateTime? DateTo { get; set; }
     }
 }
+
