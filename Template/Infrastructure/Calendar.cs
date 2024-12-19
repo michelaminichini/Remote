@@ -19,7 +19,7 @@ namespace Template.Infrastructure
 
             var currentDay = startOfWeek;
 
-            while (currentDay <= lastDayOfMonth.AddMonths(1)) // Abbiamo esteso fino al mese successivo per gestire i giorni finali
+            while (currentDay <= lastDayOfMonth)
             {
                 var week = new List<DayViewModel>();
 
