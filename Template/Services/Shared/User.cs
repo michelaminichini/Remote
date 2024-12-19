@@ -20,11 +20,11 @@ namespace Template.Services.Shared
         public string Role { get; set; }
         public string TeamName { get; set; }
 
-        public DateTime DataRichiesta { get; set; }
+        public DateTime? DataRichiesta { get; set; }
         public string Tipologia { get; set; }
-        public DateTime DataInizio { get; set; }
-        public DateTime DataFine { get; set; }
-        public TimeSpan Durata { get; set; }
+        public DateTime? DataInizio { get; set; }
+        public DateTime? DataFine { get; set; }
+        public TimeSpan? Durata { get; set; }
 
         public string Img { get; set; } // Campo per immagine profilo
 

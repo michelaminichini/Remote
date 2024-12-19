@@ -36,26 +36,6 @@ h1 {
     color: #000000;
 }
 
-.btn-primary {
-    padding: 10px 20px;
-    background-color: #4da3ff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #1e90ff;
-}
-
-/* Contenitore del bottone */
-.button-container {
-    text-align: right; /* Allinea il bottone a destra */
-    margin-top: 20px; /* Distanza tra la tabella e il bottone */
-}
-
 /* Profilo utente (cerchio con immagine) */
 .profile-img {
     width: 60px;

@@ -72,8 +72,8 @@ namespace Template.Web.Features.History
                 DataFine = data.DataFine != DateTime.MinValue ? data.DataFine : (DateTime?)null,
 
                 // Calcola la durata in ore
-                Durata = (data.DataInizio != DateTime.MinValue && data.DataFine != DateTime.MinValue)
-             ? (data.DataFine - data.DataInizio).TotalHours.ToString("F2") : "N/A"
+                Durata = (data.DataInizio.HasValue && data.DataFine.HasValue)
+                ? (data.DataFine.Value - data.DataInizio.Value).TotalHours.ToString("F2") : "N/A"
 
             }).ToList();
 

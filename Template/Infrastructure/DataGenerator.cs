@@ -40,7 +40,12 @@ namespace Template.Infrastructure
                     LastName = "Cognome2",
                     TeamName = "Team A",
                     Role = "Manager",
-                    Img = "images/User/User2.png"
+                    Img = "images/User/User2.png",
+                    DataRichiesta = null,
+                    Tipologia = null,
+                    DataInizio = null,  // Inizio ferie il 2 del mese
+                    DataFine = null,   // Fine ferie il 3 del mese
+                    Durata = null
                 },
                 new User
                 {

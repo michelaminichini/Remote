@@ -3,11 +3,18 @@
     ViewData["Title"] = "Storico delle richieste";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 <div class="container">
 
     <head>
         <link rel="stylesheet" href="/css/History.css" />
     </head>
+
+    <a href="/" class="text-decoration-none">
+        <i class="bi bi-house-door"></i> Torna alla Home
+    </a>
 
 
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -23,9 +30,12 @@
                 <p><strong>Ruolo:</strong> @Model.FirstOrDefault()?.Ruolo</p>
                 <p><strong>Indirizzo e-mail:</strong> @Model.FirstOrDefault()?.Email</p>
             </div>
-            
-       
     </div>
+
+    <!-- Parte di debug 
+    <p>@Model.Count</p>
+    <pre>@Html.Raw(Json.Serialize(Model))</pre>  
+    <p>Numero di elementi nel modello: @Model?.Count</p> -->
 
     @*
     Controlla se il modello contiene almeno un elemento con dati validi.
@@ -37,65 +47,41 @@
     Se nessun elemento soddisfa questa condizione, il blocco `else` verrà eseguito.
     *@
 
-    @if (Model != null && Model.Any(item =>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Data della richiesta</th>
+                <th>Tipologia</th>
+                <th>Data inizio</th>
+                <th>Data fine</th>
+                <th>Durata</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.DataRichiesta?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                    <td>@(string.IsNullOrEmpty(item.Tipologia?.Trim()) ? "N/A" : item.Tipologia)</td>
+                    <td>@(item.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                    <td>@(item.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                    <td>@(string.IsNullOrEmpty(item.Durata?.Trim()) ? "N/A" : item.Durata)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model == null || !Model.Any(item =>
     item.DataRichiesta.HasValue ||
-    !string.IsNullOrEmpty(item.Tipologia?.Trim()) ||
+    !string.IsNullOrWhiteSpace(item.Tipologia) ||
     item.DataInizio.HasValue ||
     item.DataFine.HasValue ||
-    !string.IsNullOrEmpty(item.Durata?.Trim())))
+    item.Durata != "N/A"))
+
+    
     {
-        <div class="no-request-message">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Data della richiesta</th>
-                        <th>Tipologia</th>
-                        <th>Data inizio</th>
-                        <th>Data fine</th>
-                        <th>Durata</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="5" class="text-center">N/A</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <p class="no-request-text">Non ci sono richieste passate</p>
-        </div>
+        <div class="no-request-text">Non ci sono richieste passate</div>
+       
     }
-    else
-    {
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Data della richiesta</th>
-                    <th>Tipologia</th>
-                    <th>Data inizio</th>
-                    <th>Data fine</th>
-                    <th>Durata</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@(item.DataRichiesta?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(string.IsNullOrEmpty(item.Tipologia?.Trim()) ? "N/A" : item.Tipologia)</td>
-                        <td>@(item.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(item.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(string.IsNullOrEmpty(item.Durata?.Trim()) ? "N/A" : item.Durata)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-
-    }
-
-    <!-- Bottone sotto la tabella, allineato a destra -->
-    <div class="button-container">
-        <a href="/" class="btn-primary">Torna alla home</a>
-    </div>
 </div>
