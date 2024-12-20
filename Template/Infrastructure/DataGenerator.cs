@@ -29,7 +29,8 @@ namespace Template.Infrastructure
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
                     DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = new TimeSpan(2, 0, 0)
+                    Durata = new TimeSpan(2, 0, 0),
+                    Stato = "Rifiutata"
                 },
                 new User
                 {
@@ -45,7 +46,8 @@ namespace Template.Infrastructure
                     Tipologia = null,
                     DataInizio = null,
                     DataFine = null,
-                    Durata = null
+                    Durata = null,
+                    Stato = null,
                 },
                 new User
                 {
@@ -61,7 +63,8 @@ namespace Template.Infrastructure
                     Tipologia = "Ferie",
                     DataInizio = DateTime.Now.AddMonths(-2).AddDays(2),  // Inizio ferie il 2 del mese
                     DataFine = DateTime.Now.AddMonths(-2).AddDays(3),   // Fine ferie il 3 del mese
-                    Durata = new TimeSpan(2, 0, 0)
+                    Durata = new TimeSpan(2, 0, 0),
+                    Stato = "Accettata"
 
                 },
                 new User
@@ -112,7 +115,8 @@ namespace Template.Infrastructure
                     Tipologia = "Permesso",
                     DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
                     DataFine = DateTime.Now.AddMonths(-1).AddHours(12),   // Fine permesso alle 12
-                    Durata = new TimeSpan(0, 5, 0)
+                    Durata = new TimeSpan(0, 5, 0),
+                    Stato = "Accettata"
                 },
                 new User
                 {
@@ -128,7 +132,8 @@ namespace Template.Infrastructure
                     Tipologia = null,
                     DataInizio = null,
                     DataFine = null,
-                    Durata = null
+                    Durata = null,
+                    Stato = null
                 });
 
             context.SaveChanges();

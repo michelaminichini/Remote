@@ -99,15 +99,13 @@
                                         <input type="hidden" name="selectedDate" value="@day.Date.ToString("yyyy-MM-dd")" />
                                         <select name="eventType" class="form-select">
                                             <option value="smartworking">Smartworking</option>
-                                            <option value="permessi">Permessi</option>
                                             <option value="in presenza">Presenza</option>
                                             <option value="trasferta">Trasferta</option>
-                                            <option value="ferie">Ferie</option>
                                         </select>
                                         <button type="submit" class="btn btn-sm btn-primary mt-2">Aggiungi</button>
                                     </form>
                                 </div>
-                                <div class="events event-menu mt-2" style="display:none;">
+                                <div class="events mt-2">
                                     @foreach (var eventItem in day.Events)
                                     {
                                         <img src="@eventItem" alt="Event Icon" class="event-icon" />
