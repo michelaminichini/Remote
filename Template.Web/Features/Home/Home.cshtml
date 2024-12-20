@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/css/HomeStyle.css" />
     </head>
 
+    <!-- Contenuto principale della pagina -->
     <div class="title-container">
         <h1 class="title-text">@ViewData["Title"]</h1>
 
@@ -23,13 +24,14 @@
         </div>
     </div>
 
+    <!-- Tab -->
     <div class="tabs">
         <button class="btn btn-primary">Team</button>
         <button class="btn btn-primary" onclick="location.href='@Url.Action("Richiesta", "Richiesta")'">Richieste</button>
         <button class="btn btn-primary" onclick="location.href='@Url.Action("History", "History")'">Storico</button>
     </div>
 
-    <!-- Dal - Al Date Selectors -->
+    <!-- Filtro per data -->
     <form method="get" action="@Url.Action("Home", "Home")">
         <div class="date-selectors mb-4">
             <label for="dateFrom">Dal:</label>
@@ -40,6 +42,7 @@
         </div>
     </form>
 
+    <!-- Calendario -->
     <div class="calendar text-center mt-4">
         <div class="month-navigation">
             <h2 class="month-title">
@@ -74,18 +77,24 @@
                                         +
                                     </button>
                                 </div>
-                                <div class="events mt-2">
+                                <div class="event-menu" style="display: none;">
+                                    <form method="post" action="@Url.Action("AddEvent", "Home")">
+                                        <input type="hidden" name="selectedDate" value="@day.Date.ToString("yyyy-MM-dd")" />
+                                        <select name="eventType" class="form-select">
+                                            <option value="smartworking">Smartworking</option>
+                                            <option value="permessi">Permessi</option>
+                                            <option value="in presenza">Presenza</option>
+                                            <option value="trasferta">Trasferta</option>
+                                            <option value="ferie">Ferie</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-primary mt-2">Aggiungi</button>
+                                    </form>
+                                </div>
+                                <div class="events event-menu mt-2" style="display:none;">
                                     @foreach (var eventItem in day.Events)
                                     {
                                         <img src="@eventItem" alt="Event Icon" class="event-icon" />
                                     }
-                                </div>
-                                <div class="event-menu" style="display: none;">
-                                    <select class="form-select">
-                                        <option value="smartworking">Smartworking</option>
-                                        <option value="permessi">Permessi</option>
-                                    </select>
-                                    <button class="btn btn-primary mt-1">Aggiungi</button>
                                 </div>
                             </td>
                         }

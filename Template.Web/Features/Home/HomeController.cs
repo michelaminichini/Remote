@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Template.Infrastructure;
 using Template.Services;
 using Template.Services.Shared;
@@ -97,9 +98,51 @@ namespace Template.Web.Features.Home
             return View(model);
         }
 
+        // Metodo per aggiungere un evento tramite POST
+        [HttpPost]
+        public virtual async Task<IActionResult> AddEvent(DateTime selectedDate, string eventType)
+        {
+            var userEmail = User.Identity?.Name;
+            var currentUser = _dbContext.Users
+                .FirstOrDefault(u => u.Email == userEmail);
+
+            if (currentUser != null)
+            {
+                try
+                {
+                    var eventStartDate = selectedDate.Date;
+                    var eventEndDate = selectedDate.Date;
+
+                    var request = new Request
+                    {
+                        Tipologia = eventType,
+                        DataInizio = eventStartDate,
+                        DataFine = eventEndDate,
+                        OraInizio = TimeSpan.Zero, // Ora di inizio, modificabile in base alle necessità
+                        OraFine = TimeSpan.Zero // Ora di fine, modificabile in base alle necessità
+                    };
+
+                    await _sharedService.HandleRequest(new AddRequestCommand
+                    {
+                        Tipologia = eventType,
+                        DataInizio = eventStartDate,
+                        DataFine = eventEndDate,
+                        OraInizio = TimeSpan.Zero,
+                        OraFine = TimeSpan.Zero
+                    });
+
+                    TempData["Message"] = "Evento aggiunto con successo!";
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Si è verificato un errore durante l'aggiunta dell'evento.";
+                }
+            }
+            return RedirectToAction("Home");
+        }
+
         private string GetEventIcon(string eventType)
         {
-            // Restituisce il percorso dell'icona in base alla tipologia
             return eventType switch
             {
                 "ferie" => "/images/Logo/ferie.png",
@@ -111,8 +154,6 @@ namespace Template.Web.Features.Home
             };
         }
 
-
-        // Azione per cambiare la lingua
         [HttpPost]
         public virtual IActionResult ChangeLanguageTo(string cultureName)
         {
