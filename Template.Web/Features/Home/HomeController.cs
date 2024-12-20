@@ -52,7 +52,7 @@ namespace Template.Web.Features.Home
 
             // Recupera gli eventi (Tipologia) relativi all'utente
             var events = _dbContext.Users
-                .Where(u => u.Email == userEmail)  // Filtra l'utente per email
+                .Where(u => u.Email == userEmail && u.Stato != "Rifiutata")  // Filtra l'utente per email
                 .Select(u => new
                 {
                     u.Tipologia,
