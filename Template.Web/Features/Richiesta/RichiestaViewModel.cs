@@ -10,6 +10,11 @@ namespace Template.Web.Features.Richiesta
         [Key]
         public int Id { get; set; }
 
+        // Utente che ha fatto la richiesta 
+        [Required]
+        [Display(Name = "Utente")]
+        public int UtenteName { get; set; }
+
         // Tipologia della richiesta (permessi o ferie)
         [Required]
         [Display(Name = "Tipologia")]
@@ -37,10 +42,12 @@ namespace Template.Web.Features.Richiesta
         [Display(Name = "Ora Fine")]
         public TimeSpan? OraFine { get; set; }
 
-        //// Utente che ha fatto la richiesta (Foreign Key)
-        //[Required]
-        //[Display(Name = "Utente")]
-        //public int UtenteId { get; set; }
+        // Stato della richiesta
+        [Required]
+        [Display(Name = "Stato")]
+        public string Stato { get; set; } = "Da Approvare";
+
+
 
     }
 }

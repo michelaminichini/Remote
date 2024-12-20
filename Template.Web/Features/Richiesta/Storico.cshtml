@@ -8,11 +8,13 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>User Email</th>
                 <th>Tipologia</th>
                 <th>Data Inizio</th>
                 <th>Data Fine</th>
                 <th>Ora Inizio</th>
                 <th>Ora Fine</th>
+                <th>Stato</th>
             </tr>
         </thead>
         <tbody>
@@ -20,11 +22,13 @@
             {
                 <tr>
                     <td>@richiesta.Id</td>
+                    <td>@richiesta.UserName</td>
                     <td>@richiesta.Tipologia</td>
                     <td>@richiesta.DataInizio.ToString("yyyy-MM-dd")</td>
                     <td>@richiesta.DataFine.ToString("yyyy-MM-dd")</td>
                     <td>@richiesta.OraInizio</td>
                     <td>@richiesta.OraFine</td>
+                    <td>@richiesta.Stato</td>
                 </tr>
             }
         </tbody>

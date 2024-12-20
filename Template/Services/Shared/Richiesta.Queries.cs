@@ -16,8 +16,8 @@ namespace Template.Services.Shared
             public string Tipologia { get; set; }
             public DateTime DataInizio { get; set; }
             public DateTime DataFine { get; set; }
-            public TimeSpan OraInizio { get; set; }
-            public TimeSpan OraFine { get; set; }
+            public TimeSpan? OraInizio { get; set; }
+            public TimeSpan? OraFine { get; set; }
         }
     }
 

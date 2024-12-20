@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using Template.Infrastructure;
 using Template.Services.Shared;
 using Template.Web.Infrastructure;
 
@@ -31,6 +33,7 @@ namespace Template.Web.Features.Richiesta
             {
                 // Recupera tutte le richieste dal database usando SharedService
                 var richieste = await _sharedService.GetAllRequests();
+                //var richieste = DataGenerator.Requests;
 
                 // Passa i dati alla vista
                 return View(richieste);
@@ -54,15 +57,31 @@ namespace Template.Web.Features.Richiesta
                 {
                     var cmd = new AddRequestCommand
                     {
+                        UserName = User.Identity.Name,
                         Tipologia = richiesta.Tipologia,
                         DataInizio = richiesta.DataInizio,
                         DataFine = richiesta.DataFine,
                         OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
                         OraFine = richiesta.OraFine ?? TimeSpan.Zero,
+                        Stato = richiesta.Stato
+                    };
+
+                    // Crea un oggetto Request
+                    var newRequest = new Request
+                    {
+                        Id = Guid.NewGuid(),
+                        UserName = User.Identity.Name,
+                        Tipologia = richiesta.Tipologia,
+                        DataInizio = richiesta.DataInizio,
+                        DataFine = richiesta.DataFine,
+                        OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
+                        OraFine = richiesta.OraFine ?? TimeSpan.Zero,
+                        Stato = richiesta.Stato
                     };
 
                     // Salva la richiesta usando il tuo servizio
                     var id = await _sharedService.HandleRequest(cmd);
+                    //DataGenerator.AddRequest(newRequest);
 
                     TempData["Message"] = "Richiesta inviata con successo!";
                     return RedirectToAction("Richiesta");
