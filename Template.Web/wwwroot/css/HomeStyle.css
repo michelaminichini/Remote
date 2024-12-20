@@ -20,6 +20,26 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Messaggi di successo e errore */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: white;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #93bf85; /* Verde per il successo */
+    border: 1px solid #218838;
+}
+
+.alert-danger {
+    background-color: #f09e94; /* Rosso per l'errore */
+    border: 1px solid #c82333;
+}
+
 /* Titolo e immagine profilo */
 .title-container {
     display: flex;

@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Remote";
+    var successMessage = TempData["Message"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
 }
 
 <div class="container">
@@ -23,6 +25,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Messaggio di successo o errore -->
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success">
+            @successMessage
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+        </div>
+    }
 
     <!-- Tab -->
     <div class="tabs">
