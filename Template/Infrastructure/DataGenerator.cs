@@ -140,5 +140,59 @@ namespace Template.Infrastructure
             context.SaveChanges();
         }
 
+        public static void InitializeTeam(TemplateDbContext context)
+        {
+            if (context.Teams.Any())
+            {
+                return;   
+            }
+
+            context.AddRange(
+            new Teams
+            {
+                TeamName = "Team A",
+                TeamManager = "Moretti",
+                Employee = new List<User>
+                {
+                    new User
+                    {
+                        FirstName = "Giuseppe",
+                        LastName = "Conti",
+                    },
+                    new User
+                    {
+                        FirstName = "Pippo",
+                        LastName = "Bello",
+                    },
+                }
+            },
+
+            new Teams
+            {
+                TeamName = "Team B",
+                TeamManager = "Vngog",
+                Employee = new List<User>
+                {
+                    new User
+                    {
+                        FirstName = "Sandra",
+                        LastName = "Vespucci",
+                    },
+                    new User
+                    {
+                        FirstName = "Carlo",
+                        LastName = "Beata",
+                    },
+                }
+            });
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Errore nel salvataggio: " + ex.Message);
+            }
+        }
     }
 }

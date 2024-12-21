@@ -115,7 +115,8 @@ namespace Template.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Home}"
                 ).RequireAuthorization(); // RequireAuthorization assicura che solo gli utenti autenticati possano accedere alla Home
-                endpoints.MapControllerRoute("default", "{controller=Richiesta}/{action=Richiesta}"); 
+                endpoints.MapControllerRoute("default", "{controller=Richiesta}/{action=Richiesta}");
+                endpoints.MapControllerRoute("default", "{controller=Team}/{action=Team}");
             });
         }
     }

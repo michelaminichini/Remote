@@ -67,17 +67,17 @@ namespace Template.Web.Features.Richiesta
                     };
 
                     // Crea un oggetto Request
-                    var newRequest = new Request
-                    {
-                        Id = Guid.NewGuid(),
-                        UserName = User.Identity.Name,
-                        Tipologia = richiesta.Tipologia,
-                        DataInizio = richiesta.DataInizio,
-                        DataFine = richiesta.DataFine,
-                        OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
-                        OraFine = richiesta.OraFine ?? TimeSpan.Zero,
-                        Stato = richiesta.Stato
-                    };
+                    //var newRequest = new Request
+                    //{
+                    //    Id = Guid.NewGuid(),
+                    //    UserName = User.Identity.Name,
+                    //    Tipologia = richiesta.Tipologia,
+                    //    DataInizio = richiesta.DataInizio,
+                    //    DataFine = richiesta.DataFine,
+                    //    OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
+                    //    OraFine = richiesta.OraFine ?? TimeSpan.Zero,
+                    //    Stato = richiesta.Stato
+                    //};
 
                     // Salva la richiesta usando il tuo servizio
                     var id = await _sharedService.HandleRequest(cmd);

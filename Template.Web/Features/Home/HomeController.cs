@@ -128,7 +128,7 @@ namespace Template.Web.Features.Home
                         DataInizio = eventStartDate,
                         DataFine = eventEndDate,
                         OraInizio = TimeSpan.Zero,
-                        OraFine = TimeSpan.Zero
+                        OraFine = TimeSpan.Zero,
                     });
 
                     TempData["Message"] = "Evento aggiunto con successo!";

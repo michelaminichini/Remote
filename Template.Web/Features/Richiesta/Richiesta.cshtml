@@ -70,7 +70,7 @@
             </div>
 
             <!-- Mostra i campi orari solo se la tipologia è "Permessi" -->
-            <div v-if="tipologia === 'Permessi'" class="row mb-3">
+            <div v-if="tipologia == 'Permessi'" class="row mb-3">
                 <div class="col-sm-6">
                     <label asp-for="OraInizio" class="form-label">Dalle:</label>
                     <input v-model="oraInizio" asp-for="OraInizio" type="time" class="form-control" />
@@ -79,18 +79,27 @@
                     <label asp-for="OraFine" class="form-label">Alle:</label>
                     <input v-model="oraFine" asp-for="OraFine" type="time" class="form-control" />
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="DataInizio" class="form-label" style="padding-top: 10px;">Data</label>
+                        <input v-model="dataInizio" asp-for="DataInizio" type="date" class="form-control" value="" />
+                    </div>
+                    <div class="col-md-12">
+                        <input v-model="dataFine" asp-for="DataFine" type="hidden" class="form-control" value="dataFine" />
+                    </div>
+                </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label asp-for="DataInizio" class="form-label">Data Inizio:</label>
-                    <input v-model="dataInizio" asp-for="DataInizio" type="date" class="form-control" value="" />
-                </div>
-                <div class="col-md-12">
-                    <label asp-for="DataFine" class="form-label">Data Fine:</label>
-                    <input v-model="dataFine" asp-for="DataFine" type="date" class="form-control" value="" />
-                </div>
-            </div>
+            <div v-if="tipologia == 'Ferie'" class="row mb-3">
+               <div class="col-md-12">
+                  <label asp-for="DataInizio" class="form-label" >Data Inizio:</label> 
+                    <input v-model="dataInizio" asp-for="DataInizio" type="date" class="form-control" value="" /> 
+               </div> 
+               <div class="col-md-12"> 
+                   <label asp-for="DataFine" class="form-label" style="padding-top: 10px;">Data Fine:</label> 
+                   <input v-model="dataFine" asp-for="DataFine" type="date" class="form-control" value="dataFine" /> 
+              </div> 
+             </div> 
 
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary btn-lg">Invia</button>
@@ -142,6 +151,13 @@
                     }
 
                     return true; // Se tutto va bene
+                }
+            },
+            watch: {
+                dataInizio(newValue) {
+                    if (!this.dataFine) {
+                        this.dataFine = newValue;  
+                    }
                 }
             },
             mounted() {

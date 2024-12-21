@@ -11,7 +11,7 @@ namespace Template.Services.Shared
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }  // Chiave primaria
 
-        public String UserName { get; set; }  
+        public string UserName { get; set; }  
 
         public string Tipologia { get; set; }  // Tipo di richiesta
 
