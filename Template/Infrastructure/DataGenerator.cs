@@ -144,47 +144,35 @@ namespace Template.Infrastructure
         {
             if (context.Teams.Any())
             {
-                return;   
+                return; // I dati sono già stati inizializzati
             }
 
-            context.AddRange(
-            new Teams
-            {
-                TeamName = "Team A",
-                TeamManager = "Moretti",
-                Employee = new List<User>
-                {
-                    new User
-                    {
-                        FirstName = "Giuseppe",
-                        LastName = "Conti",
-                    },
-                    new User
-                    {
-                        FirstName = "Pippo",
-                        LastName = "Bello",
-                    },
-                }
-            },
+            // Carica tutti gli utenti dal database
+            var users = context.Users
+                .Where(u => !string.IsNullOrEmpty(u.TeamName)) // Considera solo utenti con TeamName specificato
+                .ToList();
 
-            new Teams
+            // Raggruppa in memoria per TeamName
+            var groupedUsers = users
+                .GroupBy(u => u.TeamName)
+                .ToList();
+
+            foreach (var group in groupedUsers)
             {
-                TeamName = "Team B",
-                TeamManager = "Vngog",
-                Employee = new List<User>
+                var teamName = group.Key;
+                var teamManager = group.FirstOrDefault(u => u.Role == "Manager"); // Trova il manager del team
+
+                // Crea il team
+                var team = new Teams
                 {
-                    new User
-                    {
-                        FirstName = "Sandra",
-                        LastName = "Vespucci",
-                    },
-                    new User
-                    {
-                        FirstName = "Carlo",
-                        LastName = "Beata",
-                    },
-                }
-            });
+                    TeamName = teamName,
+                    TeamManager = teamManager?.LastName ?? "N/A", // Usa il cognome del manager, se presente
+                    Employee = group.ToList() // Aggiungi tutti gli utenti del gruppo al team
+                };
+
+                context.Teams.Add(team);
+            }
+
             try
             {
                 context.SaveChanges();
