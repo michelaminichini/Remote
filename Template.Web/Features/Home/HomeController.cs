@@ -128,7 +128,7 @@ namespace Template.Web.Features.Home
                     // Usa il servizio SharedService per gestire la richiesta, delegando l'elaborazione al controller Richiesta
                     await _sharedService.HandleRequest(cmd);
 
-                    TempData["Message"] = "Evento aggiunto con successo!";
+                    TempData["Message"] = "Richiesta inviata con successo!!";
                 }
                 catch (Exception ex)
                 {
