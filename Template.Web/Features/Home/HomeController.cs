@@ -50,16 +50,25 @@ namespace Template.Web.Features.Home
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);
 
-            // Recupera gli eventi (Tipologia) relativi all'utente
+            // Recupera gli eventi (Tipologia) 
             var events = _dbContext.Users
-                .Where(u => u.Email == userEmail && u.Stato != "Rifiutata")  // Filtra l'utente per email
+                .Where(u => u.Stato != "Rifiutata")  // Filtra l'utente per email e stato richiesta 
                 .Select(u => new
                 {
                     u.Tipologia,
                     u.DataInizio,
-                    u.DataFine
+                    u.DataFine,
+                    TeamName = u.TeamName,
+                    Role = u.Role
                 })
                 .ToList();
+
+            // Filtra gli eventi in base al ruolo dell'utente
+            if (currentUser?.Role == "Dipendente")
+            {
+                // Se l'utente è un Dipendente, filtra per lo stesso team
+                events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
+            }
 
             // Crea il modello per la vista
             var model = new HomeViewModel
