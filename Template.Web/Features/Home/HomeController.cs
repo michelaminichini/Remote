@@ -58,8 +58,8 @@ namespace Template.Web.Features.Home
                     u.Tipologia,
                     u.DataInizio,
                     u.DataFine,
-                    TeamName = u.TeamName,
-                    Role = u.Role
+                    u.TeamName,
+                    u.Role
                 })
                 .ToList();
 
