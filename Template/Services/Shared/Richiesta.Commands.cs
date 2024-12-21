@@ -1,23 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Template.Infrastructure;
+
 
 namespace Template.Services.Shared
 {
     public class AddRequestCommand
     {
         public Guid? Id { get; set; }
-        public String UserName{ get; set; }
+        public string UserName{ get; set; }
         public string Tipologia { get; set; }
         public DateTime DataInizio { get; set; }
         public DateTime DataFine { get; set; }
         public TimeSpan OraInizio { get; set; }  
         public TimeSpan OraFine { get; set; }    
-        public String Stato { get; set; }
+        public string Stato { get; set; }
     }
 
     public partial class SharedService
