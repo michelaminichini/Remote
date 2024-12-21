@@ -113,23 +113,20 @@ namespace Template.Web.Features.Home
                     var eventStartDate = selectedDate.Date;
                     var eventEndDate = selectedDate.Date;
 
-                    var request = new Request
+                    // Crea un oggetto Request per l'evento
+                    var cmd = new AddRequestCommand
                     {
+                        UserName = userEmail,
                         Tipologia = eventType,
                         DataInizio = eventStartDate,
                         DataFine = eventEndDate,
                         OraInizio = TimeSpan.Zero, // Ora di inizio, modificabile in base alle necessità
-                        OraFine = TimeSpan.Zero // Ora di fine, modificabile in base alle necessità
+                        OraFine = TimeSpan.Zero, // Ora di fine, modificabile in base alle necessità
+                        Stato = "Da Approvare" // Stato di default
                     };
 
-                    await _sharedService.HandleRequest(new AddRequestCommand
-                    {
-                        Tipologia = eventType,
-                        DataInizio = eventStartDate,
-                        DataFine = eventEndDate,
-                        OraInizio = TimeSpan.Zero,
-                        OraFine = TimeSpan.Zero,
-                    });
+                    // Usa il servizio SharedService per gestire la richiesta, delegando l'elaborazione al controller Richiesta
+                    await _sharedService.HandleRequest(cmd);
 
                     TempData["Message"] = "Evento aggiunto con successo!";
                 }
@@ -138,8 +135,10 @@ namespace Template.Web.Features.Home
                     TempData["ErrorMessage"] = "Si è verificato un errore durante l'aggiunta dell'evento.";
                 }
             }
+
             return RedirectToAction("Home");
         }
+
 
         private string GetEventIcon(string eventType)
         {
