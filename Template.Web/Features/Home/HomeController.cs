@@ -148,6 +148,31 @@ namespace Template.Web.Features.Home
                             TempData["ErrorMessage"] = "Hai già due giornate Smartworking per questa settimana.";
                             return RedirectToAction("Home");
                         }
+                    }else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Logica per limitare i giorni di ferie nel mese
+                        var startOfMonth = new DateTime(eventStartDate.Year, eventStartDate.Month, 1); // Primo giorno del mese
+                        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Ultimo giorno del mese
+
+                        // Recupera gli eventi di tipo "ferie" già presenti nel mese
+                        var existingFerieEvents = _dbContext.Users
+                            .Where(u => u.Email == userEmail)
+                            .SelectMany(u => u.Events.Where(e => e.Tipologia == "Ferie" &&
+                                                                 e.DataInizio.HasValue &&
+                                                                 e.DataInizio.Value.Month == eventStartDate.Month &&
+                                                                 e.DataInizio.Value.Year == eventStartDate.Year &&
+                                                                 e.Stato != "Rifiutata")) // Solo eventi non rifiutati
+                            .ToList();
+
+                        // Controlla quanti giorni di ferie sono già stati presi nel mese
+                        var ferieDaysTaken = existingFerieEvents.Sum(e => (e.DataFine ?? e.DataInizio).Value.Subtract(e.DataInizio.Value).Days + 1);
+
+                        // Se sono già stati presi 7 o più giorni di ferie, impedisci l'aggiunta
+                        if (ferieDaysTaken >= 7)
+                        {
+                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di ferie disponibili per questo mese";
+                            return RedirectToAction("Home");
+                        }
                     }
 
                     // Crea un oggetto Request per l'evento

@@ -149,8 +149,8 @@ namespace Template.Infrastructure
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
                             Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 12, 27),  // Inizio smartworking il 2 gennaio 2024
-                            DataFine = new DateTime(2024, 12, 27),    // Fine smartworking il 2 gennaio 2024
+                            DataInizio = new DateTime(2024, 12, 27),  // Inizio smartworking il 27 dicembre 2024
+                            DataFine = new DateTime(2024, 12, 27),    // Fine smartworking il 27 dicembre 2024
                             Stato = "Approvata"
                         }
                     }
@@ -200,6 +200,16 @@ namespace Template.Infrastructure
                             DataFine = null,
                             Durata = null,
                             Stato = null
+                        },
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
+                            Tipologia = "Ferie",
+                            DataInizio = new DateTime(2025, 1, 10),  // Inizio ferie il 10 gennaio 2025
+                            DataFine = new DateTime(2025, 1, 17),     // Fine ferie il 17 gennaio 2025
+                            Durata = new DateTime(2025, 1, 17).Subtract(new DateTime(2025, 1, 10)),  // Durata da 10 gennaio a 17 gennaio
+                            Stato = "Accettata"
                         }
                     }
                 });
