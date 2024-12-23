@@ -29,6 +29,21 @@
             <button onclick="window.location.href='@Url.Action("Storico", "Richiesta")'" class="btn btn-primary btn-mg">Storico (solo per verifica)</button>
         </div>
 
+        @if (User.IsInRole("Manager"))
+        {
+            <div class="d-glex justify-content-end">
+                <button>Gestisci Richieste Dipendenti</button>
+            </div>
+        }
+        else
+        {
+            <div>
+                <p>L'utente non ha ruolo manager</p>
+            </div>
+
+        }
+
+
 
         <h1 class="text-center mb-4">Richiesta Permessi/Ferie</h1>
 

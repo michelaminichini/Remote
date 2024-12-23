@@ -19,6 +19,7 @@ namespace Template.Services
         public DbSet<User> Users { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Teams> Teams { get; set; }
+        public DbSet<Event> Events { get; set; }
 
     }
 }

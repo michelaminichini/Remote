@@ -9,6 +9,8 @@ using System.Security.Claims;
 using Template.Services.Shared;
 using System.Threading.Tasks;
 using Template.Infrastructure;
+using System.Data;
+using System.Diagnostics;
 
 namespace Template.Web.Features.Login
 {
@@ -33,10 +35,16 @@ namespace Template.Web.Features.Login
         {
             new Claim(ClaimTypes.NameIdentifier, utente.Id.ToString()),
             new Claim(ClaimTypes.Name, utente.Email),
-            new Claim(ClaimTypes.Email, utente.Email)
+            new Claim(ClaimTypes.Email, utente.Email),
+            new Claim(ClaimTypes.Role, utente.Role, utente.Role ?? "User")
         };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var userPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            // Debug: Verifica il ruolo dopo la creazione del ClaimsPrincipal
+            var userRole = userPrincipal.FindFirstValue(ClaimTypes.Role);
+            Console.WriteLine($"Role: {userRole}"); // Debug del ruolo dell'utente
 
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
             {
@@ -80,6 +88,11 @@ namespace Template.Web.Features.Login
                         Email = model.Email,
                         Password = model.Password,
                     });
+
+                    //var userRole = User.FindFirstValue(ClaimTypes.Role);
+                    //Console.WriteLine($"Role: {userRole}");
+
+                    
 
                     return LoginAndRedirect(utente, model.ReturnUrl, model.RememberMe);
                 }
