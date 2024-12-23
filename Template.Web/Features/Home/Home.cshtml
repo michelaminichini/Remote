@@ -94,21 +94,33 @@
                                     <!-- Condizione per mostrare il pulsante solo se non è sabato o domenica -->
                                     @if (day.Date.DayOfWeek != DayOfWeek.Saturday && day.Date.DayOfWeek != DayOfWeek.Sunday)
                                     {
-                                        <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this)">
+                                        <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this, '@day.Date.ToString("yyyy-MM-dd")')">
                                             +
                                         </button>
                                     }
                                 </div>
-                                <div class="event-menu" style="display: none;">
+                                <div class="event-menu" id="event-menu-@day.Date.ToString("yyyy-MM-dd")" style="display: none;">
                                     <form method="post" action="@Url.Action("AddEvent", "Home")">
                                         <input type="hidden" name="selectedDate" value="@day.Date.ToString("yyyy-MM-dd")" />
-                                        <select name="eventType" class="form-select">
+
+                                        <!-- Dropdown per selezionare il tipo di evento -->
+                                        <select name="eventType" id="eventType-@day.Date.ToString("yyyy-MM-dd")" class="form-select" onchange="showEventFields(this, '@day.Date.ToString("yyyy-MM-dd")')">
                                             <option value="Smartworking">Smartworking</option>
                                             <option value="Presenza">Presenza</option>
                                             <option value="Trasferta">Trasferta</option>
                                             <option value="Ferie">Ferie</option>
                                             <option value="Permessi">Permessi</option>
                                         </select>
+
+                                        <!-- Sezione per gli orari (Visibile solo per Trasferta e Permessi) -->
+                                        <div id="timeFields-@day.Date.ToString("yyyy-MM-dd")" style="display: none;">
+                                            <label for="orarioInizio-@day.Date.ToString("yyyy-MM-dd")">Orario Inizio:</label>
+                                            <input type="time" name="orarioInizio" id="orarioInizio-@day.Date.ToString("yyyy-MM-dd")" class="form-control">
+                                            <label for="orarioFine-@day.Date.ToString("yyyy-MM-dd")">Orario Fine:</label>
+                                            <input type="time" name="orarioFine" id="orarioFine-@day.Date.ToString("yyyy-MM-dd")" class="form-control">
+                                        </div>
+
+                                        <!-- Bottone per inviare il form -->
                                         <button type="submit" class="btn btn-sm btn-primary mt-2">Aggiungi</button>
                                     </form>
                                 </div>
@@ -119,20 +131,33 @@
                                     }
                                 </div>
                             </td>
-
                         }
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
 </div>
 
 <script>
-    function toggleEventMenu(button) {
-        const eventMenu = button.closest('td').querySelector('.event-menu');
+    function toggleEventMenu(button, date) {
+        const eventMenu = document.getElementById('event-menu-' + date);
         if (eventMenu) {
             eventMenu.style.display = eventMenu.style.display === 'none' ? 'block' : 'none';
+        }
+    }
+
+    // Funzione per mostrare i campi orari quando viene selezionato Trasferta o Permessi
+    function showEventFields(select, date) {
+        var selectedEventType = select.value;
+        var timeFields = document.getElementById('timeFields-' + date);
+
+        // Mostra o nascondi i campi per orario in base al tipo di evento
+        if (selectedEventType === 'Trasferta' || selectedEventType === 'Permessi') {
+            timeFields.style.display = 'block'; // Mostra i campi orario
+        } else {
+            timeFields.style.display = 'none';
         }
     }
 </script>
