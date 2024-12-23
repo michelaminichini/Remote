@@ -44,7 +44,7 @@ namespace Template.Web.Features.Login
 
             // Debug: Verifica il ruolo dopo la creazione del ClaimsPrincipal
             var userRole = userPrincipal.FindFirstValue(ClaimTypes.Role);
-            Console.WriteLine($"Role: {userRole}"); // Debug del ruolo dell'utente
+            // Console.WriteLine($"Role: {userRole}"); // Debug del ruolo dell'utente
 
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
             {
