@@ -67,10 +67,14 @@ namespace Template.Web.Features.Home
                 .ToList();
             ;
 
-            // Filtra gli eventi in base al ruolo dell'utente
-            if (currentUser?.Role == "Dipendente")
+            // Se l'utente è un manager, filtra gli eventi per il suo team
+            if (currentUser?.Role == "Manager")
             {
-                // Se l'utente è un Dipendente, filtra per lo stesso team
+                events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
+            }
+            // Se l'utente è un dipendente, filtra gli eventi per il suo team (già presente nella logica)
+            else if (currentUser?.Role == "Dipendente")
+            {
                 events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
             }
 
@@ -145,7 +149,7 @@ namespace Template.Web.Features.Home
                         // Se ci sono già 2 eventi di "smartworking", impedisci l'aggiunta
                         if (existingSmartworkingEvents.Count >= 2)
                         {
-                            TempData["ErrorMessage"] = "Hai già due giornate Smartworking per questa settimana.";
+                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giornate di Smartworking disponibili per questa settimana.";
                             return RedirectToAction("Home");
                         }
                     }else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
@@ -170,7 +174,7 @@ namespace Template.Web.Features.Home
                         // Se sono già stati presi 7 o più giorni di ferie, impedisci l'aggiunta
                         if (ferieDaysTaken >= 7)
                         {
-                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di ferie disponibili per questo mese";
+                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giorni di ferie disponibili per questo mese";
                             return RedirectToAction("Home");
                         }
                     }

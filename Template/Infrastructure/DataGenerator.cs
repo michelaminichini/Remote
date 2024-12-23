@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using Template.Services;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using System.Collections;
 
 namespace Template.Infrastructure
 {
@@ -19,10 +21,10 @@ namespace Template.Infrastructure
                 new User
                 {
                     Id = Guid.Parse("3de6883f-9a0b-4667-aa53-0fbc52c4d300"), // Forced to specific Guid for tests
-                    Email = "email1@test.it",
+                    Email = "luca.armani@test.it",
                     Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
-                    FirstName = "Nome1",
-                    LastName = "Cognome1",
+                    FirstName = "Luca",
+                    LastName = "Armani",
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User1.png",
@@ -43,10 +45,10 @@ namespace Template.Infrastructure
                 new User
                 {
                     Id = Guid.Parse("a030ee81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
-                    Email = "email2@test.it",
+                    Email = "luisa.verdi@test.it",
                     Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
-                    FirstName = "Nome2",
-                    LastName = "Cognome2",
+                    FirstName = "Luisa",
+                    LastName = "Verdi",
                     TeamName = "Team A",
                     Role = "Manager",
                     Img = "images/User/User2.png",
@@ -67,10 +69,10 @@ namespace Template.Infrastructure
                 new User
                 {
                     Id = Guid.Parse("bfdef48b-c7ea-4227-8333-c635af267354"), // Forced to specific Guid for tests
-                    Email = "email3@test.it",
+                    Email = "ambrogio.pisani@test.it",
                     Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
-                    FirstName = "Nome3",
-                    LastName = "Cognome3",
+                    FirstName = "Ambrogio",
+                    LastName = "Pisani",
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User3.png",
@@ -194,21 +196,21 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = null,
-                            Tipologia = null,
-                            DataInizio = null,
-                            DataFine = null,
-                            Durata = null,
-                            Stato = null
+                            DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
+                            Tipologia = "Ferie",
+                            DataInizio = new DateTime(2025, 1, 13),  // Inizio ferie il 13 gennaio 2025
+                            DataFine = new DateTime(2025, 1, 17),     // Fine ferie il 17 gennaio 2025
+                            Durata = new DateTime(2025, 1, 17).Subtract(new DateTime(2025, 1, 13)),  // Durata da 10 gennaio a 17 gennaio
+                            Stato = "Accettata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
                             Tipologia = "Ferie",
-                            DataInizio = new DateTime(2025, 1, 10),  // Inizio ferie il 10 gennaio 2025
-                            DataFine = new DateTime(2025, 1, 17),     // Fine ferie il 17 gennaio 2025
-                            Durata = new DateTime(2025, 1, 17).Subtract(new DateTime(2025, 1, 10)),  // Durata da 10 gennaio a 17 gennaio
+                            DataInizio = new DateTime(2025, 1, 2),  // Inizio ferie il 2 gennaio 2025
+                            DataFine = new DateTime(2025, 1, 3),     // Fine ferie il 3 gennaio 2025
+                            Durata = new DateTime(2025, 1, 3).Subtract(new DateTime(2025, 1, 2)),  // Durata da 2 gennaio a 3 gennaio
                             Stato = "Accettata"
                         }
                     }
