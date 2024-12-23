@@ -134,6 +134,24 @@ namespace Template.Infrastructure
                             DataFine = DateTime.Now.AddMonths(-1).AddDays(10),   // Fine ferie il 10 del mese
                             Durata = new TimeSpan(5, 0, 0, 0),
                             Stato = "Rifiutata"
+                        },
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
+                            Tipologia = "Smartworking",
+                            DataInizio = new DateTime(2024, 12, 24),  // Inizio smartworking il 24 dicembre 2024
+                            DataFine = new DateTime(2024, 12, 24),    // Fine smartworking il 24 dicembre 2024
+                            Stato = "Approvata"
+                        },
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
+                            Tipologia = "Smartworking",
+                            DataInizio = new DateTime(2024, 12, 27),  // Inizio smartworking il 2 gennaio 2024
+                            DataFine = new DateTime(2024, 12, 27),    // Fine smartworking il 2 gennaio 2024
+                            Stato = "Approvata"
                         }
                     }
                 },

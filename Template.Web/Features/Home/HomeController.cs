@@ -126,6 +126,30 @@ namespace Template.Web.Features.Home
                     var eventStartDate = selectedDate.Date;
                     var eventEndDate = selectedDate.Date;
 
+                    // Se l'evento è di tipo "smartworking", controlliamo quanti eventi di questo tipo ci sono già nella settimana
+                    if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var startOfWeek = eventStartDate.AddDays(-(int)eventStartDate.DayOfWeek); // Lunedì della settimana
+                        var endOfWeek = startOfWeek.AddDays(6); // Domenica della settimana
+
+                        // Recupera gli eventi di tipo "smartworking" già presenti nella settimana
+                        var existingSmartworkingEvents = _dbContext.Users
+                            .Where(u => u.Email == userEmail)
+                            .SelectMany(u => u.Events.Where(e => e.Tipologia == "Smartworking" &&
+                                                                 e.DataInizio.HasValue &&
+                                                                 e.DataInizio.Value.Date >= startOfWeek &&
+                                                                 e.DataInizio.Value.Date <= endOfWeek &&
+                                                                 e.Stato != "Rifiutata")) // Solo eventi non rifiutati
+                            .ToList();
+
+                        // Se ci sono già 2 eventi di "smartworking", impedisci l'aggiunta
+                        if (existingSmartworkingEvents.Count >= 2)
+                        {
+                            TempData["ErrorMessage"] = "Hai già due giornate Smartworking per questa settimana.";
+                            return RedirectToAction("Home");
+                        }
+                    }
+
                     // Crea un oggetto Request per l'evento
                     var cmd = new AddRequestCommand
                     {
@@ -151,7 +175,6 @@ namespace Template.Web.Features.Home
 
             return RedirectToAction("Home");
         }
-
 
         private string GetEventIcon(string eventType)
         {
