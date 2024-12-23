@@ -67,10 +67,14 @@ namespace Template.Web.Features.Home
                 .ToList();
             ;
 
-            // Filtra gli eventi in base al ruolo dell'utente
-            if (currentUser?.Role == "Dipendente")
+            // Se l'utente è un manager, filtra gli eventi per il suo team
+            if (currentUser?.Role == "Manager")
             {
-                // Se l'utente è un Dipendente, filtra per lo stesso team
+                events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
+            }
+            // Se l'utente è un dipendente, filtra gli eventi per il suo team (già presente nella logica)
+            else if (currentUser?.Role == "Dipendente")
+            {
                 events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
             }
 
