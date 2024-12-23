@@ -98,10 +98,11 @@
                                     <form method="post" action="@Url.Action("AddEvent", "Home")">
                                         <input type="hidden" name="selectedDate" value="@day.Date.ToString("yyyy-MM-dd")" />
                                         <select name="eventType" class="form-select">
-                                            <option value="smartworking">Smartworking</option>
-                                            <option value="in presenza">Presenza</option>
-                                            <option value="trasferta">Trasferta</option>
-                                            <option value="ferie">Ferie</option>
+                                            <option value="Smartworking">Smartworking</option>
+                                            <option value="Presenza">Presenza</option>
+                                            <option value="Trasferta">Trasferta</option>
+                                            <option value="Ferie">Ferie</option>
+                                            <option value="Permessi">Permessi</option>
                                         </select>
                                         <button type="submit" class="btn btn-sm btn-primary mt-2">Aggiungi</button>
                                     </form>
