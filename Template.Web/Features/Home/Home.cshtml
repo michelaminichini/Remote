@@ -90,9 +90,14 @@
                             <td class="@(day.IsToday ? "today" : "") @(day.IsCurrentMonth ? "" : "other-month-day") @(day.IsInRange ? "" : "other-month-day")">
                                 <div class="day-header d-flex justify-content-between align-items-start">
                                     <span>@day.Date.Day</span>
-                                    <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this)">
-                                        +
-                                    </button>
+
+                                    <!-- Condizione per mostrare il pulsante solo se non è sabato o domenica -->
+                                    @if (day.Date.DayOfWeek != DayOfWeek.Saturday && day.Date.DayOfWeek != DayOfWeek.Sunday)
+                                    {
+                                        <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this)">
+                                            +
+                                        </button>
+                                    }
                                 </div>
                                 <div class="event-menu" style="display: none;">
                                     <form method="post" action="@Url.Action("AddEvent", "Home")">
@@ -114,6 +119,7 @@
                                     }
                                 </div>
                             </td>
+
                         }
                     </tr>
                 }
