@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Template.Services;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Template.Web.Features.History
 {
@@ -47,39 +48,40 @@ namespace Template.Web.Features.History
                 .Where(x => x.Email == userEmail)
                 .Select(x => new
                 {
-                    x.Email,
+                    x.Id,
                     x.FirstName,
                     x.TeamName,
                     x.Role,
                     x.Img,
-                    x.DataRichiesta,
-                    x.Tipologia,
-                    x.DataInizio,
-                    x.DataFine,
-                    x.Durata,
-                    x.Stato
+                    Events = x.Events.Select(e => new
+                    {
+                        e.DataRichiesta,
+                        e.Tipologia,
+                        e.DataInizio,
+                        e.DataFine,
+                        e.Durata,
+                        e.Stato
+                    }).ToList()
                 })
                 .ToListAsync();
 
             // Crea il modello per la vista
-            var model = allData.Select(data => new HistoryViewModel
+            var model = allData.Select(userData => new HistoryViewModel
             {
-                Nome = data.FirstName,
-                NomeTeam = data.TeamName,
-                Ruolo = data.Role,
-                Email = data.Email,
-                Img = data.Img,
-                DataRichiesta = data.DataRichiesta != DateTime.MinValue ? data.DataRichiesta : (DateTime?)null,
-                Tipologia = data.Tipologia,
-                DataInizio = data.DataInizio != DateTime.MinValue ? data.DataInizio : (DateTime?)null,
-                DataFine = data.DataFine != DateTime.MinValue ? data.DataFine : (DateTime?)null,
-
-                // Calcola la durata in ore
-                Durata = (data.DataInizio.HasValue && data.DataFine.HasValue)
-                ? (data.DataFine.Value - data.DataInizio.Value).TotalHours.ToString("F2") : "N/A",
-
-                Stato = data.Stato
-
+                Nome = userData.FirstName,
+                NomeTeam = userData.TeamName,
+                Ruolo = userData.Role,
+                Email = userEmail,
+                Img = userData.Img,
+                Events = userData.Events.Select(e => new Event
+                {
+                    Tipologia = e.Tipologia,
+                    DataRichiesta = e.DataRichiesta ?? (DateTime?)null, // Handle null values for nullable DateTime
+                    DataInizio = e.DataInizio ?? (DateTime?)null,
+                    DataFine = e.DataFine ?? (DateTime?)null,
+                    Durata = e.Durata,                       // Directly use the Durata field (TimeSpan)
+                    Stato = e.Stato
+                }).ToList()
             }).ToList();
 
             return View(model); // Restituisce la vista con il modello

@@ -16,6 +16,7 @@ namespace Template.Services.Shared
         public TimeSpan OraInizio { get; set; }  
         public TimeSpan OraFine { get; set; }    
         public string Stato { get; set; }
+        public string LogoPath { get; set; }
     }
 
     public partial class SharedService
@@ -31,6 +32,7 @@ namespace Template.Services.Shared
                 OraInizio = cmd.OraInizio,
                 OraFine = cmd.OraFine,
                 Stato = cmd.Stato,
+                LogoPath = cmd.LogoPath,
             };
             _dbContext.Requests.Add(request);
             await _dbContext.SaveChangesAsync();

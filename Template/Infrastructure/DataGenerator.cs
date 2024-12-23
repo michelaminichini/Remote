@@ -26,12 +26,19 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User1.png",
-                    DataRichiesta = DateTime.Now.AddMonths(-3),
-                    Tipologia = "Permesso",
-                    DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
-                    DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = new TimeSpan(2, 0, 0),
-                    Stato = "Rifiutata"
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now.AddMonths(-3),
+                            Tipologia = "Permesso",
+                            DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
+                            DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
+                            Durata = new TimeSpan(2, 0, 0),
+                            Stato = "Rifiutata"
+                        }
+                    }
                 },
                 new User
                 {
@@ -43,12 +50,19 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Manager",
                     Img = "images/User/User2.png",
-                    DataRichiesta = null,
-                    Tipologia = null,
-                    DataInizio = null,
-                    DataFine = null,
-                    Durata = null,
-                    Stato = null,
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = null,
+                            Tipologia = null,
+                            DataInizio = null,
+                            DataFine = null,
+                            Durata = null,
+                            Stato = null
+                        }
+                    }
                 },
                 new User
                 {
@@ -60,12 +74,19 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User3.png",
-                    DataRichiesta = DateTime.Now.AddMonths(-2),
-                    Tipologia = "Ferie",
-                    DataInizio = DateTime.Now.AddMonths(-2).AddDays(2),  // Inizio ferie il 2 del mese
-                    DataFine = DateTime.Now.AddMonths(-2).AddDays(3),   // Fine ferie il 3 del mese
-                    Durata = new TimeSpan(2, 0, 0),
-                    Stato = "Accettata"
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now.AddMonths(-2),
+                            Tipologia = "Ferie",
+                            DataInizio = DateTime.Now.AddMonths(-2).AddDays(2),  // Inizio ferie il 2 del mese
+                            DataFine = DateTime.Now.AddMonths(-2).AddDays(3),   // Fine ferie il 3 del mese
+                            Durata = new TimeSpan(2, 0, 0),
+                            Stato = "Accettata"
+                        }
+                    }
 
                 },
                 new User
@@ -78,12 +99,19 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User4.png",
-                    DataRichiesta = DateTime.Now.AddMonths(-3),
-                    Tipologia = "Permesso",
-                    DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
-                    DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                    Durata = new TimeSpan(2, 0, 0),
-                    Stato = "Accettata"
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now.AddMonths(-3),
+                            Tipologia = "Permesso",
+                            DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
+                            DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
+                            Durata = new TimeSpan(2, 0, 0),
+                            Stato = "Accettata"
+                        }
+                    }
                 },
                 new User
                 {
@@ -95,12 +123,19 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User5.png",
-                    DataRichiesta = DateTime.Now.AddMonths(-1),
-                    Tipologia = "Ferie",
-                    DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
-                    DataFine = DateTime.Now.AddMonths(-1).AddDays(10),   // Fine ferie il 10 del mese
-                    Durata = new TimeSpan(5, 0, 0, 0),
-                    Stato = "Rifiutata"
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now.AddMonths(-1),
+                            Tipologia = "Ferie",
+                            DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
+                            DataFine = DateTime.Now.AddMonths(-1).AddDays(10),   // Fine ferie il 10 del mese
+                            Durata = new TimeSpan(5, 0, 0, 0),
+                            Stato = "Rifiutata"
+                        }
+                    }
                 },
                 new User
                 {
@@ -112,12 +147,19 @@ namespace Template.Infrastructure
                     TeamName = "Team B",
                     Role = "Dipendente",
                     Img = "images/User/User6.png",
-                    DataRichiesta = DateTime.Now.AddMonths(-1),
-                    Tipologia = "Permesso",
-                    DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
-                    DataFine = DateTime.Now.AddMonths(-1).AddHours(12),   // Fine permesso alle 12
-                    Durata = new TimeSpan(0, 5, 0),
-                    Stato = "Accettata"
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = DateTime.Now.AddMonths(-1),
+                            Tipologia = "Permesso",
+                            DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
+                            DataFine = DateTime.Now.AddMonths(-1).AddHours(12),   // Fine permesso alle 12
+                            Durata = new TimeSpan(0, 5, 0),
+                            Stato = "Accettata"
+                        }
+                    }
                 },
                 new User
                 {
@@ -129,12 +171,19 @@ namespace Template.Infrastructure
                     TeamName = "Team B",
                     Role = "Manager",
                     Img = "images/User/User7.png",
-                    DataRichiesta = null,
-                    Tipologia = null,
-                    DataInizio = null,
-                    DataFine = null,
-                    Durata = null,
-                    Stato = null
+                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    {
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = null,
+                            Tipologia = null,
+                            DataInizio = null,
+                            DataFine = null,
+                            Durata = null,
+                            Stato = null
+                        }
+                    }
                 });
 
             context.SaveChanges();

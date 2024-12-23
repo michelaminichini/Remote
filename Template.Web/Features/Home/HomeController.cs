@@ -50,18 +50,22 @@ namespace Template.Web.Features.Home
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);
 
-            // Recupera gli eventi (Tipologia) 
+            // Recupera gli eventi (Tipologia) per ogni utente, includendo gli eventi relativi all'utente
             var events = _dbContext.Users
-                .Where(u => u.Stato != "Rifiutata")  // Filtra l'utente per email e stato richiesta 
-                .Select(u => new
-                {
-                    u.Tipologia,
-                    u.DataInizio,
-                    u.DataFine,
-                    u.TeamName,
-                    u.Role
-                })
+                .SelectMany(u => u.Events.Where(e => e.Stato != "Rifiutata"), // Seleziona gli eventi associati a ciascun utente, filtrando per stato
+                    (u, e) => new // Creazione di un nuovo oggetto anonimo con i dettagli richiesti
+                    {
+                        u.Email,
+                        u.Role,
+                        u.TeamName,
+                        e.Tipologia,
+                        e.DataInizio,
+                        e.DataFine,
+                        e.Stato, // Stato dell'evento
+                        e.LogoPath // Logo dell'evento, se disponibile
+                    })
                 .ToList();
+            ;
 
             // Filtra gli eventi in base al ruolo dell'utente
             if (currentUser?.Role == "Dipendente")

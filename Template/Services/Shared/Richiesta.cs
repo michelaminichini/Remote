@@ -21,5 +21,6 @@ namespace Template.Services.Shared
         public TimeSpan? OraInizio { get; set; }  // Ora inizio
         public TimeSpan? OraFine { get; set; }    // Ora fine
         public string Stato { get; set; }
+        public string LogoPath { get; set; }
     }
 }
