@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,8 +20,16 @@ namespace Template.Services.Shared
         public string LastName { get; set; }
         public string Role { get; set; }
         public string TeamName { get; set; }
+
+        public DateTime? DataRichiesta { get; set; }
+        public string Tipologia { get; set; }
+        public DateTime? DataInizio { get; set; }
+        public DateTime? DataFine { get; set; }
+        public TimeSpan? Durata { get; set; }
+        public string Stato { get; set; }
+
         public string Img { get; set; } // Campo per immagine profilo
-        public List<Event> Events { get; set; } = new List<Event>(); // Lista di eventi
+        public List<Event> Events { get; internal set; }
 
         public bool IsMatchWithPassword(string password)
         {

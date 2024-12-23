@@ -46,6 +46,19 @@ namespace Template.Web
                 options.LogoutPath = "/Login/Logout";
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ManagerOnly", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        var userRoles = context.User.FindAll("role").Select(r => r.Value.ToLower());
+                        return userRoles.Contains("manager");
+
+                    });
+                });
+            });
+
             var builder = services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization(options =>

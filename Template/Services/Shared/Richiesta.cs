@@ -22,5 +22,6 @@ namespace Template.Services.Shared
         public TimeSpan? OraFine { get; set; }    // Ora fine
         public string Stato { get; set; }
         public string LogoPath { get; set; }
+        public string Role { get; set; }
     }
 }

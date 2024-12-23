@@ -12,6 +12,7 @@ namespace Template.Services.Shared
         public TimeSpan? Durata { get; set; }
         public string Stato { get; set; } // Stato dell'evento (Accettata, Rifiutata, etc.)
         public string LogoPath { get; set; } // Percorso relativo al logo
+        public string TeamName { get; set; }
     }
 
     public class EventViewModel

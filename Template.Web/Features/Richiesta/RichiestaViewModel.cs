@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
+using Template.Services.Shared;
 
 namespace Template.Web.Features.Richiesta
 {
@@ -8,7 +10,7 @@ namespace Template.Web.Features.Richiesta
     {
         // ID della richiesta (generato automaticamente, non visibile all'utente)
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         // Utente che ha fatto la richiesta 
         [Required]
@@ -46,6 +48,9 @@ namespace Template.Web.Features.Richiesta
         [Required]
         [Display(Name = "Stato")]
         public string Stato { get; set; } = "Da Approvare";
+        public string Role { get; set; } // manager o dipendente
+        public List<RichiestaViewModel> Richieste { get; set; } // Lista delle richieste (tipo Event)
+        public string TeamName { get; set; } // Nome del teams
 
 
 
