@@ -94,11 +94,11 @@ namespace Template.Infrastructure
                 {
                     Id = Guid.NewGuid(),
                     Email = "mario.rossi@teama.it",
-                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
+                    Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
                     FirstName = "Mario",
                     LastName = "Rossi",
                     TeamName = "Team A",
-                    Role = "Dipendente",
+                    Role = "Manager",
                     Img = "images/User/User4.png",
                     Events = new List<Event> // Aggiungi eventi per l'utente
                     {
