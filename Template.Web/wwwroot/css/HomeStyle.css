@@ -231,26 +231,30 @@ h1 {
     margin-top: 5px; /* Margine per evitare sovrapposizioni con il numero del giorno */
     margin-left: auto; /* Allinea l'icona al centro orizzontalmente */
     margin-right: auto;
-}
-
-/* Nascondi l'icona dell'evento per i giorni fuori mese */
-.table td.other-month-day .event-icon {
-    display: none;
-}
-
-.event-icon {
-    width: 30px; /* Dimensione dell'icona dell'evento */
-    height: 30px;
+    width: 30px; /* Imposta una larghezza fissa per l'icona */
+    height: 30px; /* Imposta un'altezza fissa per l'icona */
     object-fit: cover; /* Assicura che l'immagine venga ritagliata correttamente */
     border-radius: 50%; /* Rende l'icona tonda */
     cursor: pointer;
     transition: opacity 0.3s ease; /* Transizione per il hover */
+    max-width: 100%; /* Limita la larghezza dell'icona al 100% del contenitore */
+    max-height: 100%; /* Limita l'altezza dell'icona al 100% del contenitore */
 }
 
-    /* Aggiungi un'ombra leggera per un effetto hover */
-    .event-icon:hover {
-        opacity: 0.8; /* Effetto di opacità al passaggio del mouse */
-    }
+/* Modifica la posizione dell'icona in caso di più eventi nello stesso giorno */
+.table td .events {
+    display: flex;
+    flex-wrap: wrap; /* Permette alle icone di "rompersi" su più righe */
+    justify-content: center; /* Centra le icone orizzontalmente */
+    gap: 5px; /* Distanza tra le icone */
+    max-height: 80%; /* Limita l'altezza totale della sezione eventi */
+}
+
+/* Nascondi gli eventi e il pulsante "+" per i giorni che non appartengono al mese corrente */
+.table td.other-month-day .events,
+.table td.other-month-day .add-event-button {
+    display: none;
+}
 
 /* Tooltip */
 .event-icon {
@@ -271,6 +275,14 @@ h1 {
         white-space: nowrap;
         z-index: 100;
     }
+
+/* Eventi che invadono lo spazio, limitando la loro altezza */
+.table td .events img {
+    width: 20px; /* Rende più piccole le icone */
+    height: 20px; /* Rende più piccole le icone */
+    object-fit: cover;
+    border-radius: 50%;
+}
 
 /* Contenitore mese con frecce */
 .month-navigation {

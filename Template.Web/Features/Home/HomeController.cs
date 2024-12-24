@@ -61,7 +61,7 @@ namespace Template.Web.Features.Home
                         e.DataInizio,
                         e.DataFine,
                         e.Stato,
-                        LogoPath = e.LogoPath // Non normalizzo qui, uso direttamente il valore salvato
+                        e.LogoPath // Non normalizzo qui, uso direttamente il valore salvato
                     })
                 .ToList();
 
@@ -140,7 +140,7 @@ namespace Template.Web.Features.Home
             return eventType.ToLower() switch
             {
                 "ferie" => "/images/Logo/ferie.png",
-                "in presenza" => "/images/Logo/inpresenza.png",
+                "presenza" => "/images/Logo/inpresenza.png",
                 "trasferta" => "/images/Logo/trasferta.png",
                 "permessi" => "/images/Logo/permessi.png",
                 "smartworking" => "/images/Logo/smartworking.png",
@@ -231,6 +231,12 @@ namespace Template.Web.Features.Home
                             return RedirectToAction("Home");
                         }
                     }
+                    else if (eventType.Equals("Presenza", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Gestisce l'evento di "Presenza" come un evento che copre tutta la giornata
+                        eventStartDate = selectedDate.Date;
+                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1); // Copre tutta la giornata
+                    }
 
                     // Crea un oggetto Request
                     var request = new Request
@@ -260,6 +266,7 @@ namespace Template.Web.Features.Home
 
             return RedirectToAction("Home");
         }
+
 
         [HttpPost]
         public virtual IActionResult ChangeLanguageTo(string cultureName)
