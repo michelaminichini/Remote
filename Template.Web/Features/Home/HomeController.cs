@@ -50,10 +50,9 @@ namespace Template.Web.Features.Home
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);
 
-            // Recupera gli eventi (Tipologia) per ogni utente, includendo gli eventi relativi all'utente
             var events = _dbContext.Users
                 .SelectMany(u => u.Events.Where(e => e.Stato != "Rifiutata"), // Seleziona gli eventi associati a ciascun utente, filtrando per stato
-                    (u, e) => new // Creazione di un nuovo oggetto anonimo con i dettagli richiesti
+                    (u, e) => new
                     {
                         u.Email,
                         u.Role,
@@ -61,19 +60,12 @@ namespace Template.Web.Features.Home
                         e.Tipologia,
                         e.DataInizio,
                         e.DataFine,
-                        e.Stato, // Stato dell'evento
-                        e.LogoPath // Logo dell'evento, se disponibile
+                        e.Stato,
+                        e.LogoPath
                     })
                 .ToList();
-            ;
 
-            // Se l'utente è un manager, filtra gli eventi per il suo team
-            if (currentUser?.Role == "Manager")
-            {
-                events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
-            }
-            // Se l'utente è un dipendente, filtra gli eventi per il suo team (già presente nella logica)
-            else if (currentUser?.Role == "Dipendente")
+            if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente") // filtra gli eventi per il rpoprio team
             {
                 events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
             }
@@ -91,22 +83,19 @@ namespace Template.Web.Features.Home
                 Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo)
             };
 
-            // Aggiungi eventi per ciascun giorno della settimana
             foreach (var week in model.Weeks)
             {
-                foreach (var day in week)
+                foreach (var day in week) // Filtra gli eventi per ogni giorno
                 {
-                    // Filtra gli eventi per ogni giorno
                     var dayEvents = events.Where(e =>
-                        e.DataInizio.HasValue && e.DataFine.HasValue &&  // Verifica la presenza delle date
-                        e.DataInizio.Value.Date <= day.Date.Date && // Verifica che la data di inizio sia prima del giorno corrente
-                        e.DataFine.Value.Date >= day.Date.Date) // Verifica che la data di fine sia successiva o uguale al giorno corrente
-                        .Select(e => e.Tipologia) // Ottieni la tipologia dell'evento
+                        e.DataInizio.HasValue && e.DataFine.HasValue &&
+                        e.DataInizio.Value.Date <= day.Date.Date &&
+                        e.DataFine.Value.Date >= day.Date.Date)
+                        .Select(e => e.Tipologia)
                         .ToList();
 
                     foreach (var eventType in dayEvents)
                     {
-                        // Aggiungi icone per ogni evento
                         day.Events.Add(GetEventIcon(eventType));
                     }
                 }
@@ -115,9 +104,8 @@ namespace Template.Web.Features.Home
             return View(model);
         }
 
-        // Metodo per aggiungere un evento tramite POST
         [HttpPost]
-        public virtual async Task<IActionResult> AddEvent(DateTime selectedDate, string eventType)
+        public virtual async Task<IActionResult> AddEvent(DateTime selectedDate, string eventType, TimeSpan? startTime, TimeSpan? endTime)
         {
             var userEmail = User.Identity?.Name;
             var currentUser = _dbContext.Users
@@ -127,72 +115,96 @@ namespace Template.Web.Features.Home
             {
                 try
                 {
-                    var eventStartDate = selectedDate.Date;
-                    var eventEndDate = selectedDate.Date;
+                    DateTime eventStartDate = selectedDate.Date;
+                    DateTime eventEndDate = selectedDate.Date;
 
-                    // Se l'evento è di tipo "smartworking", controlliamo quanti eventi di questo tipo ci sono già nella settimana
                     if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
                     {
-                        var startOfWeek = eventStartDate.AddDays(-(int)eventStartDate.DayOfWeek); // Lunedì della settimana
-                        var endOfWeek = startOfWeek.AddDays(6); // Domenica della settimana
+                        var startOfWeek = eventStartDate.AddDays(-(int)eventStartDate.DayOfWeek); //controllo che nella settimana non abbia già due giornate di smart
+                        var endOfWeek = startOfWeek.AddDays(6); 
 
-                        // Recupera gli eventi di tipo "smartworking" già presenti nella settimana
                         var existingSmartworkingEvents = _dbContext.Users
                             .Where(u => u.Email == userEmail)
                             .SelectMany(u => u.Events.Where(e => e.Tipologia == "Smartworking" &&
                                                                  e.DataInizio.HasValue &&
                                                                  e.DataInizio.Value.Date >= startOfWeek &&
                                                                  e.DataInizio.Value.Date <= endOfWeek &&
-                                                                 e.Stato != "Rifiutata")) // Solo eventi non rifiutati
+                                                                 e.Stato != "Rifiutata"))
                             .ToList();
 
-                        // Se ci sono già 2 eventi di "smartworking", impedisci l'aggiunta
                         if (existingSmartworkingEvents.Count >= 2)
                         {
                             TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giornate di Smartworking disponibili per questa settimana.";
                             return RedirectToAction("Home");
                         }
-                    }else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Logica per limitare i giorni di ferie nel mese
-                        var startOfMonth = new DateTime(eventStartDate.Year, eventStartDate.Month, 1); // Primo giorno del mese
-                        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Ultimo giorno del mese
 
-                        // Recupera gli eventi di tipo "ferie" già presenti nel mese
+                        eventStartDate = eventStartDate.Date;
+                        eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
+                    }
+                    else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var startOfMonth = new DateTime(eventStartDate.Year, eventStartDate.Month, 1);
+                        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
                         var existingFerieEvents = _dbContext.Users
                             .Where(u => u.Email == userEmail)
                             .SelectMany(u => u.Events.Where(e => e.Tipologia == "Ferie" &&
                                                                  e.DataInizio.HasValue &&
                                                                  e.DataInizio.Value.Month == eventStartDate.Month &&
                                                                  e.DataInizio.Value.Year == eventStartDate.Year &&
-                                                                 e.Stato != "Rifiutata")) // Solo eventi non rifiutati
+                                                                 e.Stato != "Rifiutata"))
                             .ToList();
 
-                        // Controlla quanti giorni di ferie sono già stati presi nel mese
                         var ferieDaysTaken = existingFerieEvents.Sum(e => (e.DataFine ?? e.DataInizio).Value.Subtract(e.DataInizio.Value).Days + 1);
 
-                        // Se sono già stati presi 7 o più giorni di ferie, impedisci l'aggiunta
                         if (ferieDaysTaken >= 7)
                         {
-                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giorni di ferie disponibili per questo mese";
+                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giorni di ferie disponibili per questo mese.";
+                            return RedirectToAction("Home");
+                        }
+
+                        eventStartDate = eventStartDate.Date;
+                        eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
+                    }
+                    else if (eventType.Equals("Trasferta", StringComparison.OrdinalIgnoreCase) ||
+                             eventType.Equals("Permessi", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (startTime.HasValue && endTime.HasValue)
+                        {
+                            eventStartDate = selectedDate.Date.Add(startTime.Value);
+                            eventEndDate = selectedDate.Date.Add(endTime.Value);
+
+                            // Verifica che ora fine sia dopo ora inizio
+                            if (eventEndDate <= eventStartDate)
+                            {
+                                TempData["ErrorMessage"] = "L'orario di fine deve essere successivo all'orario di inizio.";
+                                return RedirectToAction("Home");
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Ora di inizio e fine devono essere specificate per trasferta o permesso.";
                             return RedirectToAction("Home");
                         }
                     }
 
-                    // Crea un oggetto Request per l'evento
-                    var cmd = new AddRequestCommand
+                    // Crea un oggetto Request
+                    var request = new Request
                     {
                         UserName = userEmail,
                         Tipologia = eventType,
                         DataInizio = eventStartDate,
                         DataFine = eventEndDate,
-                        OraInizio = TimeSpan.Zero, // Ora di inizio, modificabile in base alle necessità
-                        OraFine = TimeSpan.Zero, // Ora di fine, modificabile in base alle necessità
-                        Stato = "Da Approvare" // Stato di default
+                        Stato = "Da Approvare",
+                        OraInizio = startTime, // Imposta l'orario di inizio
+                        OraFine = endTime, // Imposta l'orario di fine
+                        LogoPath = GetEventIcon(eventType),
+                        Role = currentUser.Role
                     };
 
-                    // Usa il servizio SharedService per gestire la richiesta, delegando l'elaborazione al controller Richiesta
-                    await _sharedService.HandleRequest(cmd);
+                    // Salva la richiesta nel database
+                    _dbContext.Requests.Add(request);
+                    await _dbContext.SaveChangesAsync();
 
                     TempData["Message"] = "Richiesta inviata con successo!!";
                 }
@@ -210,11 +222,11 @@ namespace Template.Web.Features.Home
             return eventType switch
             {
                 "ferie" => "/images/Logo/ferie.png",
-                "in presenza" => "/images/Logo/in_presenza.png",
+                "in presenza" => "/images/Logo/inpresenza.png",
                 "trasferta" => "/images/Logo/trasferta.png",
                 "permessi" => "/images/Logo/permessi.png",
                 "smartworking" => "/images/Logo/smartworking.png",
-                _ => "/images/Logo/default.png", // Icona di default
+                _ => "/images/Logo/default.png",
             };
         }
 

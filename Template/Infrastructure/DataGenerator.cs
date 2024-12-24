@@ -144,7 +144,7 @@ namespace Template.Infrastructure
                             Tipologia = "Smartworking",
                             DataInizio = new DateTime(2024, 12, 24),  // Inizio smartworking il 24 dicembre 2024
                             DataFine = new DateTime(2024, 12, 24),    // Fine smartworking il 24 dicembre 2024
-                            Stato = "Approvata"
+                            Stato = "Accettata"
                         },
                         new Event
                         {
@@ -153,7 +153,7 @@ namespace Template.Infrastructure
                             Tipologia = "Smartworking",
                             DataInizio = new DateTime(2024, 12, 27),  // Inizio smartworking il 27 dicembre 2024
                             DataFine = new DateTime(2024, 12, 27),    // Fine smartworking il 27 dicembre 2024
-                            Stato = "Approvata"
+                            Stato = "Accettata"
                         }
                     }
                 },
@@ -172,12 +172,12 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-1),
+                            DataRichiesta = new DateTime(2024, 10, 24),  // Data della richiesta 
                             Tipologia = "Permesso",
-                            DataInizio = DateTime.Now.AddMonths(-1).AddHours(9),  // Inizio permesso alle 9
-                            DataFine = DateTime.Now.AddMonths(-1).AddHours(12),   // Fine permesso alle 12
-                            Durata = new TimeSpan(0, 5, 0),
-                            Stato = "Accettata"
+                            DataInizio = new DateTime(2024, 11, 20, 9, 0, 0),  // Inizio permesso alle 9:00 del 20 novembre
+                            DataFine = new DateTime(2024, 11, 20, 11, 0, 0),   // Fine permesso alle 11:00 del 20 novembre
+                            Durata = new TimeSpan(2, 0, 0),  // Durata di 2 ore
+                            Stato = "Accettata" 
                         }
                     }
                 },
