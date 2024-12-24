@@ -125,9 +125,14 @@
                                     </form>
                                 </div>
                                 <div class="events mt-2">
-                                    @foreach (var eventItem in day.Events)
+                                    @foreach (var eventItem in day.Events.GroupBy(e => e.Icon))
                                     {
-                                        <img src="@eventItem" alt="Event Icon" class="event-icon" />
+                                        var eventIcon = Url.Content(eventItem.Key); // Usa Url.Content per garantire percorsi corretti
+                                        var userName = string.Join(", ", eventItem.Select(e => e.UserName).Distinct());
+                                        <div class="events">
+                                            <!-- Mostra l'icona dell'evento -->
+                                            <img src="@eventIcon" alt="Event Icon" class="event-icon" title="Eventi di: @userName" />
+                                        </div>
                                     }
                                 </div>
                             </td>

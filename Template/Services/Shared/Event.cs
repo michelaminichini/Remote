@@ -15,12 +15,10 @@ namespace Template.Services.Shared
         public string TeamName { get; set; }
     }
 
-    public class EventViewModel
+    public class EventIconViewModel //per visualizzare nome user quando passa freccia su evento
     {
-        public string IconPath { get; set; }
-        public string EventType { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string Icon { get; set; }
+        public string UserName { get; set; }
     }
 
 }

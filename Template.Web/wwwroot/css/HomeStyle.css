@@ -1,4 +1,5 @@
-﻿body {
+﻿/* Corpo della pagina */
+body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
@@ -11,6 +12,7 @@ h1 {
     text-align: center;
 }
 
+/* Contenitore principale */
 .container {
     margin: 20px auto;
     max-width: 1200px;
@@ -223,35 +225,52 @@ h1 {
         background-color: #2a8be7;
     }
 
-/* Menu evento */
-.event-menu {
-    display: none;
-    margin-top: 0.5rem;
+/* Event icon visibile solo nei giorni del mese */
+.table td .event-icon {
+    display: block; /* Assicurati che l'icona sia visibile */
+    margin-top: 5px; /* Margine per evitare sovrapposizioni con il numero del giorno */
+    margin-left: auto; /* Allinea l'icona al centro orizzontalmente */
+    margin-right: auto;
 }
 
-    .event-menu.active {
-        display: block;
+/* Nascondi l'icona dell'evento per i giorni fuori mese */
+.table td.other-month-day .event-icon {
+    display: none;
+}
+
+.event-icon {
+    width: 30px; /* Dimensione dell'icona dell'evento */
+    height: 30px;
+    object-fit: cover; /* Assicura che l'immagine venga ritagliata correttamente */
+    border-radius: 50%; /* Rende l'icona tonda */
+    cursor: pointer;
+    transition: opacity 0.3s ease; /* Transizione per il hover */
+}
+
+    /* Aggiungi un'ombra leggera per un effetto hover */
+    .event-icon:hover {
+        opacity: 0.8; /* Effetto di opacità al passaggio del mouse */
     }
 
-    .event-menu .form-select {
-        width: 100%;
-    }
+/* Tooltip */
+.event-icon {
+    position: relative;
+}
 
-    .event-menu .btn {
-        display: block;
-        margin-top: 0.5rem;
-        background-color: #4da3ff;
-        color: white;
-        border: none;
-        padding: 5px 10px;
+    .event-icon[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        padding: 5px;
         border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 100;
     }
-
-        .event-menu .btn:hover {
-            background-color: #2a8be7;
-        }
 
 /* Contenitore mese con frecce */
 .month-navigation {
@@ -296,14 +315,4 @@ h1 {
 .right-arrow {
     right: -40px; /* Posizionamento a destra */
     border-radius: 50%;
-}
-
-/* Event icon visibile solo nei giorni del mese */
-.table td .event-icon {
-    display: block; /* Assicurati che l'icona sia visibile */
-}
-
-/* Nascondi l'icona dell'evento per i giorni fuori mese */
-.table td.other-month-day .event-icon {
-    display: none;
 }

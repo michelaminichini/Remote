@@ -51,7 +51,7 @@ namespace Template.Web.Features.Home
                 .FirstOrDefault(u => u.Email == userEmail);
 
             var events = _dbContext.Users
-                .SelectMany(u => u.Events.Where(e => e.Stato != "Rifiutata"), // Seleziona gli eventi associati a ciascun utente, filtrando per stato
+                .SelectMany(u => u.Events.Where(e => e.Stato != "Rifiutata"),
                     (u, e) => new
                     {
                         u.Email,
@@ -61,14 +61,21 @@ namespace Template.Web.Features.Home
                         e.DataInizio,
                         e.DataFine,
                         e.Stato,
-                        e.LogoPath
+                        LogoPath = e.LogoPath // Non normalizzo qui, uso direttamente il valore salvato
                     })
                 .ToList();
 
-            if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente") // filtra gli eventi per il rpoprio team
+            if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente") // Filtra gli eventi per il proprio team
             {
                 events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
             }
+
+            // Mappa gli eventi anonimi in una lista di EventIconViewModel
+            var eventIcons = events.Select(e => new EventIconViewModel
+            {
+                Icon = e.LogoPath, // Usa il LogoPath per l'icona
+                UserName = e.Email // Usa l'Email per la lista degli utenti
+            }).ToList();
 
             // Crea il modello per la vista
             var model = new HomeViewModel
@@ -80,28 +87,65 @@ namespace Template.Web.Features.Home
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 UserProfileImage = currentUser?.Img,
-                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo)
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo, eventIcons)  // Passa gli eventi come EventIconViewModel
             };
 
+            // Associa gli eventi ai giorni del calendario
             foreach (var week in model.Weeks)
             {
-                foreach (var day in week) // Filtra gli eventi per ogni giorno
+                foreach (var day in week) // Per ogni giorno della settimana
                 {
+                    // Inizializza la lista degli eventi se non è già stata inizializzata
+                    if (day.Events == null)
+                    {
+                        day.Events = new List<EventIconViewModel>();
+                    }
+
+                    // Filtra gli eventi che si sovrappongono con il giorno specifico
                     var dayEvents = events.Where(e =>
                         e.DataInizio.HasValue && e.DataFine.HasValue &&
                         e.DataInizio.Value.Date <= day.Date.Date &&
                         e.DataFine.Value.Date >= day.Date.Date)
-                        .Select(e => e.Tipologia)
+                        .Select(e => new
+                        {
+                            e.Tipologia,
+                            e.LogoPath,
+                            e.Email
+                        })
                         .ToList();
 
-                    foreach (var eventType in dayEvents)
+                    foreach (var eventInfo in dayEvents)
                     {
-                        day.Events.Add(GetEventIcon(eventType));
+                        var eventIcon = GetEventIcon(eventInfo.Tipologia);
+                        var userNames = events.Where(e => e.Tipologia == eventInfo.Tipologia)
+                                              .Select(e => e.Email)
+                                              .Distinct()
+                                              .ToList(); // Evitiamo duplicati
+
+                        // Aggiungi l'evento con l'icona e i nomi degli utenti
+                        day.Events.Add(new EventIconViewModel
+                        {
+                            Icon = eventIcon,
+                            UserName = string.Join(", ", userNames) // Concateno gli utenti per il tooltip
+                        });
                     }
                 }
             }
 
             return View(model);
+        }
+
+        private string GetEventIcon(string eventType)
+        {
+            return eventType.ToLower() switch
+            {
+                "ferie" => "/images/Logo/ferie.png",
+                "in presenza" => "/images/Logo/inpresenza.png",
+                "trasferta" => "/images/Logo/trasferta.png",
+                "permessi" => "/images/Logo/permessi.png",
+                "smartworking" => "/images/Logo/smartworking.png",
+                _ => "/images/Logo/default.png", // Icona predefinita
+            };
         }
 
         [HttpPost]
@@ -121,7 +165,7 @@ namespace Template.Web.Features.Home
                     if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
                     {
                         var startOfWeek = eventStartDate.AddDays(-(int)eventStartDate.DayOfWeek); //controllo che nella settimana non abbia già due giornate di smart
-                        var endOfWeek = startOfWeek.AddDays(6); 
+                        var endOfWeek = startOfWeek.AddDays(6);
 
                         var existingSmartworkingEvents = _dbContext.Users
                             .Where(u => u.Email == userEmail)
@@ -197,7 +241,7 @@ namespace Template.Web.Features.Home
                         DataFine = eventEndDate,
                         Stato = "Da Approvare",
                         OraInizio = startTime, // Imposta l'orario di inizio
-                        OraFine = endTime, // Imposta l'orario di fine
+                        OraFine = endTime, // Imposta l'orario di fine 
                         LogoPath = GetEventIcon(eventType),
                         Role = currentUser.Role
                     };
@@ -215,19 +259,6 @@ namespace Template.Web.Features.Home
             }
 
             return RedirectToAction("Home");
-        }
-
-        private string GetEventIcon(string eventType)
-        {
-            return eventType switch
-            {
-                "ferie" => "/images/Logo/ferie.png",
-                "in presenza" => "/images/Logo/inpresenza.png",
-                "trasferta" => "/images/Logo/trasferta.png",
-                "permessi" => "/images/Logo/permessi.png",
-                "smartworking" => "/images/Logo/smartworking.png",
-                _ => "/images/Logo/default.png",
-            };
         }
 
         [HttpPost]

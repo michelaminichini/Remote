@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Template.Services.Shared;
 
 namespace Template.Infrastructure
 {
     public class Calendar
     {
-        public static List<List<DayViewModel>> GetWeeksInMonth(int year, int month, DateTime? dateFrom, DateTime? dateTo)
+        public static List<List<DayViewModel>> GetWeeksInMonth(int year, int month, DateTime? dateFrom, DateTime? dateTo, List<EventIconViewModel> Events)
         {
             var weeks = new List<List<DayViewModel>>();
             var firstDayOfMonth = new DateTime(year, month, 1);
@@ -35,7 +36,7 @@ namespace Template.Infrastructure
                         IsCurrentMonth = isCurrentMonth,
                         IsToday = isToday,
                         IsInRange = (dateFrom == null || currentDay >= dateFrom) && (dateTo == null || currentDay <= dateTo),
-                        Events = new List<string>()
+                        Events = new List<EventIconViewModel>()
                     });
 
                     currentDay = currentDay.AddDays(1);
@@ -55,6 +56,6 @@ namespace Template.Infrastructure
         public bool IsCurrentMonth { get; set; }
         public bool IsToday { get; set; }
         public bool IsInRange { get; set; }
-        public List<string> Events { get; set; }  // Aggiunto per memorizzare gli eventi
+        public List<EventIconViewModel> Events { get; set; }
     }
 }
