@@ -335,7 +335,7 @@ button[type="submit"].btn-primary.mt-2 {
 }
 
 /* Contenitore dei campi orari (orario inizio e fine) */
-#timeFields-@day.Date.ToString("yyyy-MM-dd") .time-range {
+.timeFields-@day.Date.ToString("yyyy-MM-dd") .time-range {
     display: flex;
     flex-direction: column;
     align-items: center; /* Centra i campi orario */
@@ -344,7 +344,7 @@ button[type="submit"].btn-primary.mt-2 {
 }
 
 /* Stilizzazione per le etichette */
-#timeFields-@day.Date.ToString("yyyy-MM-dd") label {
+.timeFields-@day.Date.ToString("yyyy-MM-dd") label {
     display: block;
     font-weight: normal; /* Font leggermente più sottile */
     margin-bottom: 3px;
@@ -355,7 +355,7 @@ button[type="submit"].btn-primary.mt-2 {
 }
 
 /* Stilizzazione per i campi di input (orario inizio e fine) */
-#timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"] {
+.timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"] {
     width: 80%; /* Ridotto per rendere più piccolo l'input */
     padding: 3px 6px; /* Ridotto padding per un campo più compatto */
     margin-bottom: 8px; /* Ridotto margine tra i campi */
@@ -367,14 +367,14 @@ button[type="submit"].btn-primary.mt-2 {
 }
 
     /* Focus sugli input */
-    #timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:focus {
+    timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
 /* Aggiungi uno spazio tra i campi */
-#timeFields-@day.Date.ToString("yyyy-MM-dd") .form-control {
+.timeFields-@day.Date.ToString("yyyy-MM-dd") .form-control {
     margin-bottom: 8px; /* Diminuito margine tra i campi */
     height: 30px; /* Impostato un'altezza minore per il controllo */
 }
@@ -396,6 +396,47 @@ button[type="submit"].btn-primary.mt-2 {
     }
 
 /* Effetto hover per i campi input */
-#timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:hover {
+.timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:hover {
     background-color: #f1f1f1;
 }
+
+
+/*  pop-up */
+.event-pop-up {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    display: none; /* Nascondi per default */
+    max-width: 80vw; /* Limita la larghezza al 80% della viewport */
+    max-height: 80vh; /* Limita l'altezza al 80% della viewport */
+    width: auto; /* Si adatta alla larghezza del contenuto */
+    height: auto; /* Si adatta all'altezza del contenuto */
+    box-sizing: border-box; /* Includi il padding nel calcolo delle dimensioni */
+    overflow: auto; /* Aggiungi la possibilità di scrollare se necessario */
+    word-wrap: break-word; /* Impedisce che le parole lunghe escano dai bordi */
+    text-align: left; /* Allinea tutto il testo a sinistra */
+}
+
+.event-pop-up ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.event-pop-up li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 14px; /* Imposta la dimensione del testo a 14px (puoi modificarlo in base alle tue preferenze) */
+    word-wrap: break-word; /* Spezza le parole troppo lunghe */
+}
+
+.event-pop-up .event-icon {
+    width: 16px; /* Riduci la dimensione dell'icona a 16px */
+    height: 16px; /* Riduci l'altezza dell'icona a 16px */
+    margin-right: 8px; /* Riduci il margine tra icona e testo */
+}
+

@@ -87,7 +87,8 @@
                     <tr>
                         @foreach (var day in week)
                         {
-                            <td class="@(day.IsToday ? "today" : "") @(day.IsCurrentMonth ? "" : "other-month-day") @(day.IsInRange ? "" : "other-month-day")">
+                            <td class="@(day.IsToday ? "today" : "") @(day.IsCurrentMonth ? "" : "other-month-day") @(day.IsInRange ? "" : "other-month-day")" onmouseover="showEventPopUp('@day.Date.ToString("yyyy-MM-dd")')"
+                                onmouseout="hideEventPopUp('@day.Date.ToString("yyyy-MM-dd")')">
                                 <div class="day-header d-flex justify-content-between align-items-start">
                                     <span>@day.Date.Day</span>
 
@@ -134,7 +135,20 @@
                                             <img src="@eventIcon" alt="Event Icon" class="event-icon" title="Eventi di: @userName" />
                                         </div>
                                     }
-                                </div>
+
+                                    <!-- Pop-up contenente eventi del giorno -->
+                                    <div class="event-pop-up" id="event-pop-up-@day.Date.ToString("yyyy-MM-dd")" style="display:none;">
+                                        <ul>
+                                            @foreach (var eventItem in day.Events)
+                                            {
+                                                <li>
+                                                    <img src="@eventItem.Icon" alt="Event Icon" class="event-icon" />
+                                                    @eventItem.UserName
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                 </div>
                             </td>
                         }
                     </tr>
@@ -145,24 +159,40 @@
 
 </div>
 
-<script>
-    function toggleEventMenu(button, date) {
-        const eventMenu = document.getElementById('event-menu-' + date);
-        if (eventMenu) {
-            eventMenu.style.display = eventMenu.style.display === 'none' ? 'block' : 'none';
+    <script>
+        function toggleEventMenu(button, date) {
+            const eventMenu = document.getElementById('event-menu-' + date);
+            if (eventMenu) {
+                eventMenu.style.display = eventMenu.style.display === 'none' ? 'block' : 'none';
+            }
         }
-    }
 
-    // Funzione per mostrare i campi orari quando viene selezionato Trasferta o Permessi
-    function showEventFields(select, date) {
-        var selectedEventType = select.value;
-        var timeFields = document.getElementById('timeFields-' + date);
+        // Funzione per mostrare i campi orari quando viene selezionato Trasferta o Permessi
+        function showEventFields(select, date) {
+            var selectedEventType = select.value;
+            var timeFields = document.getElementById('timeFields-' + date);
 
-        // Mostra o nascondi i campi per orario in base al tipo di evento
-        if (selectedEventType === 'Trasferta' || selectedEventType === 'Permessi') {
-            timeFields.style.display = 'block'; // Mostra i campi orario
-        } else {
-            timeFields.style.display = 'none';
+            // Mostra o nascondi i campi per orario in base al tipo di evento
+            if (selectedEventType === 'Trasferta' || selectedEventType === 'Permessi') {
+                timeFields.style.display = 'block'; // Mostra i campi orario
+            } else {
+                timeFields.style.display = 'none';
+            }
         }
-    }
-</script>
+
+        //pop-up
+        function showEventPopUp(date) {
+
+            const popUp = document.getElementById('event-pop-up-' + date);
+            if (popUp) {
+                popUp.style.display = 'block';
+            }
+        }
+
+        function hideEventPopUp(date) {
+            const popUp = document.getElementById('event-pop-up-' + date);
+            if (popUp) {
+                popUp.style.display = 'none';
+            }
+        }
+    </script>

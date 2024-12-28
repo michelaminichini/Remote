@@ -105,11 +105,11 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-3),
+                            DataRichiesta = new DateTime(2024, 9, 27), // Data della richiesta: 27 settembre 2024
                             Tipologia = "Permessi",
-                            DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
-                            DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
-                            Durata = new TimeSpan(2, 0, 0),
+                            DataInizio = new DateTime(2024, 9, 27, 14, 0, 0),  // Inizio permesso il 27 settembre 2024 alle 14:00
+                            DataFine = new DateTime(2024, 9, 27, 16, 0, 0),   // Fine permesso il 27 settembre 2024 alle 16:00
+                            Durata = new TimeSpan(2, 0, 0),  // Durata del permesso: 2 ore
                             Stato = "Accettata"
                         }
                     }
@@ -176,16 +176,6 @@ namespace Template.Infrastructure
                             DataInizio = new DateTime(2024, 11, 20, 9, 0, 0),  // Inizio permesso alle 9:00 del 20 novembre
                             DataFine = new DateTime(2024, 11, 20, 11, 0, 0),   // Fine permesso alle 11:00 del 20 novembre
                             Durata = new TimeSpan(2, 0, 0),  // Durata di 2 ore
-                            Stato = "Accettata" 
-                        },
-                        new Event
-                        {
-                            EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
-                            Tipologia = "Ferie",
-                            DataInizio = new DateTime(2025, 1, 2),  // Inizio ferie il 2 gennaio 2025
-                            DataFine = new DateTime(2025, 1, 3),     // Fine ferie il 3 gennaio 2025
-                            Durata = new DateTime(2025, 1, 3).Subtract(new DateTime(2025, 1, 2)),  // Durata da 2 gennaio a 3 gennaio
                             Stato = "Accettata"
                         },
                         new Event
@@ -193,8 +183,8 @@ namespace Template.Infrastructure
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
                             Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 11, 20),  // Inizio smartworking il 20 novembre 2024
-                            DataFine = new DateTime(2024, 11, 20),    // Fine smartworking il 20 novembre 2024
+                            DataInizio = new DateTime(2024, 11, 20),  // Inizio smartworking il 20 dicembre 2024
+                            DataFine = new DateTime(2024, 11, 20),    // Fine smartworking il 20 dicembre 2024
                             Stato = "Accettata"
                         }
                     }
@@ -245,7 +235,7 @@ namespace Template.Infrastructure
                 },
                 new User
                 {
-                    Id = Guid.NewGuid(), 
+                    Id = Guid.NewGuid(),
                     Email = "mirco.alessi@test.it",
                     Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
                     FirstName = "Mirco",
