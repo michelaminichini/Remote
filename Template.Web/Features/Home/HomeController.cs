@@ -46,6 +46,13 @@ namespace Template.Web.Features.Home
                 currentYear++;
             }
 
+            // Verifica che la data 'dal' non sia successiva alla data 'al'
+            if (dateFrom.HasValue && dateTo.HasValue && dateFrom.Value > dateTo.Value)
+            {
+                TempData["ErrorMessage"] = "La data 'dal' non può essere successiva alla data 'al'.";
+                return RedirectToAction("Home");
+            }
+
             var userEmail = User.Identity?.Name;
             var currentUser = _dbContext.Users
                 .FirstOrDefault(u => u.Email == userEmail);

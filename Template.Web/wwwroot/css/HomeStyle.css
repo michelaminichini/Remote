@@ -328,3 +328,74 @@ h1 {
     right: -40px; /* Posizionamento a destra */
     border-radius: 50%;
 }
+
+/* Modifiche al bottone "Aggiungi" */
+button[type="submit"].btn-primary.mt-2 {
+    margin-top: 16px; /* Aumenta il margine superiore */
+}
+
+/* Contenitore dei campi orari (orario inizio e fine) */
+#timeFields-@day.Date.ToString("yyyy-MM-dd") .time-range {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra i campi orario */
+    gap: 8px; /* Spaziatura tra i campi */
+    font-size: 12px; /* Font piccolo per tutta la sezione */
+}
+
+/* Stilizzazione per le etichette */
+#timeFields-@day.Date.ToString("yyyy-MM-dd") label {
+    display: block;
+    font-weight: normal; /* Font leggermente più sottile */
+    margin-bottom: 3px;
+    font-size: 12px; /* Font più piccolo */
+    color: #333;
+    text-align: center; /* Centra il testo */
+    width: 80%; /* Stessa larghezza dell'input */
+}
+
+/* Stilizzazione per i campi di input (orario inizio e fine) */
+#timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"] {
+    width: 80%; /* Ridotto per rendere più piccolo l'input */
+    padding: 3px 6px; /* Ridotto padding per un campo più compatto */
+    margin-bottom: 8px; /* Ridotto margine tra i campi */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 11px; /* Font più piccolo */
+    background-color: #fff;
+    height: 30px; /* Impostato un'altezza minore */
+}
+
+    /* Focus sugli input */
+    #timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+/* Aggiungi uno spazio tra i campi */
+#timeFields-@day.Date.ToString("yyyy-MM-dd") .form-control {
+    margin-bottom: 8px; /* Diminuito margine tra i campi */
+    height: 30px; /* Impostato un'altezza minore per il controllo */
+}
+
+/* Centrare la form */
+.form-control {
+    font-size: 11px; /* Font più piccolo */
+    padding: 3px 6px; /* Ridotto padding per un campo più compatto */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 80%; /* Ridotto per un campo più piccolo */
+    height: 30px; /* Impostato un'altezza minore */
+}
+
+    /* Aggiungi effetto focus */
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+/* Effetto hover per i campi input */
+#timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:hover {
+    background-color: #f1f1f1;
+}
