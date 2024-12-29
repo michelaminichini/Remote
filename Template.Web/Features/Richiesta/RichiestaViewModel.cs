@@ -48,9 +48,10 @@ namespace Template.Web.Features.Richiesta
         [Required]
         [Display(Name = "Stato")]
         public string Stato { get; set; } = "Da Approvare";
-        public string Role { get; set; } // manager o dipendente
-        public List<RichiestaViewModel> Richieste { get; set; } // Lista delle richieste (tipo Event)
-        public string TeamName { get; set; } // Nome del teams
+
+        //public string Role { get; set; } // manager o dipendente
+        //public List<RichiestaViewModel> Richieste { get; set; } // Lista delle richieste (tipo Event)
+        //public string TeamName { get; set; } // Nome del teams
 
 
 

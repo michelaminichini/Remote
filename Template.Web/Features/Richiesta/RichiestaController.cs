@@ -72,8 +72,7 @@ namespace Template.Web.Features.Richiesta
                         OraFine = richiesta.OraFine ?? TimeSpan.Zero,
                         Stato = richiesta.Stato
                     };
-
-                    // Crea un oggetto Request
+   
                     //var newRequest = new Request
                     //{
                     //    Id = Guid.NewGuid(),
@@ -109,119 +108,119 @@ namespace Template.Web.Features.Richiesta
             return View(richiesta);
         }
 
-        [HttpGet]
-        public virtual async Task<IActionResult> RichiesteDipendenti()
-        {
-            try
-            {
-                var userName = User.Identity.Name;
-                var utenteLoggato = await _sharedService.GetUserByName(userName);
+        //[HttpGet]
+        //public virtual async Task<IActionResult> RichiesteDipendenti()
+        //{
+        //    try
+        //    {
+        //        var userName = User.Identity.Name;
+        //        var utenteLoggato = await _sharedService.GetUserByName(userName);
 
-                if(utenteLoggato == null || !string.Equals(utenteLoggato.Role, "Manager", StringComparison.OrdinalIgnoreCase))
-                {
-                    return Unauthorized();
-                }
+        //        if(utenteLoggato == null || !string.Equals(utenteLoggato.Role, "Manager", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            return Unauthorized();
+        //        }
 
-                var richieste = await _sharedService.GetRequestByTeam(utenteLoggato.TeamName);
+        //        var richieste = await _sharedService.GetRequestByTeam(utenteLoggato.TeamName);
 
-                var model = new RichiesteDipendentiViewModel
-                {
-                    Richieste = richieste
-                };
-                return View(model);
+        //        var model = new RichiesteDipendentiViewModel
+        //        {
+        //            Richieste = richieste
+        //        };
+        //        return View(model);
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("errore durante recupero delle richieste del team: " + ex.Message);
-                TempData["ErrorMessage"] = "Si è verificato un errore durante il recupero delle richieste del team.";
-                return RedirectToAction("Richiesta");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("errore durante recupero delle richieste del team: " + ex.Message);
+        //        TempData["ErrorMessage"] = "Si è verificato un errore durante il recupero delle richieste del team.";
+        //        return RedirectToAction("Richiesta");
 
-            }
-        }
+        //    }
+        //}
 
-        [HttpPost]
-        public virtual async Task<IActionResult> Approva(Guid id)
-        {
-            try
-            {
-                var success = await _sharedService.UpdateRequestStatus(id, "Approvata");
+        //[HttpPost]
+        //public virtual async Task<IActionResult> Approva(Guid id)
+        //{
+        //    try
+        //    {
+        //        var success = await _sharedService.UpdateRequestStatus(id, "Approvata");
 
-                if (!success)
-                {
-                    return BadRequest(new { success = false, message = "Impossibile approvare la richiesta" });
+        //        if (!success)
+        //        {
+        //            return BadRequest(new { success = false, message = "Impossibile approvare la richiesta" });
 
-                }
+        //        }
 
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("errore durante approvazione richiesta: " + ex.Message);
-                return BadRequest(new {success = false, message = ex.Message});
-            }
-        }
+        //        return Json(new { success = true });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("errore durante approvazione richiesta: " + ex.Message);
+        //        return BadRequest(new {success = false, message = ex.Message});
+        //    }
+        //}
 
-        [HttpPost]
-        public virtual async Task<IActionResult> Rifiuta(Guid id)
-        {
-            try
-            {
-                // Aggiorna lo stato della richiesta a "Rifiutata"
-                var success = await _sharedService.UpdateRequestStatus(id, "Rifiutata");
+        //[HttpPost]
+        //public virtual async Task<IActionResult> Rifiuta(Guid id)
+        //{
+        //    try
+        //    {
+        //        // Aggiorna lo stato della richiesta a "Rifiutata"
+        //        var success = await _sharedService.UpdateRequestStatus(id, "Rifiutata");
 
-                if (!success)
-                {
-                    return BadRequest(new { success = false, message = "Impossibile rifiutare la richiesta." });
-                }
+        //        if (!success)
+        //        {
+        //            return BadRequest(new { success = false, message = "Impossibile rifiutare la richiesta." });
+        //        }
 
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Errore durante il rifiuto della richiesta: " + ex.Message);
-                return BadRequest(new { success = false, message = ex.Message });
-            }
-        }
+        //        return Json(new { success = true });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Errore durante il rifiuto della richiesta: " + ex.Message);
+        //        return BadRequest(new { success = false, message = ex.Message });
+        //    }
+        //}
 
-        [HttpGet]
-        public virtual async Task<IActionResult> RichiestaPage()
-        {
-            try
-            {
-                var richiesteEsistenti = await _sharedService.GetAllRequests();
-                var userName = User.Identity.Name;
-                var teamName = await _dbContext.Users
-                                                     .Where(u => u.Email == User.Identity.Name)
-                                                     .Select(u => u.TeamName)
-                                                     .FirstOrDefaultAsync();
-                var model = new RichiestaViewModel
-                {
-                    Richieste = richiesteEsistenti.Select(r => new RichiestaViewModel
-                    {
-                        Id = r.Id,
-                        Tipologia = r.Tipologia,
-                        DataInizio = r.DataInizio,
-                        DataFine = r.DataFine,
-                        OraInizio = r.OraInizio,
-                        OraFine = r.OraFine,
-                        Stato = r.Stato,
-                        Role = r.Role,
-                        TeamName = teamName
-                    }).ToList(),
+        //[HttpGet]
+        //public virtual async Task<IActionResult> RichiestaPage()
+        //{
+        //    try
+        //    {
+        //        var richiesteEsistenti = await _sharedService.GetAllRequests();
+        //        var userName = User.Identity.Name;
+        //        var teamName = await _dbContext.Users
+        //                                             .Where(u => u.Email == User.Identity.Name)
+        //                                             .Select(u => u.TeamName)
+        //                                             .FirstOrDefaultAsync();
+        //        var model = new RichiestaViewModel
+        //        {
+        //            Richieste = richiesteEsistenti.Select(r => new RichiestaViewModel
+        //            {
+        //                Id = r.Id,
+        //                Tipologia = r.Tipologia,
+        //                DataInizio = r.DataInizio,
+        //                DataFine = r.DataFine,
+        //                OraInizio = r.OraInizio,
+        //                OraFine = r.OraFine,
+        //                Stato = r.Stato,
+        //                Role = r.Role,
+        //                TeamName = teamName
+        //            }).ToList(),
 
-                    TeamName = teamName ?? "Unknown"
-                };
+        //            TeamName = teamName ?? "Unknown"
+        //        };
 
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Errore durante il caricamento della pagina Richiesta: " + ex.Message);
-                TempData["ErrorMessage"] = "Si è verificato un errore durante il caricamento della pagina.";
-                return RedirectToAction("Richiesta");
-            }
-        }
+        //        return View(model);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Errore durante il caricamento della pagina Richiesta: " + ex.Message);
+        //        TempData["ErrorMessage"] = "Si è verificato un errore durante il caricamento della pagina.";
+        //        return RedirectToAction("Richiesta");
+        //    }
+        //}
 
 
 

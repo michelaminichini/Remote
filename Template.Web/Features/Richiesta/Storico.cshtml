@@ -1,38 +1,77 @@
 ﻿@model IEnumerable<Template.Services.Shared.Request>
 
-<h1>Richieste Salvate</h1>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richieste Inviate</title>
+    <!-- Riferimento a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Aggiungi eventuali stili personalizzati qui */
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
 
-@if (Model.Any())
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipologia</th>
-                <th>Data Inizio</th>
-                <th>Data Fine</th>
-                <th>Ora Inizio</th>
-                <th>Ora Fine</th>
-                <th>Stato</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var richiesta in Model)
-            {
-                <tr>
-                    <td>@richiesta.Id</td>
-                    <td>@richiesta.Tipologia</td>
-                    <td>@richiesta.DataInizio.ToString("yyyy-MM-dd")</td>
-                    <td>@richiesta.DataFine.ToString("yyyy-MM-dd")</td>
-                    <td>@richiesta.OraInizio</td>
-                    <td>@richiesta.OraFine</td>
-                    <td>@richiesta.Stato</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>Non ci sono richieste salvate.</p>
-}
+    <div class="container mt-5">
+        <a href="/" class="text-decoration-none">
+            <i class="bi bi-house-door"></i> Torna alla Home
+        </a>
+        <h1 class="text-left my-4">Richieste Inviate</h1>
+
+        @if (Model.Any())
+        {
+            <div class="table-responsive p-3 bg-body-tertiary rounded">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead class=" bg-white text-center">
+                        <tr>
+                            <th>Utente</th>
+                            <th>Tipologia</th>
+                            <th>Data Inizio</th>
+                            <th>Data Fine</th>
+                            <th>Ora Inizio</th>
+                            <th>Ora Fine</th>
+                            <th>Stato</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var richiesta in Model)
+                        {
+                            <tr class="@(Model.ToList().IndexOf(richiesta) % 2 == 0 ? "bg-light" : "")">
+                                <td class="text-center fw-bold">@richiesta.UserName</td>
+                                <td>@richiesta.Tipologia</td>
+                                <td class="text-center">@richiesta.DataInizio.ToString("yyyy-MM-dd")</td>
+                                <td class="text-center">@richiesta.DataFine.ToString("yyyy-MM-dd")</td>
+                                <td class="text-center">@richiesta.OraInizio</td>
+                                <td class="text-center">@richiesta.OraFine</td>
+                                <td class="text-center">
+                                    <span class="badge bg-primary">
+                                        @richiesta.Stato
+                                    </span>
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center shadow-sm mt-4" role="alert">
+                <strong>Non ci sono richieste salvate.</strong>
+            </div>
+        }
+    </div>
+
+    <!-- Riferimento a Bootstrap JS e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -26,11 +26,13 @@ namespace Template.Services.Shared
         {
             var request = new Request
             {
+                UserName = cmd.UserName,
                 Tipologia = cmd.Tipologia,
                 DataInizio = cmd.DataInizio,
                 DataFine = cmd.DataFine,
                 OraInizio = cmd.OraInizio,
                 OraFine = cmd.OraFine,
+                Stato = cmd.Stato
             };
             _dbContext.Requests.Add(request);
             await _dbContext.SaveChangesAsync();
