@@ -34,6 +34,20 @@
             </div>
         </div>
 
+        <!-- Filter Section -->
+        <div class="d-flex flex-column">
+            <div>
+                <div id="filterPanel" class="d-flex justify-content-end mb-2" style="position: relative;">
+                    <select id="filterStatus" class="form-select" onchange="applyFilter()" style="width: 130px;">
+                        <option value="" disabled selected>Filtri</option>
+                        <option value="Tutti">Tutti</option>
+                        <option value="Accettata">Accettata</option>
+                        <option value="Rifiutata">Rifiutata</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -71,23 +85,7 @@
         <div class="no-request-text">Non ci sono richieste passate</div>
     }
 
-    <!-- Filter Section -->
-    <div id="filter-box" class="d-flex mb-4">
-        <button class="btn btn-outline-primary" onclick="toggleFilterPanel()">
-            <i class="bi bi-filter-left"></i>
-        </button>
-
-        <div>
-            <div id="filterPanel" class="filter-panel d-none">
-                <select id="filterStatus" class="form-select" onchange="applyFilter()">
-                    <option value="Tutti">Tutti</option>
-                    <option value="Accettata">Accettata</option>
-                    <option value="Rifiutata">Rifiutata</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
+    
     <script>
         function applyFilter() {
             const selectedStatus = document.getElementById('filterStatus').value;
@@ -100,11 +98,6 @@
                     row.style.display = 'none';
                 }
             });
-        }
-
-        function toggleFilterPanel() {
-            const filterPanel = document.getElementById('filterPanel');
-            filterPanel.classList.toggle('d-none');
         }
     </script>
 </div>
