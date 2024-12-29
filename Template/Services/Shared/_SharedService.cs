@@ -28,18 +28,6 @@ namespace Template.Services.Shared
                 .Where(e => e.TeamName == teamName)
                 .ToListAsync();
         }
-        public async Task<bool> UpdateRequestStatus(Guid requestId, string newStatus)
-        {
-            var request = await _dbContext.Events.FirstOrDefaultAsync(e => e.EventId == requestId);
-
-            if (request == null)
-                return false;
-
-            request.Stato = newStatus;
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
-       
 
     }
 }

@@ -104,6 +104,14 @@
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary btn-lg">Invia</button>
             </div>
+
+            @if (User.IsInRole("Manager"))
+            {
+                <div class="container-fluid bg-light bottom-0 w-100 text-center p-3 mt-5">
+                    <p>Gestisci qui le richieste dei dipendenti del team:</p>
+                    <button onclick="window.location.href='@Url.Action("Storico","Richiesta")'" class="btn btn-primary btn-mg">Gestisci Richieste</button>
+                </div>
+            }
         </form>
     </div>
 

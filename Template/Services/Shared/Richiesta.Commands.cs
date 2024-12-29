@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,17 @@ namespace Template.Services.Shared
         {
             return await _dbContext.Requests.ToListAsync();
         }
+
+        public async Task<bool> UpdateStatus(Guid id, string stato)
+        {
+            var richiesta = await _dbContext.Requests.FindAsync(id);
+            if (richiesta == null) return false;
+
+            richiesta.Stato = stato; // Aggiorna lo stato
+            await _dbContext.SaveChangesAsync(); // Salva i cambiamenti nel DB
+            return true;
+        }
+
 
     }
 }

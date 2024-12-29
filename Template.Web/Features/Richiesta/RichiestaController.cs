@@ -85,7 +85,7 @@ namespace Template.Web.Features.Richiesta
                     //    Stato = richiesta.Stato
                     //};
 
-                    // Salva la richiesta usando il tuo servizio
+                    // Salva la richiesta
                     var id = await _sharedService.HandleRequest(cmd);
                     //DataGenerator.AddRequest(newRequest);
 
@@ -107,6 +107,57 @@ namespace Template.Web.Features.Richiesta
             // In caso di errore o se il modello non è valido, ritorna alla vista con il messaggio di errore
             return View(richiesta);
         }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> Approva(Guid id)  // id viene passato come parametro di query
+        {
+            Console.WriteLine("ID ricevuto: " + id);
+            try
+            {
+                // Verifica se l'id è valido
+                if (id == Guid.Empty)
+                {
+                    return BadRequest(new { success = false, message = "ID non valido." });
+                }
+
+                var success = await _sharedService.UpdateStatus(id, "Approvata");
+                if (!success)
+                {
+                    return BadRequest(new { success = false, message = "Impossibile approvare la richiesta." });
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Errore durante approvazione richiesta: " + ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+
+
+
+        [HttpPost]
+        public virtual async Task<IActionResult> Rifiuta(Guid id)
+        {
+            var success = await _sharedService.UpdateStatus(id, "Rifiutata");
+            if (!success)
+            {
+                return BadRequest(new { success = false, message = "Impossibile rifiutare la richiesta." });
+            }
+
+            return Json(new { success = true });
+        }
+
+
+        [HttpGet]
+        public virtual async Task<IActionResult> Lista()
+        {
+            var richieste = await _dbContext.Requests.ToListAsync(); 
+            return Json(richieste);
+        }
+
 
         //[HttpGet]
         //public virtual async Task<IActionResult> RichiesteDipendenti()
@@ -139,49 +190,6 @@ namespace Template.Web.Features.Richiesta
         //    }
         //}
 
-        //[HttpPost]
-        //public virtual async Task<IActionResult> Approva(Guid id)
-        //{
-        //    try
-        //    {
-        //        var success = await _sharedService.UpdateRequestStatus(id, "Approvata");
-
-        //        if (!success)
-        //        {
-        //            return BadRequest(new { success = false, message = "Impossibile approvare la richiesta" });
-
-        //        }
-
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("errore durante approvazione richiesta: " + ex.Message);
-        //        return BadRequest(new {success = false, message = ex.Message});
-        //    }
-        //}
-
-        //[HttpPost]
-        //public virtual async Task<IActionResult> Rifiuta(Guid id)
-        //{
-        //    try
-        //    {
-        //        // Aggiorna lo stato della richiesta a "Rifiutata"
-        //        var success = await _sharedService.UpdateRequestStatus(id, "Rifiutata");
-
-        //        if (!success)
-        //        {
-        //            return BadRequest(new { success = false, message = "Impossibile rifiutare la richiesta." });
-        //        }
-
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Errore durante il rifiuto della richiesta: " + ex.Message);
-        //        return BadRequest(new { success = false, message = ex.Message });
-        //    }
-        //}
 
         //[HttpGet]
         //public virtual async Task<IActionResult> RichiestaPage()
