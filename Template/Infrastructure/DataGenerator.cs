@@ -5,11 +5,59 @@ using Template.Services;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System.Collections;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Template.Infrastructure
 {
     public class DataGenerator
     {
+
+        public static void AddEventForUser(TemplateDbContext context, Request richiesta)
+        {
+            // Carica l'utente con tracking esplicito includendo gli Events
+            var user = context.Users
+                .Include(u => u.Events)
+                .FirstOrDefault(u => u.Email == richiesta.UserName);
+
+            if (user != null)
+            {
+                var newEvent = new Event
+                {
+                    EventId = Guid.NewGuid(),
+                    DataRichiesta = DateTime.Now,
+                    Tipologia = richiesta.Tipologia,
+                    DataInizio = richiesta.DataInizio,
+                    DataFine = richiesta.DataFine,
+                    Durata = richiesta.DataFine - richiesta.DataInizio,
+                    Stato = "Approvata"
+                };
+
+                // Se la collezione Events è null, inizializzala
+                if (user.Events == null)
+                {
+                    user.Events = new List<Event>();
+                }
+
+                user.Events.Add(newEvent);
+                context.Events.Add(newEvent);
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Errore nel salvataggio dell'evento: " + ex.Message);
+                }
+            }
+            else
+            {
+                throw new Exception("Utente non trovato");
+            }
+        }
+
+
         public static void InitializeUsers(TemplateDbContext context)
         {
             if (context.Users.Any())

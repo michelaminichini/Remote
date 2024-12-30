@@ -29,7 +29,7 @@ namespace Template.Services.Shared
         public string Stato { get; set; }
 
         public string Img { get; set; } // Campo per immagine profilo
-        public List<Event> Events { get; internal set; }
+        public List<Event> Events { get; internal set; } = new List<Event>();
 
         public bool IsMatchWithPassword(string password)
         {

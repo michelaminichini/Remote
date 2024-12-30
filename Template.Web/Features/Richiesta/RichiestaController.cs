@@ -40,8 +40,7 @@ namespace Template.Web.Features.Richiesta
             {
                 // Recupera tutte le richieste dal database usando SharedService
                 var richieste = await _sharedService.GetAllRequests();
-                //var richieste = DataGenerator.Requests;
-
+  
                 // Passa i dati alla vista
                 return View(richieste);
             }
@@ -52,8 +51,6 @@ namespace Template.Web.Features.Richiesta
                 return RedirectToAction("Richiesta");
             }
         }
-
-
 
         [HttpPost]
         public virtual async Task<IActionResult> PostRequest(RichiestaViewModel richiesta)
@@ -73,21 +70,7 @@ namespace Template.Web.Features.Richiesta
                         Stato = richiesta.Stato
                     };
    
-                    //var newRequest = new Request
-                    //{
-                    //    Id = Guid.NewGuid(),
-                    //    UserName = User.Identity.Name,
-                    //    Tipologia = richiesta.Tipologia,
-                    //    DataInizio = richiesta.DataInizio,
-                    //    DataFine = richiesta.DataFine,
-                    //    OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
-                    //    OraFine = richiesta.OraFine ?? TimeSpan.Zero,
-                    //    Stato = richiesta.Stato
-                    //};
-
-                    // Salva la richiesta
                     var id = await _sharedService.HandleRequest(cmd);
-                    //DataGenerator.AddRequest(newRequest);
 
                     TempData["Message"] = "Richiesta inviata con successo!";
                     return RedirectToAction("Richiesta");
@@ -103,13 +86,11 @@ namespace Template.Web.Features.Richiesta
             {
                 TempData["ErrorMessage"] = "I dati inseriti non sono validi.";
             }
-
-            // In caso di errore o se il modello non è valido, ritorna alla vista con il messaggio di errore
             return View(richiesta);
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Approva(Guid id)  // id viene passato come parametro di query
+        public virtual async Task<IActionResult> Approva(Guid id)  
         {
             Console.WriteLine("ID ricevuto: " + id);
             try
@@ -126,7 +107,49 @@ namespace Template.Web.Features.Richiesta
                     return BadRequest(new { success = false, message = "Impossibile approvare la richiesta." });
                 }
 
+                var richiesta = await _dbContext.Requests.FindAsync(id);
+                if (richiesta == null)
+                {
+                    return BadRequest(new { success = false, message = "Richiesta non trovata." });
+                }
+
+                // Assicurati che l'email della richiesta non sia null o vuota
+                if (string.IsNullOrEmpty(richiesta.UserName))
+                {
+                    return BadRequest(new { success = false, message = "L'email dell'utente non è presente nella richiesta." });
+                }
+
+                // Cerca l'utente tramite la sua email
+                var user = await _dbContext.Users
+                    .FirstOrDefaultAsync(u => u.Email == richiesta.UserName);
+
+                if (user == null)
+                {
+                    return BadRequest(new { success = false, message = "Utente non trovato per questa richiesta." });
+                }
+
+                // Verifica che l'utente abbia eventi e che la lista non sia null
+                if (user.Events == null)
+                {
+                    return BadRequest(new { success = false, message = "L'utente non ha eventi registrati." });
+                }
+
+                // Controllo se un evento simile è già presente per l'utente
+                var existingEvent = user.Events
+                    .FirstOrDefault(e => e.DataRichiesta == DateTime.Now &&
+                                         e.Tipologia == richiesta.Tipologia &&
+                                         e.Stato == richiesta.Stato);
+
+                if (existingEvent != null)
+                {
+                    return BadRequest(new { success = false, message = "Un evento simile è già stato registrato." });
+                }
+
+                // Aggiungi l'evento per l'utente corrispondente
+                DataGenerator.AddEventForUser(_dbContext, richiesta);
+
                 return Json(new { success = true });
+
             }
             catch (Exception ex)
             {
@@ -135,18 +158,14 @@ namespace Template.Web.Features.Richiesta
             }
         }
 
-
-
-
         [HttpPost]
         public virtual async Task<IActionResult> Rifiuta(Guid id)
         {
             var success = await _sharedService.UpdateStatus(id, "Rifiutata");
             if (!success)
             {
-                return BadRequest(new { success = false, message = "Impossibile rifiutare la richiesta." });
+                return BadRequest(new { success = false, message = "Errore durante operazione" });
             }
-
             return Json(new { success = true });
         }
 
@@ -229,8 +248,5 @@ namespace Template.Web.Features.Richiesta
         //        return RedirectToAction("Richiesta");
         //    }
         //}
-
-
-
     }
 }

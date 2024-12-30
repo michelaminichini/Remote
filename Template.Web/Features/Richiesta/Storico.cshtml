@@ -110,7 +110,7 @@
 
             aggiornaRichieste() {
                 // Recupera le richieste aggiornate dal server
-                fetch('/Richiesta/Lista') // Assicurati che questa endpoint restituisca le richieste aggiornate
+                fetch('/Richiesta/Lista') 
                     .then(response => response.json())
                     .then(data => {
                         this.richieste = data;
@@ -119,8 +119,6 @@
                         console.error('Errore durante il recupero delle richieste:', error);
                     });
             }
-
-
         }
     });
 </script>
