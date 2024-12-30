@@ -172,73 +172,32 @@ namespace Template.Web.Features.Home
                     DateTime eventStartDate = selectedDate.Date;
                     DateTime eventEndDate = selectedDate.Date;
 
+                    // Logica per Smartworking, Trasferta, Presenza (gestiti tramite DataGenerator)
                     if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
                     {
-                        var startOfWeek = eventStartDate.AddDays(-(int)eventStartDate.DayOfWeek); //controllo che nella settimana non abbia già due giornate di smart
-                        var endOfWeek = startOfWeek.AddDays(6);
+                        if (ValidateSmartworkingAvailability(userEmail, eventStartDate))
+                        {
+                            eventStartDate = eventStartDate.Date;
+                            eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
 
-                        var existingSmartworkingEvents = _dbContext.Users
-                            .Where(u => u.Email == userEmail)
-                            .SelectMany(u => u.Events.Where(e => e.Tipologia == "Smartworking" &&
-                                                                 e.DataInizio.HasValue &&
-                                                                 e.DataInizio.Value.Date >= startOfWeek &&
-                                                                 e.DataInizio.Value.Date <= endOfWeek &&
-                                                                 e.Stato != "Rifiutata"))
-                            .ToList();
-
-                        if (existingSmartworkingEvents.Count >= 2)
+                            var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            DataGenerator.AddEventForUser(_dbContext, richiesta);
+                        }
+                        else
                         {
                             TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giornate di Smartworking disponibili per questa settimana.";
                             return RedirectToAction("Home");
                         }
-
-                        eventStartDate = eventStartDate.Date;
-                        eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
                     }
-                    else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
+                    else if (eventType.Equals("Trasferta", StringComparison.OrdinalIgnoreCase))
                     {
-                        var startOfMonth = new DateTime(eventStartDate.Year, eventStartDate.Month, 1);
-                        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
-
-                        var existingFerieEvents = _dbContext.Users
-                            .Where(u => u.Email == userEmail)
-                            .SelectMany(u => u.Events.Where(e => e.Tipologia == "Ferie" &&
-                                                                 e.DataInizio.HasValue &&
-                                                                 e.DataInizio.Value.Month == eventStartDate.Month &&
-                                                                 e.DataInizio.Value.Year == eventStartDate.Year &&
-                                                                 e.Stato != "Rifiutata"))
-                            .ToList();
-
-                        var ferieDaysTaken = existingFerieEvents.Sum(e => (e.DataFine ?? e.DataInizio).Value.Subtract(e.DataInizio.Value).Days + 1);
-
-                        if (ferieDaysTaken >= 7)
-                        {
-                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giorni di ferie disponibili per questo mese.";
-                            return RedirectToAction("Home");
-                        }
-
-                        eventStartDate = eventStartDate.Date;
-                        eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
-                    }
-                    else if (eventType.Equals("Trasferta", StringComparison.OrdinalIgnoreCase) ||
-                             eventType.Equals("Permessi", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (startTime.HasValue && endTime.HasValue)
+                        if (ValidateStartAndEndTime(startTime, endTime))
                         {
                             eventStartDate = selectedDate.Date.Add(startTime.Value);
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
 
-                            // Verifica che ora fine sia dopo ora inizio
-                            if (eventEndDate <= eventStartDate)
-                            {
-                                TempData["ErrorMessage"] = "L'orario di fine deve essere successivo all'orario di inizio.";
-                                return RedirectToAction("Home");
-                            }
-                        }
-                        else
-                        {
-                            TempData["ErrorMessage"] = "Ora di inizio e fine devono essere specificate per trasferta o permesso.";
-                            return RedirectToAction("Home");
+                            var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            DataGenerator.AddEventForUser(_dbContext, richiesta);
                         }
                     }
                     else if (eventType.Equals("Presenza", StringComparison.OrdinalIgnoreCase))
@@ -246,27 +205,49 @@ namespace Template.Web.Features.Home
                         // Gestisce l'evento di "Presenza" come un evento che copre tutta la giornata
                         eventStartDate = selectedDate.Date;
                         eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1); // Copre tutta la giornata
+
+                        var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                        DataGenerator.AddEventForUser(_dbContext, richiesta);
                     }
-
-                    // Crea un oggetto Request
-                    var request = new Request
+                    // Logica per Ferie e Permessi (gestiti tramite _dbContext.Requests.Add)
+                    else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
                     {
-                        UserName = userEmail,
-                        Tipologia = eventType,
-                        DataInizio = eventStartDate,
-                        DataFine = eventEndDate,
-                        Stato = "Da Approvare",
-                        OraInizio = startTime, // Imposta l'orario di inizio
-                        OraFine = endTime, // Imposta l'orario di fine 
-                        LogoPath = GetEventIcon(eventType),
-                        Role = currentUser.Role
-                    };
+                        if (ValidateFerieAvailability(userEmail, eventStartDate))
+                        {
+                            eventStartDate = eventStartDate.Date;
+                            eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
 
-                    // Salva la richiesta nel database
-                    _dbContext.Requests.Add(request);
-                    await _dbContext.SaveChangesAsync();
+                            var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            _dbContext.Requests.Add(request);
+                            await _dbContext.SaveChangesAsync();
 
-                    TempData["Message"] = "Richiesta inviata con successo!!";
+                            TempData["Message"] = "Richiesta inviata con successo!!";
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Hai raggiunto il limite massimo di giorni di ferie disponibili per questo mese.";
+                            return RedirectToAction("Home");
+                        }
+                    }
+                    else if (eventType.Equals("Permessi", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ValidateStartAndEndTime(startTime, endTime))
+                        {
+                            eventStartDate = selectedDate.Date.Add(startTime.Value);
+                            eventEndDate = selectedDate.Date.Add(endTime.Value);
+
+                            var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            _dbContext.Requests.Add(request);
+                            await _dbContext.SaveChangesAsync();
+
+                            TempData["Message"] = "Richiesta inviata con successo!!";
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Ora di inizio e fine devono essere specificate per permessi.";
+                            return RedirectToAction("Home");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -275,6 +256,67 @@ namespace Template.Web.Features.Home
             }
 
             return RedirectToAction("Home");
+        }
+
+        private bool ValidateSmartworkingAvailability(string userEmail, DateTime eventStartDate)
+        {
+            var startOfWeek = eventStartDate.AddDays(-(int)eventStartDate.DayOfWeek); // Start of the week
+            var endOfWeek = startOfWeek.AddDays(6); // End of the week
+
+            var existingSmartworkingEvents = _dbContext.Users
+                .Where(u => u.Email == userEmail)
+                .SelectMany(u => u.Events.Where(e => e.Tipologia == "Smartworking" &&
+                                                     e.DataInizio.HasValue &&
+                                                     e.DataInizio.Value.Date >= startOfWeek &&
+                                                     e.DataInizio.Value.Date <= endOfWeek &&
+                                                     e.Stato != "Rifiutata"))
+                .ToList();
+
+            return existingSmartworkingEvents.Count < 2;
+        }
+
+        private bool ValidateFerieAvailability(string userEmail, DateTime eventStartDate)
+        {
+            var startOfMonth = new DateTime(eventStartDate.Year, eventStartDate.Month, 1);
+            var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+            var existingFerieEvents = _dbContext.Users
+                .Where(u => u.Email == userEmail)
+                .SelectMany(u => u.Events.Where(e => e.Tipologia == "Ferie" &&
+                                                     e.DataInizio.HasValue &&
+                                                     e.DataInizio.Value.Month == eventStartDate.Month &&
+                                                     e.DataInizio.Value.Year == eventStartDate.Year &&
+                                                     e.Stato != "Rifiutata"))
+                .ToList();
+
+            var ferieDaysTaken = existingFerieEvents.Sum(e => (e.DataFine ?? e.DataInizio).Value.Subtract(e.DataInizio.Value).Days + 1);
+            return ferieDaysTaken < 7;
+        }
+
+        private bool ValidateStartAndEndTime(TimeSpan? startTime, TimeSpan? endTime)
+        {
+            if (startTime.HasValue && endTime.HasValue)
+            {
+                return endTime > startTime;
+            }
+            return false;
+        }
+
+        private Request CreateRequest(string userEmail, string eventType, DateTime eventStartDate, DateTime eventEndDate,
+                                      TimeSpan? startTime, TimeSpan? endTime, string userRole)
+        {
+            return new Request
+            {
+                UserName = userEmail,
+                Tipologia = eventType,
+                DataInizio = eventStartDate,
+                DataFine = eventEndDate,
+                Stato = "Da Approvare",
+                OraInizio = startTime, // Imposta l'orario di inizio
+                OraFine = endTime, // Imposta l'orario di fine
+                LogoPath = GetEventIcon(eventType),
+                Role = userRole
+            };
         }
 
 
