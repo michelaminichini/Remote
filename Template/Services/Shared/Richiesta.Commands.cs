@@ -10,7 +10,6 @@ namespace Template.Services.Shared
     public class AddRequestCommand
     {
         public Guid? Id { get; set; }
-        //public User User { get; set; }
         public string Tipologia { get; set; }
         public DateTime DataInizio { get; set; }
         public DateTime DataFine { get; set; }

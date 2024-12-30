@@ -15,7 +15,7 @@ namespace Template.Web.Features.Richiesta
         // Utente che ha fatto la richiesta 
         [Required]
         [Display(Name = "Utente")]
-        public int UtenteName { get; set; }
+        public int UtenteName { get; set; }    // se cambi STRING non va
 
         // Tipologia della richiesta (permessi o ferie)
         [Required]
