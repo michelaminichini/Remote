@@ -12,11 +12,6 @@ namespace Template.Web.Features.Richiesta
         [Key]
         public Guid Id { get; set; }
 
-        // Utente che ha fatto la richiesta 
-        [Required]
-        [Display(Name = "Utente")]
-        public int UtenteName { get; set; }    // se cambi STRING non va
-
         // Tipologia della richiesta (permessi o ferie)
         [Required]
         [Display(Name = "Tipologia")]
@@ -52,8 +47,5 @@ namespace Template.Web.Features.Richiesta
         //public string Role { get; set; } // manager o dipendente
         //public List<RichiestaViewModel> Richieste { get; set; } // Lista delle richieste (tipo Event)
         //public string TeamName { get; set; } // Nome del teams
-
-
-
     }
 }

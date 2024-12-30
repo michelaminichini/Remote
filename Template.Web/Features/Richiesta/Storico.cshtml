@@ -20,7 +20,7 @@
         </a>
         <h1 class="text-left my-4">Richieste Inviate</h1>
 
-        <div v-if="richieste.length" class="table-responsive p-3 bg-body-tertiary rounded">
+        <div v-if="richieste.length" class="table-responsive p-3  rounded">
             <table class="table table-bordered table-striped align-middle">
                 <thead class="bg-white text-center">
                     <tr>
@@ -40,8 +40,8 @@
                         <td>{{ richiesta.tipologia }}</td>
                         <td class="text-center">{{ formatDate(richiesta.dataInizio) }}</td>
                         <td class="text-center">{{ formatDate(richiesta.dataFine) }}</td>
-                        <td class="text-center">{{ richiesta.oraInizio }}</td>
-                        <td class="text-center">{{ richiesta.oraFine }}</td>
+                        <td class="text-center">{{ richiesta.oraInizio === '00:00:00' ? '' : richiesta.oraInizio }}</td>
+                        <td class="text-center">{{ richiesta.oraFine === '00:00:00' ? '' : richiesta.oraFine }}</td>
                         <td class="text-center">
                             <span class="badge" :class="getBadgeClass(richiesta.stato)">
                                 {{ richiesta.stato }}
