@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -38,9 +39,32 @@ namespace Template.Web.Features.Richiesta
         {
             try
             {
-                // Recupera tutte le richieste dal database usando SharedService
-                var richieste = await _sharedService.GetAllRequests();
-  
+                // Recupera il nome del team dell'utente loggato
+                var userName = User.Identity.Name;
+                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
+                var userRole = user.Role;
+                var teamName = user.TeamName;
+
+                if (string.IsNullOrEmpty(teamName))
+                {
+                    TempData["ErrorMessage"] = "Impossibile determinare il team dell'utente loggato.";
+                    return RedirectToAction("Richiesta");
+                }
+
+                List<Request> richieste;
+                if (userRole == "Manager")
+                {
+                    // Recupera solo le richieste relative al team dell'utente
+                    richieste = await _sharedService.GetRequestByTeam(teamName);
+                    Console.WriteLine($"Richieste trovate per il team {teamName}: {richieste.Count}");
+                }
+                else
+                {
+                    richieste = await _dbContext.Requests
+                   .Where(r => r.UserName == user.Email) // Usa il nome dell'utente per filtrare
+                   .ToListAsync();
+                }
+
                 // Passa i dati alla vista
                 return View(richieste);
             }
@@ -51,6 +75,26 @@ namespace Template.Web.Features.Richiesta
                 return RedirectToAction("Richiesta");
             }
         }
+
+
+        //[HttpGet]
+        //public virtual async Task<IActionResult> Storico()
+        //{
+        //    try
+        //    {
+        //        // Recupera tutte le richieste dal database usando SharedService
+        //        var richieste = await _sharedService.GetAllRequests();
+
+        //        // Passa i dati alla vista
+        //        return View(richieste);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Errore durante il recupero delle richieste: " + ex.Message);
+        //        TempData["ErrorMessage"] = "Si è verificato un errore durante il recupero delle richieste.";
+        //        return RedirectToAction("Richiesta");
+        //    }
+        //}
 
         [HttpPost]
         public virtual async Task<IActionResult> PostRequest(RichiestaViewModel richiesta)

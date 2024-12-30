@@ -17,17 +17,17 @@ namespace Template.Services.Shared
             _dbContext = dbContext;
         }
 
-        public async Task<User> GetUserByName(string userName)
-        {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userName);
-        }
+        //public async Task<User> GetUserByName(string userName)
+        //{
+        //    return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userName);
+        //}
 
-        public async Task<List<Event>> GetRequestByTeam(string teamName)
-        {
-            return await _dbContext.Events
-                .Where(e => e.TeamName == teamName)
-                .ToListAsync();
-        }
+        //public async Task<List<Event>> GetRequestByTeam(string teamName)
+        //{
+        //    return await _dbContext.Events
+        //        .Where(e => e.TeamName == teamName)
+        //        .ToListAsync();
+        //}
 
     }
 }
