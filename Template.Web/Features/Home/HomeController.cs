@@ -124,16 +124,19 @@ namespace Template.Web.Features.Home
                     foreach (var eventInfo in dayEvents)
                     {
                         var eventIcon = GetEventIcon(eventInfo.Tipologia);
-                        var userNames = events.Where(e => e.Tipologia == eventInfo.Tipologia)
-                                              .Select(e => e.Email)
-                                              .Distinct()
-                                              .ToList(); // Evitiamo duplicati
 
-                        // Aggiungi l'evento con l'icona e i nomi degli utenti
+                        // Raccoglie solo gli utenti che hanno l'evento in quel giorno
+                        var userNames = dayEvents
+                                        .Where(e => e.Tipologia == eventInfo.Tipologia && e.Email == eventInfo.Email)
+                                        .Select(e => e.Email)
+                                        .Distinct()
+                                        .ToList();
+
+                        // Aggiungi l'evento con l'icona e il nome dell'utente specifico per quel giorno
                         day.Events.Add(new EventIconViewModel
                         {
                             Icon = eventIcon,
-                            UserName = string.Join(", ", userNames) // Concateno gli utenti per il tooltip
+                            UserName = string.Join(", ", userNames) // Concateno l'email dell'utente per il tooltip
                         });
                     }
                 }
