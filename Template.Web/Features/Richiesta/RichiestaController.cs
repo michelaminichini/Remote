@@ -18,8 +18,6 @@ namespace Template.Web.Features.Richiesta
         private readonly SharedService _sharedService;
         private readonly TemplateDbContext _dbContext;
 
-
-
         // Costruttore che inietta il servizio SharedService
         public RichiestaController(SharedService sharedService, TemplateDbContext dbContext)
         {
@@ -54,18 +52,14 @@ namespace Template.Web.Features.Richiesta
                 List<Request> richieste;
                 if (userRole == "Manager")
                 {
-                    // Recupera solo le richieste relative al team dell'utente
-                    richieste = await _sharedService.GetRequestByTeam(teamName);
-                    Console.WriteLine($"Richieste trovate per il team {teamName}: {richieste.Count}");
+                    // Lista richiesta per manager
+                    richieste = await _sharedService.GetManagerRequest(teamName);
                 }
                 else
                 {
-                    richieste = await _dbContext.Requests
-                   .Where(r => r.UserName == user.Email) // Usa il nome dell'utente per filtrare
-                   .ToListAsync();
+                    // Lista richiesta per dipendenti
+                    richieste = await _sharedService.GetUserRequest(user.Email);
                 }
-
-                // Passa i dati alla vista
                 return View(richieste);
             }
             catch (Exception ex)
@@ -75,26 +69,6 @@ namespace Template.Web.Features.Richiesta
                 return RedirectToAction("Richiesta");
             }
         }
-
-
-        //[HttpGet]
-        //public virtual async Task<IActionResult> Storico()
-        //{
-        //    try
-        //    {
-        //        // Recupera tutte le richieste dal database usando SharedService
-        //        var richieste = await _sharedService.GetAllRequests();
-
-        //        // Passa i dati alla vista
-        //        return View(richieste);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Errore durante il recupero delle richieste: " + ex.Message);
-        //        TempData["ErrorMessage"] = "Si è verificato un errore durante il recupero delle richieste.";
-        //        return RedirectToAction("Richiesta");
-        //    }
-        //}
 
         [HttpPost]
         public virtual async Task<IActionResult> PostRequest(RichiestaViewModel richiesta)
@@ -132,11 +106,9 @@ namespace Template.Web.Features.Richiesta
             }
             return View(richiesta);
         }
-
-        [HttpPost]
-        public virtual async Task<IActionResult> Approva(Guid id)  
+        private async Task<IActionResult> ApproveOrRejectRequest(Guid id, string newStatus)
         {
-            Console.WriteLine("ID ricevuto: " + id);
+            Console.WriteLine($"ID ricevuto: {id}");
             try
             {
                 // Verifica se l'id è valido
@@ -145,10 +117,10 @@ namespace Template.Web.Features.Richiesta
                     return BadRequest(new { success = false, message = "ID non valido." });
                 }
 
-                var success = await _sharedService.UpdateStatus(id, "Approvata");
+                var success = await _sharedService.UpdateStatus(id, newStatus);
                 if (!success)
                 {
-                    return BadRequest(new { success = false, message = "Impossibile approvare la richiesta." });
+                    return BadRequest(new { success = false, message = "Impossibile aggiornare lo stato della richiesta." });
                 }
 
                 var richiesta = await _dbContext.Requests.FindAsync(id);
@@ -193,24 +165,24 @@ namespace Template.Web.Features.Richiesta
                 DataGenerator.AddEventForUser(_dbContext, richiesta);
 
                 return Json(new { success = true });
-
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Errore durante approvazione richiesta: " + ex.Message);
+                Console.WriteLine($"Errore durante {newStatus.ToLower()} richiesta: {ex.Message}");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
         [HttpPost]
+        public virtual async Task<IActionResult> Approva(Guid id)
+        {
+            return await ApproveOrRejectRequest(id, "Accettata");
+        }
+
+        [HttpPost]
         public virtual async Task<IActionResult> Rifiuta(Guid id)
         {
-            var success = await _sharedService.UpdateStatus(id, "Rifiutata");
-            if (!success)
-            {
-                return BadRequest(new { success = false, message = "Errore durante operazione" });
-            }
-            return Json(new { success = true });
+            return await ApproveOrRejectRequest(id, "Rifiutata");
         }
 
 

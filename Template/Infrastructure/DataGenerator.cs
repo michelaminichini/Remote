@@ -30,7 +30,7 @@ namespace Template.Infrastructure
                     DataInizio = richiesta.DataInizio,
                     DataFine = richiesta.DataFine,
                     Durata = richiesta.DataFine - richiesta.DataInizio,
-                    Stato = "Approvata"
+                    Stato = richiesta.Stato
                 };
 
                 // Se la collezione Events è null, inizializzala

@@ -42,5 +42,22 @@ namespace Template.Services.Shared
                 Richieste = richieste
             };
         }
+
+        public async Task<List<Request>> GetUserRequest(string userEmail)
+        {
+            return await _dbContext.Requests
+           .Where(r => r.UserName == userEmail) 
+           .ToListAsync();
+        }
+
+        public async Task<List<Request>> GetManagerRequest(string teamName)
+        {
+            var richieste = await (from user in _dbContext.Users
+                                   join request in _dbContext.Requests on user.Email equals request.UserName
+                                   where user.TeamName == teamName
+                                   select request).ToListAsync();
+            return richieste;
+        }
+
     }
 }

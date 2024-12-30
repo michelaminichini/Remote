@@ -40,21 +40,6 @@ namespace Template.Services.Shared
             return request.Id;
         }
 
-        public async Task<List<Request>> GetAllRequests()
-        {
-            return await _dbContext.Requests.ToListAsync();
-        }
-
-        public async Task<List<Request>> GetRequestByTeam(string teamName)
-        {
-            var richieste = await (from user in _dbContext.Users
-                                   join request in _dbContext.Requests on user.Email equals request.UserName
-                                   where user.TeamName == teamName
-                                   select request).ToListAsync();
-            Console.WriteLine($"Richieste trovate: {richieste.Count}");
-            return richieste;
-        }
-
         public async Task<bool> UpdateStatus(Guid id, string stato)
         {
             var richiesta = await _dbContext.Requests.FindAsync(id);
