@@ -55,7 +55,7 @@ namespace Template.Web.Features.Richiesta
                     // Lista richiesta per manager
                     richieste = await _sharedService.GetManagerRequest(teamName);
                 }
-                if (userRole == "CEO")
+                else if (userRole == "CEO")
                 {
                     richieste = await _sharedService.GetAllRequests();
                 }

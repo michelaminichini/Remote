@@ -54,7 +54,7 @@ namespace Template.Services.Shared
         {
             var richieste = await (from user in _dbContext.Users
                                    join request in _dbContext.Requests on user.Email equals request.UserName
-                                   where user.TeamName == teamName && user.Role != "Manager"
+                                   where user.TeamName == teamName
                                    select request).ToListAsync();
             return richieste;
         }
