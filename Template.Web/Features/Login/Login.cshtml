@@ -35,5 +35,13 @@
         <div class="form-group text-center mt-4">
             <button type="submit" class="btn btn-primary">Accedi</button>
         </div>
+
+        @if (ViewData.ModelState.ContainsKey("LoginError"))
+        {
+            <div class="error-message">
+                @Html.ValidationMessage("LoginError")
+            </div>
+        }
+
     </form>
 </div>

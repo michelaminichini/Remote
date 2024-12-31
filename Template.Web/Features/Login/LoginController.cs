@@ -76,6 +76,7 @@ namespace Template.Web.Features.Login
             return View(model);
         }
 
+
         [HttpPost]
         public async virtual Task<ActionResult> Login(LoginViewModel model)
         {
@@ -89,16 +90,12 @@ namespace Template.Web.Features.Login
                         Password = model.Password,
                     });
 
-                    //var userRole = User.FindFirstValue(ClaimTypes.Role);
-                    //Console.WriteLine($"Role: {userRole}");
-
-                    
-
+                  
                     return LoginAndRedirect(utente, model.ReturnUrl, model.RememberMe);
                 }
                 catch (LoginException e)
                 {
-                    ModelState.AddModelError(LoginErrorModelStateKey, e.Message);
+                    ModelState.AddModelError(LoginErrorModelStateKey, "Email o password errate. Riprovare");
                 }
             }
 
@@ -110,7 +107,7 @@ namespace Template.Web.Features.Login
         {
             HttpContext.SignOutAsync();
             Alerts.AddSuccess(this, "Utente scollegato correttamente");
-            return RedirectToAction("Login", "Login");  // Redirect alla pagina di login
+            return RedirectToAction("Login", "Login");  // Redirect to Login page
         }
     }
 

@@ -98,3 +98,15 @@ button[type="submit"]:hover {
 .forgot-password a:hover {
     text-decoration: underline;
 }
+
+div .error-message{
+    background-color: indianred;
+    padding-top : 10px;
+    padding-bottom: 10px;
+}
+
+.error-message{
+    margin-top: 50px;
+    text-align: center;
+    color: white;
+}
