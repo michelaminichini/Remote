@@ -33,7 +33,7 @@ namespace Template.Web.Features.Richiesta
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> Storico()
+        public virtual async Task<IActionResult> RichiesteInArrivo()
         {
             try
             {
@@ -194,75 +194,5 @@ namespace Template.Web.Features.Richiesta
         }
 
 
-        //[HttpGet]
-        //public virtual async Task<IActionResult> RichiesteDipendenti()
-        //{
-        //    try
-        //    {
-        //        var userName = User.Identity.Name;
-        //        var utenteLoggato = await _sharedService.GetUserByName(userName);
-
-        //        if(utenteLoggato == null || !string.Equals(utenteLoggato.Role, "Manager", StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            return Unauthorized();
-        //        }
-
-        //        var richieste = await _sharedService.GetRequestByTeam(utenteLoggato.TeamName);
-
-        //        var model = new RichiesteDipendentiViewModel
-        //        {
-        //            Richieste = richieste
-        //        };
-        //        return View(model);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("errore durante recupero delle richieste del team: " + ex.Message);
-        //        TempData["ErrorMessage"] = "Si è verificato un errore durante il recupero delle richieste del team.";
-        //        return RedirectToAction("Richiesta");
-
-        //    }
-        //}
-
-
-        //[HttpGet]
-        //public virtual async Task<IActionResult> RichiestaPage()
-        //{
-        //    try
-        //    {
-        //        var richiesteEsistenti = await _sharedService.GetAllRequests();
-        //        var userName = User.Identity.Name;
-        //        var teamName = await _dbContext.Users
-        //                                             .Where(u => u.Email == User.Identity.Name)
-        //                                             .Select(u => u.TeamName)
-        //                                             .FirstOrDefaultAsync();
-        //        var model = new RichiestaViewModel
-        //        {
-        //            Richieste = richiesteEsistenti.Select(r => new RichiestaViewModel
-        //            {
-        //                Id = r.Id,
-        //                Tipologia = r.Tipologia,
-        //                DataInizio = r.DataInizio,
-        //                DataFine = r.DataFine,
-        //                OraInizio = r.OraInizio,
-        //                OraFine = r.OraFine,
-        //                Stato = r.Stato,
-        //                Role = r.Role,
-        //                TeamName = teamName
-        //            }).ToList(),
-
-        //            TeamName = teamName ?? "Unknown"
-        //        };
-
-        //        return View(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Errore durante il caricamento della pagina Richiesta: " + ex.Message);
-        //        TempData["ErrorMessage"] = "Si è verificato un errore durante il caricamento della pagina.";
-        //        return RedirectToAction("Richiesta");
-        //    }
-        //}
     }
 }
