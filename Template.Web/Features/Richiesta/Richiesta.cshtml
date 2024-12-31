@@ -105,13 +105,14 @@
                 <button type="submit" class="btn btn-primary btn-lg">Invia</button>
             </div>
 
-            @if (User.IsInRole("Manager"))
+            @if (User.IsInRole("Manager") || User.IsInRole("CEO"))
             {
                 <div class="container-fluid bg-light bottom-0 w-100 text-center p-3 mt-5">
                     <p>Gestisci qui le richieste dei dipendenti del team:</p>
                     <button onclick="window.location.href='@Url.Action("RichiesteInArrivo","Richiesta")'" class="btn btn-primary btn-mg">Gestisci Richieste</button>
                 </div>
             }
+
         </form>
     </div>
 

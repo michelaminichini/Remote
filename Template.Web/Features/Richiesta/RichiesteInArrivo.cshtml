@@ -31,7 +31,7 @@
                         <th>Ora Inizio</th>
                         <th>Ora Fine</th>
                         <th>Stato</th>
-                        <th v-if="isManager && hasPendingRequests">Azioni</th>
+                        <th v-if="(isManager || isCEO) && hasPendingRequests">Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,7 +71,8 @@
         el: '#app',
         data: {
             richieste: @Html.Raw(Json.Serialize(Model)),
-            isManager: @User.IsInRole("Manager").ToString().ToLower()
+            isManager: @User.IsInRole("Manager").ToString().ToLower(),
+            isCEO: @User.IsInRole("CEO").ToString().ToLower()
         },
         computed: {
             // Check if there are any pending requests (Da Approvare)

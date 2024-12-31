@@ -97,8 +97,8 @@ namespace Template.Infrastructure
                     Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
                     FirstName = "Paolo",
                     LastName = "Neri",
-                    TeamName = null,
-                    Role = "Admin",
+                    TeamName = "Supervisione",
+                    Role = "CEO",
                     Img = "images/User/UserAdmin.png"
                 },
                 new User

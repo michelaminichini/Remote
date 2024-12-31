@@ -59,5 +59,10 @@ namespace Template.Services.Shared
             return richieste;
         }
 
+        public async Task<List<Request>> GetAllRequests()
+        {
+            return await _dbContext.Requests.ToListAsync();
+        }
+
     }
 }
