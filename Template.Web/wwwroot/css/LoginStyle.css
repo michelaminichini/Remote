@@ -99,14 +99,9 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
-div .error-message{
-    background-color: indianred;
-    padding-top : 10px;
-    padding-bottom: 10px;
-}
-
-.error-message{
+.error-message {
     margin-top: 50px;
-    text-align: center;
-    color: white;
+    background-color: #f09e94; /* Rosso per l'errore */
+    border: 1px solid #c82333;
+    padding: 15px;
 }

@@ -47,7 +47,7 @@
                                 {{ richiesta.stato }}
                             </span>
                         </td>
-                        <td v-if="isManager && richiesta.stato === 'Da Approvare'" class="text-center">
+                        <td v-if="(isManager || isCEO) && richiesta.stato === 'Da Approvare'" class="text-center">
                             <button class="btn btn-success btn-sm me-1" v-on:click="gestisciRichiesta(richiesta.id, 'Approva')">
                                 Accetta
                             </button>

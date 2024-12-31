@@ -93,7 +93,7 @@ namespace Template.Infrastructure
                 new User
                 {
                     Id = Guid.NewGuid(),
-                    Email = "ceo@aziendale.it",
+                    Email = "ceo@ceo.it",
                     Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
                     FirstName = "Paolo",
                     LastName = "Neri",
