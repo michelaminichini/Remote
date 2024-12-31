@@ -92,6 +92,17 @@ namespace Template.Infrastructure
                 },
                 new User
                 {
+                    Id = Guid.NewGuid(),
+                    Email = "admin@aziendale.it",
+                    Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
+                    FirstName = "Paolo",
+                    LastName = "Neri",
+                    TeamName = null,
+                    Role = "Admin",
+                    Img = "images/User/UserAdmin.png"
+                },
+                new User
+                {
                     Id = Guid.Parse("a030ee81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
                     Email = "luisa.verdi@test.it",
                     Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
