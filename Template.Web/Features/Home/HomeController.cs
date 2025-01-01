@@ -181,7 +181,7 @@ namespace Template.Web.Features.Home
                             eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
 
                             var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            DataGenerator.AddEventForUser(_dbContext, richiesta);
+                            AddEventForUserBasedOnRole(richiesta, currentUser.Role);
                         }
                         else
                         {
@@ -197,7 +197,7 @@ namespace Template.Web.Features.Home
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
 
                             var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            DataGenerator.AddEventForUser(_dbContext, richiesta);
+                            AddEventForUserBasedOnRole(richiesta, currentUser.Role);
                         }
                     }
                     else if (eventType.Equals("Presenza", StringComparison.OrdinalIgnoreCase))
@@ -207,7 +207,7 @@ namespace Template.Web.Features.Home
                         eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1); // Copre tutta la giornata
 
                         var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                        DataGenerator.AddEventForUser(_dbContext, richiesta);
+                        AddEventForUserBasedOnRole(richiesta, currentUser.Role);
                     }
                     // Logica per Ferie e Permessi (gestiti tramite _dbContext.Requests.Add)
                     else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
@@ -218,10 +218,13 @@ namespace Template.Web.Features.Home
                             eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
 
                             var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            _dbContext.Requests.Add(request);
-                            await _dbContext.SaveChangesAsync();
+                            AddEventForUserBasedOnRole(request, currentUser.Role);
 
-                            TempData["Message"] = "Richiesta inviata con successo!!";
+                            // Solo se non è un CEO, mostra il messaggio di successo
+                            if (!currentUser.Role.Equals("CEO", StringComparison.OrdinalIgnoreCase))
+                            {
+                                TempData["Message"] = "Richiesta inviata con successo!!";
+                            }
                         }
                         else
                         {
@@ -237,10 +240,13 @@ namespace Template.Web.Features.Home
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
 
                             var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            _dbContext.Requests.Add(request);
-                            await _dbContext.SaveChangesAsync();
+                            AddEventForUserBasedOnRole(request, currentUser.Role);
 
-                            TempData["Message"] = "Richiesta inviata con successo!!";
+                            // Solo se non è un CEO, mostra il messaggio di successo
+                            if (!currentUser.Role.Equals("CEO", StringComparison.OrdinalIgnoreCase))
+                            {
+                                TempData["Message"] = "Richiesta inviata con successo!!";
+                            }
                         }
                         else
                         {
@@ -257,6 +263,23 @@ namespace Template.Web.Features.Home
 
             return RedirectToAction("Home");
         }
+
+        // Funzione di supporto per gestire l'aggiunta dell'evento in base al ruolo
+        private void AddEventForUserBasedOnRole(Request request, string userRole)
+        {
+            // Impostiamo sempre lo stato della richiesta come "Approvata" per il ruolo "CEO"
+            if (userRole.Equals("CEO", StringComparison.OrdinalIgnoreCase))
+            {
+                request.Stato = "Approvata"; // Lo stato è sempre approvato per il CEO
+                DataGenerator.AddEventForUser(_dbContext, request); // Gestione tramite DataGenerator
+            }
+            else
+            {
+                _dbContext.Requests.Add(request);
+                _dbContext.SaveChanges();
+            }
+        }
+
 
         private bool ValidateSmartworkingAvailability(string userEmail, DateTime eventStartDate)
         {
