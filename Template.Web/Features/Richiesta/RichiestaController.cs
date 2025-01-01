@@ -81,16 +81,38 @@ namespace Template.Web.Features.Richiesta
             {
                 try
                 {
-                    var cmd = new AddRequestCommand
+                    var userName = User.Identity.Name;
+                    var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
+                    var userRole = user.Role;
+
+                    AddRequestCommand cmd;
+                    if (userRole == "CEO")
                     {
-                        UserName = User.Identity.Name,
-                        Tipologia = richiesta.Tipologia,
-                        DataInizio = richiesta.DataInizio,
-                        DataFine = richiesta.DataFine,
-                        OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
-                        OraFine = richiesta.OraFine ?? TimeSpan.Zero,
-                        Stato = richiesta.Stato
-                    };
+                        cmd = new AddRequestCommand
+                        {
+                            UserName = User.Identity.Name,
+                            Tipologia = richiesta.Tipologia,
+                            DataInizio = richiesta.DataInizio,
+                            DataFine = richiesta.DataFine,
+                            OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
+                            OraFine = richiesta.OraFine ?? TimeSpan.Zero,
+                            Stato = "Accettata"
+                        };
+                    }
+                    else
+                    {
+                        cmd = new AddRequestCommand
+                        {
+                            UserName = User.Identity.Name,
+                            Tipologia = richiesta.Tipologia,
+                            DataInizio = richiesta.DataInizio,
+                            DataFine = richiesta.DataFine,
+                            OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
+                            OraFine = richiesta.OraFine ?? TimeSpan.Zero,
+                            Stato = richiesta.Stato
+                        };
+                    }
+               
    
                     var id = await _sharedService.HandleRequest(cmd);
 
