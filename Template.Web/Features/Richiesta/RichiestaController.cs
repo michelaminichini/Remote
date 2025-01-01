@@ -215,7 +215,27 @@ namespace Template.Web.Features.Richiesta
         [HttpGet]
         public virtual async Task<IActionResult> Lista()
         {
-            var richieste = await _dbContext.Requests.ToListAsync(); 
+            var userName = User.Identity.Name;
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
+            var userRole = user.Role;
+            var teamName = user.TeamName;
+
+
+            List<Request> richieste;
+            if (userRole == "Manager")
+            {
+                // Lista richiesta per manager
+                richieste = await _sharedService.GetManagerRequest(teamName);
+            }
+            else if (userRole == "CEO")
+            {
+                richieste = await _sharedService.GetAllRequests();
+            }
+            else
+            {
+                // Lista richiesta per dipendenti
+                richieste = await _sharedService.GetUserRequest(user.Email);
+            }
             return Json(richieste);
         }
 
