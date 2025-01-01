@@ -303,7 +303,7 @@ namespace Template.Web.Features.Home
         }
 
         private Request CreateRequest(string userEmail, string eventType, DateTime eventStartDate, DateTime eventEndDate,
-                                      TimeSpan? startTime, TimeSpan? endTime, string userRole)
+                              TimeSpan? startTime, TimeSpan? endTime, string userRole)
         {
             return new Request
             {
@@ -311,7 +311,9 @@ namespace Template.Web.Features.Home
                 Tipologia = eventType,
                 DataInizio = eventStartDate,
                 DataFine = eventEndDate,
-                Stato = "Da Approvare",
+                Stato = (eventType.ToLower() == "smartworking" ||
+                         eventType.ToLower() == "presenza" ||
+                         eventType.ToLower() == "trasferta") ? "Approvata" : "Da Approvare",
                 OraInizio = startTime, // Imposta l'orario di inizio
                 OraFine = endTime, // Imposta l'orario di fine
                 LogoPath = GetEventIcon(eventType),
