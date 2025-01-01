@@ -1,12 +1,10 @@
-﻿/* Stile generale per la pagina */
-.container {
+﻿.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     margin-bottom: 50px;
 }
 
-/* Intestazione principale */
 h1 {
     font-size: 28px;
     font-weight: bold;
@@ -23,20 +21,20 @@ h1 {
 }
 
 .info-details {
-    background-color: #f0f0f0; /* Colore di sfondo grigio chiaro */
+    background-color: #f0f0f0; /* Background color: light grey */
     padding: 20px;
-    border-radius: 8px; /* Angoli arrotondati */
-    width: 50%; /* Imposta la larghezza del box */
+    border-radius: 8px; /* Rounded corners */
+    width: 50%;
 }
 
-/* Info utente */
+/* user info */
 .info p {
     font-size: 16px;
     margin: 5px 0;
     color: #000000;
 }
 
-/* Profilo utente (cerchio con immagine) */
+/* User profile pic */
 .profile-img {
     width: 80px;
     height: 80px;
@@ -67,7 +65,7 @@ h1 {
 }
 
 .filter-panel-down {
-    left: -10px; /* Per spostarla leggermente sotto se vuoi che non tocchi l'icona */
+    left: -10px;
 }
 
 .d-none{
@@ -75,17 +73,15 @@ h1 {
 }
 
 .btn-outline-primary {
-    position: relative; /* Necessario per il posizionamento relativo dell'icona */
+    position: relative;
 }
 
-/* Stile per la tabella */
 .table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 50px;
 }
 
-    /* Intestazioni della tabella */
     .table th {
         background-color: #4da3ff;
         padding: 12px;
@@ -95,50 +91,44 @@ h1 {
         color: #ffffff;
     }
 
-    /* Celle della tabella */
     .table td {
         padding: 12px;
         text-align: center;
         border: 1px solid #000;
     }
 
-    /* Righe alternate per la tabella */
     .table tbody tr:nth-child(even) {
         background-color: #f9f9f9;
     }
 
-/* Stile per il messaggio di nessuna richiesta */
 .no-request-message {
     text-align: center;
     margin-top: 20px;
 }
 
 .no-request-text {
-    color: #8b0000; /* Colore rosso scuro */
-    font-size: 16px; /* Dimensione del font più grande */
-    font-weight: bold; /* Grassetto */
-    margin-top: 20px; /* Spazio sopra il messaggio */
+    color: #8b0000; /* Background color: dark red */
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
     text-align: left;
 }
 
 
-/* Centratura della tabella e messaggi */
 .text-center {
     text-align: center;
 }
 
-/* Stile per le righe della tabella vuota */
 .table td {
     font-style: italic;
     color: #777;
 }
 
-/* Aggiungere bordi visibili alla tabella */
 .table, .table th, .table td {
     border: 2px solid #000;
 }
 
-/* Responsività: assicurati che la tabella si adatti su dispositivi mobili */
+/* Table fits for mobile devices (responsive) */
 @media (max-width: 768px) {
     .table {
         font-size: 14px;
@@ -148,11 +138,11 @@ h1 {
         font-size: 20px;
     }
     .button-container {
-        text-align: center; /* Centra il bottone su schermi piccoli */
+        text-align: center;
     }
 
     .btn-primary {
-        width: 100%; /* Rende il bottone a larghezza piena su schermi piccoli */
+        width: 100%;
     }
 
 }

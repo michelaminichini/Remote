@@ -22,7 +22,7 @@ namespace Template.Web.Features.History
         [HttpGet]
         public async virtual Task<IActionResult> History()
         {
-            var userEmail = User.Identity.Name; // Ottieni l'email dell'utente loggato
+            var userEmail = User.Identity.Name; // Get user email
 
             if (string.IsNullOrEmpty(userEmail))
             {
@@ -43,7 +43,7 @@ namespace Template.Web.Features.History
                 return NotFound("Utente non trovato");
             }
 
-            // Recupera tutte le richieste dell'utente dallo storico
+            // Retrieves all user requests from history
             var allData = await _dbContext.Users
                 .Where(x => x.Email == userEmail)
                 .Select(x => new
@@ -65,7 +65,7 @@ namespace Template.Web.Features.History
                 })
                 .ToListAsync();
 
-            // Crea il modello per la vista
+            // Create the template for the view
             var model = allData.Select(userData => new HistoryViewModel
             {
                 Nome = userData.FirstName,
@@ -84,7 +84,7 @@ namespace Template.Web.Features.History
                 }).ToList()
             }).ToList();
 
-            return View(model); // Restituisce la vista con il modello
+            return View(model);
         }
     }
 }

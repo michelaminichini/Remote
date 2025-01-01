@@ -34,7 +34,6 @@ namespace Template.Services.Shared
 
             user.FirstName = cmd.FirstName;
             user.LastName = cmd.LastName;
-            //user.Email = cmd.Email;
             user.Role = cmd.Role;
             user.TeamName = cmd.TeamName;
            

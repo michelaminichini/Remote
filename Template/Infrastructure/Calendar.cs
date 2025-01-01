@@ -31,7 +31,7 @@ namespace Template.Infrastructure
 
                     week.Add(new DayViewModel
                     {
-                        DayId = Guid.NewGuid(),  // Genera un ID univoco per ogni giorno
+                        DayId = Guid.NewGuid(),  // Generate a unique ID for each day
                         Date = currentDay,
                         IsCurrentMonth = isCurrentMonth,
                         IsToday = isToday,
@@ -51,7 +51,7 @@ namespace Template.Infrastructure
 
     public class DayViewModel
     {
-        public Guid DayId { get; set; }  // Aggiungi l'ID del giorno
+        public Guid DayId { get; set; }  // Add the ID of the day
         public DateTime Date { get; set; }
         public bool IsCurrentMonth { get; set; }
         public bool IsToday { get; set; }

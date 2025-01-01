@@ -15,7 +15,7 @@ namespace Template.Infrastructure
 
         public static void AddEventForUser(TemplateDbContext context, Request richiesta)
         {
-            // Carica l'utente con tracking esplicito includendo gli Events
+            // Upload the user with explicit tracking including Events
             var user = context.Users
                 .Include(u => u.Events)
                 .FirstOrDefault(u => u.Email == richiesta.UserName);
@@ -33,7 +33,7 @@ namespace Template.Infrastructure
                     Stato = richiesta.Stato
                 };
 
-                // Se la collezione Events è null, inizializzala
+                // If the Events collection is null, initialize it
                 if (user.Events == null)
                 {
                     user.Events = new List<Event>();
@@ -76,15 +76,15 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User1.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now.AddMonths(-3),
                             Tipologia = "Permessi",
-                            DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),  // Inizio permesso alle 14
-                            DataFine = DateTime.Now.AddMonths(-3).AddHours(16),   // Fine permesso alle 16
+                            DataInizio = DateTime.Now.AddMonths(-3).AddHours(14),
+                            DataFine = DateTime.Now.AddMonths(-3).AddHours(16),
                             Durata = new TimeSpan(2, 0, 0),
                             Stato = "Rifiutata"
                         }
@@ -111,16 +111,16 @@ namespace Template.Infrastructure
                     TeamName = "Team B",
                     Role = "Manager",
                     Img = "images/User/User2.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now.AddMonths(-2),
-                            Tipologia = "Presenza",  // Cambiamo la tipologia a "Presenza"
-                            DataInizio = new DateTime(2024, 11, 20, 0, 0, 0),  // Inizio presenza il 20 novembre 2024, a mezzanotte
-                            DataFine = new DateTime(2024, 11, 20, 23, 59, 59),  // Fine presenza il 20 novembre 2024, a mezzanotte
-                            Durata = new TimeSpan(1, 0, 0, 0),  // Durata di 1 giorno (24 ore)
+                            Tipologia = "Presenza",
+                            DataInizio = new DateTime(2024, 11, 20, 0, 0, 0),
+                            DataFine = new DateTime(2024, 11, 20, 23, 59, 59),
+                            Durata = new TimeSpan(1, 0, 0, 0),  // 1 day
                             Stato = "Accettata",
                         }
                     }
@@ -135,16 +135,16 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User3.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now.AddMonths(-2),
                             Tipologia = "Presenza",
-                            DataInizio = new DateTime(2024, 11, 20),  // in presenza il 20 novembre 2024
+                            DataInizio = new DateTime(2024, 11, 20),
                             DataFine = new DateTime(2024, 11, 20),
-                            Durata = new TimeSpan(1, 0, 0, 0),        // Durata di 1 giorno
+                            Durata = new TimeSpan(1, 0, 0, 0),
                             Stato = "Accettata"
                         }
                     }
@@ -159,16 +159,16 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Manager",
                     Img = "images/User/User4.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = new DateTime(2024, 9, 27), // Data della richiesta: 27 settembre 2024
+                            DataRichiesta = new DateTime(2024, 9, 27),
                             Tipologia = "Permessi",
-                            DataInizio = new DateTime(2024, 9, 27, 14, 0, 0),  // Inizio permesso il 27 settembre 2024 alle 14:00
-                            DataFine = new DateTime(2024, 9, 27, 16, 0, 0),   // Fine permesso il 27 settembre 2024 alle 16:00
-                            Durata = new TimeSpan(2, 0, 0),  // Durata del permesso: 2 ore
+                            DataInizio = new DateTime(2024, 9, 27, 14, 0, 0),
+                            DataFine = new DateTime(2024, 9, 27, 16, 0, 0),
+                            Durata = new TimeSpan(2, 0, 0),
                             Stato = "Accettata"
                         }
                     }
@@ -183,34 +183,34 @@ namespace Template.Infrastructure
                     TeamName = "Team A",
                     Role = "Dipendente",
                     Img = "images/User/User5.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now.AddMonths(-1),
                             Tipologia = "Ferie",
-                            DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),  // Inizio ferie il 5 del mese
-                            DataFine = DateTime.Now.AddMonths(-1).AddDays(10),   // Fine ferie il 10 del mese
+                            DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),
+                            DataFine = DateTime.Now.AddMonths(-1).AddDays(10),
                             Durata = new TimeSpan(5, 0, 0, 0),
                             Stato = "Rifiutata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
+                            DataRichiesta = DateTime.Now,
                             Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 12, 24),  // Inizio smartworking il 24 dicembre 2024
-                            DataFine = new DateTime(2024, 12, 24),    // Fine smartworking il 24 dicembre 2024
+                            DataInizio = new DateTime(2024, 12, 24),
+                            DataFine = new DateTime(2024, 12, 24),
                             Stato = "Accettata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
+                            DataRichiesta = DateTime.Now,
                             Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 12, 27),  // Inizio smartworking il 27 dicembre 2024
-                            DataFine = new DateTime(2024, 12, 27),    // Fine smartworking il 27 dicembre 2024
+                            DataInizio = new DateTime(2024, 12, 27),
+                            DataFine = new DateTime(2024, 12, 27),
                             Stato = "Accettata"
                         }
                     }
@@ -225,25 +225,25 @@ namespace Template.Infrastructure
                     TeamName = "Team B",
                     Role = "Dipendente",
                     Img = "images/User/User6.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = new DateTime(2024, 10, 24),  // Data della richiesta 
+                            DataRichiesta = new DateTime(2024, 10, 24), 
                             Tipologia = "Permessi",
-                            DataInizio = new DateTime(2024, 11, 20, 9, 0, 0),  // Inizio permesso alle 9:00 del 20 novembre
-                            DataFine = new DateTime(2024, 11, 20, 11, 0, 0),   // Fine permesso alle 11:00 del 20 novembre
-                            Durata = new TimeSpan(2, 0, 0),  // Durata di 2 ore
+                            DataInizio = new DateTime(2024, 11, 20, 9, 0, 0),
+                            DataFine = new DateTime(2024, 11, 20, 11, 0, 0),
+                            Durata = new TimeSpan(2, 0, 0),
                             Stato = "Accettata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now, // Data di richiesta dell'evento (ad esempio, oggi)
+                            DataRichiesta = DateTime.Now,
                             Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 11, 20),  // Inizio smartworking il 20 dicembre 2024
-                            DataFine = new DateTime(2024, 11, 20),    // Fine smartworking il 20 dicembre 2024
+                            DataInizio = new DateTime(2024, 11, 20),
+                            DataFine = new DateTime(2024, 11, 20),
                             Stato = "Accettata"
                         }
                     }
@@ -258,36 +258,36 @@ namespace Template.Infrastructure
                     TeamName = "Team B",
                     Role = "Dipendente",
                     Img = "images/User/User7.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
+                            DataRichiesta = DateTime.Now.AddMonths(-1),
                             Tipologia = "Ferie",
-                            DataInizio = new DateTime(2024, 11, 20),  // Inizio ferie 
-                            DataFine = new DateTime(2024, 11, 22),     // Fine ferie 
-                            Durata = new DateTime(2024, 11, 20).Subtract(new DateTime(2024, 11, 22)),  // Durata da 3 giorni
+                            DataInizio = new DateTime(2024, 11, 20),
+                            DataFine = new DateTime(2024, 11, 22), 
+                            Durata = new DateTime(2024, 11, 20).Subtract(new DateTime(2024, 11, 22)),
                             Stato = "Accettata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
+                            DataRichiesta = DateTime.Now.AddMonths(-1),
                             Tipologia = "Ferie",
-                            DataInizio = new DateTime(2025, 1, 13),  // Inizio ferie il 13 gennaio 2025
-                            DataFine = new DateTime(2025, 1, 17),     // Fine ferie il 17 gennaio 2025
-                            Durata = new DateTime(2025, 1, 17).Subtract(new DateTime(2025, 1, 13)),  // Durata da 10 gennaio a 17 gennaio
+                            DataInizio = new DateTime(2025, 1, 13),
+                            DataFine = new DateTime(2025, 1, 17),
+                            Durata = new DateTime(2025, 1, 17).Subtract(new DateTime(2025, 1, 13)),
                             Stato = "Accettata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-1),  // Richiesta effettuata un mese fa
+                            DataRichiesta = DateTime.Now.AddMonths(-1),
                             Tipologia = "Ferie",
-                            DataInizio = new DateTime(2025, 1, 2),  // Inizio ferie il 2 gennaio 2025
-                            DataFine = new DateTime(2025, 1, 3),     // Fine ferie il 3 gennaio 2025
-                            Durata = new DateTime(2025, 1, 3).Subtract(new DateTime(2025, 1, 2)),  // Durata da 2 gennaio a 3 gennaio
+                            DataInizio = new DateTime(2025, 1, 2),
+                            DataFine = new DateTime(2025, 1, 3),
+                            Durata = new DateTime(2025, 1, 3).Subtract(new DateTime(2025, 1, 2)),
                             Stato = "Accettata"
                         }
                     }
@@ -302,16 +302,16 @@ namespace Template.Infrastructure
                     TeamName = "Team B",
                     Role = "Dipendente",
                     Img = "images/User/User8.png",
-                    Events = new List<Event> // Aggiungi eventi per l'utente
+                    Events = new List<Event> // Add events for the user
                     {
                         new Event
                         {
                             EventId = Guid.NewGuid(),
                             DataRichiesta = DateTime.Now.AddMonths(-2),
-                            Tipologia = "Trasferta",  // Modificata la tipologia a "Trasferta"
-                            DataInizio = new DateTime(2024, 11, 20, 8, 0, 0),  // Inizio trasferta il 20 novembre 2024 alle 8:00
-                            DataFine = new DateTime(2024, 11, 20, 12, 0, 0),   // Fine trasferta il 20 novembre 2024 alle 12:00
-                            Durata = new TimeSpan(4, 0, 0),                      // Durata della trasferta di 4 ore
+                            Tipologia = "Trasferta",
+                            DataInizio = new DateTime(2024, 11, 20, 8, 0, 0),
+                            DataFine = new DateTime(2024, 11, 20, 12, 0, 0),
+                            Durata = new TimeSpan(4, 0, 0),
                             Stato = "Accettata"
                         }
                     }
@@ -324,15 +324,15 @@ namespace Template.Infrastructure
         {
             if (context.Teams.Any())
             {
-                return; // I dati sono già stati inizializzati
+                return; // Data has already been initialized
             }
 
-            // Carica tutti gli utenti dal database
+            // Load all users from database
             var users = context.Users
-                .Where(u => !string.IsNullOrEmpty(u.TeamName)) // Considera solo utenti con TeamName specificato
+                .Where(u => !string.IsNullOrEmpty(u.TeamName)) // Consider only users with "TeamName"
                 .ToList();
 
-            // Raggruppa in memoria per TeamName
+            // Group for TeamName
             var groupedUsers = users
                 .GroupBy(u => u.TeamName)
                 .ToList();
@@ -340,14 +340,14 @@ namespace Template.Infrastructure
             foreach (var group in groupedUsers)
             {
                 var teamName = group.Key;
-                var teamManager = group.FirstOrDefault(u => u.Role == "Manager"); // Trova il manager del team
+                var teamManager = group.FirstOrDefault(u => u.Role == "Manager"); // Find the team manager
 
-                // Crea il team
+                // Create the team
                 var team = new Teams
                 {
                     TeamName = teamName,
-                    TeamManager = teamManager?.LastName ?? "N/A", // Usa il cognome del manager, se presente
-                    Employee = group.ToList() // Aggiungi tutti gli utenti del gruppo al team
+                    TeamManager = teamManager?.LastName ?? "N/A", // Use manager’s last name, if present
+                    Employee = group.ToList() // Add all users in the group to the team
                 };
 
                 context.Teams.Add(team);

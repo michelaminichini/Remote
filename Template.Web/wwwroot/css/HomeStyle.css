@@ -1,5 +1,4 @@
-﻿/* Corpo della pagina */
-body {
+﻿body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
@@ -12,7 +11,6 @@ h1 {
     text-align: center;
 }
 
-/* Contenitore principale */
 .container {
     margin: 20px auto;
     max-width: 1200px;
@@ -22,7 +20,6 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Messaggi di successo e errore */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
@@ -33,32 +30,31 @@ h1 {
 }
 
 .alert-success {
-    background-color: #93bf85; /* Verde per il successo */
+    background-color: #93bf85; /* Green for success */
     border: 1px solid #218838;
 }
 
 .alert-danger {
-    background-color: #f09e94; /* Rosso per l'errore */
+    background-color: #f09e94; /* Red for error */
     border: 1px solid #c82333;
 }
 
-/* Titolo e immagine profilo */
 .title-container {
     display: flex;
-    justify-content: center; /* Centra il titolo */
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
 }
 
 .title-text {
-    font-size: 3rem; /* Grandezza del titolo */
+    font-size: 3rem;
     font-weight: bold;
     margin: 0;
-    flex-grow: 1; /* Permette al titolo di crescere e occupare spazio */
-    text-align: center; /* Centra il testo */
+    flex-grow: 1;
+    text-align: center;
 }
 
-/* Profilo utente con hover per logout */
+/* for logout */
 .profile-container {
     position: relative;
     display: inline-block;
@@ -66,9 +62,9 @@ h1 {
 
 .profile-img-large {
     width: 5rem;
-    height: 5rem; /* Altezza uguale alla larghezza */
-    object-fit: cover; /* Adatta senza distorsioni */
-    border-radius: 50%; /* Bordo tondo */
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 50%;
     border: 4px solid black;
     cursor: pointer;
 }
@@ -79,11 +75,11 @@ h1 {
     top: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px; /* Aumentato per contenere l'email */
+    padding: 10px;
     border-radius: 5px;
-    text-align: center; /* Allineamento al centro */
-    color: white; /* Testo bianco */
-    width: 150px; /* Larghezza fissa */
+    text-align: center;
+    color: white;
+    width: 150px;
 }
 
 .profile-container:hover .logout-button-container {
@@ -92,8 +88,8 @@ h1 {
 
 .logout-button-container h4 {
     margin: 0;
-    font-size: 0.9rem; /* Dimensioni testo email */
-    color: white; /* Testo bianco */
+    font-size: 0.9rem;
+    color: white;
     font-weight: normal;
 }
 
@@ -102,7 +98,7 @@ h1 {
     color: white;
     border: none;
     padding: 5px 10px;
-    margin-top: 5px; /* Distanza tra email e bottone */
+    margin-top: 5px;
     cursor: pointer;
     border-radius: 4px;
 }
@@ -111,7 +107,6 @@ h1 {
         background-color: #c82333;
     }
 
-/* Selezione date */
 .date-selectors {
     display: flex;
     align-items: center;
@@ -119,7 +114,6 @@ h1 {
     margin-top: 20px;
 }
 
-/* Tabs */
 .tabs {
     display: flex;
     justify-content: start;
@@ -140,7 +134,6 @@ h1 {
             background-color: #2a8be7;
         }
 
-/* Calendario */
 .calendar {
     margin-top: 20px;
 }
@@ -161,30 +154,26 @@ h1 {
         position: relative;
     }
 
-    /* Intestazioni della tabella (giorni della settimana) */
+    /* days of the week */
     .table th {
         background-color: #4da3ff;
         color: white;
         font-weight: bold;
     }
 
-    /* Cella dei giorni normali */
     .table td {
         background-color: #fdfdfd;
         transition: background-color 0.3s ease;
     }
 
-        /* Giorni fuori mese */
         .table td.other-month-day {
-            background-color: #f4f4f4; /* Colore di sfondo per i giorni prima/dopo il mese */
+            background-color: #f4f4f4;
         }
 
-        /* Cella del giorno odierno */
         .table td.today {
-            background-color: #add8e6; /* Colore per il giorno odierno */
+            background-color: #add8e6;
         }
 
-        /* Intestazione dei giorni */
         .table td .day-header {
             font-size: 1rem;
             font-weight: bold;
@@ -193,20 +182,17 @@ h1 {
             position: relative;
         }
 
-        /* Nascondi il numero del giorno e il pulsante '+' per i giorni fuori mese */
         .table td.other-month-day .day-header,
         .table td.other-month-day .add-event-button {
             display: none;
         }
 
-        /* Eventi dei giorni */
         .table td .events {
             font-size: 0.9rem;
             color: #666;
             margin-top: 10px;
         }
 
-/* Pulsante aggiunta evento */
 .add-event-button {
     position: absolute;
     top: 0;
@@ -225,38 +211,35 @@ h1 {
         background-color: #2a8be7;
     }
 
-/* Event icon visibile solo nei giorni del mese */
 .table td .event-icon {
-    display: block; /* Assicurati che l'icona sia visibile */
-    margin-top: 5px; /* Margine per evitare sovrapposizioni con il numero del giorno */
-    margin-left: auto; /* Allinea l'icona al centro orizzontalmente */
+    display: block;
+    margin-top: 5px;
+    margin-left: auto;
     margin-right: auto;
-    width: 30px; /* Imposta una larghezza fissa per l'icona */
-    height: 30px; /* Imposta un'altezza fissa per l'icona */
-    object-fit: cover; /* Assicura che l'immagine venga ritagliata correttamente */
-    border-radius: 50%; /* Rende l'icona tonda */
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
     cursor: pointer;
-    transition: opacity 0.3s ease; /* Transizione per il hover */
-    max-width: 100%; /* Limita la larghezza dell'icona al 100% del contenitore */
-    max-height: 100%; /* Limita l'altezza dell'icona al 100% del contenitore */
+    transition: opacity 0.3s ease;
+    max-width: 100%;
+    max-height: 100%;
 }
 
-/* Modifica la posizione dell'icona in caso di più eventi nello stesso giorno */
+/* Change the icon position in case of multiple events on the same day */
 .table td .events {
     display: flex;
-    flex-wrap: wrap; /* Permette alle icone di "rompersi" su più righe */
-    justify-content: center; /* Centra le icone orizzontalmente */
-    gap: 5px; /* Distanza tra le icone */
-    max-height: 80%; /* Limita l'altezza totale della sezione eventi */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    max-height: 80%;
 }
 
-/* Nascondi gli eventi e il pulsante "+" per i giorni che non appartengono al mese corrente */
 .table td.other-month-day .events,
 .table td.other-month-day .add-event-button {
     display: none;
 }
 
-/* Tooltip */
 .event-icon {
     position: relative;
 }
@@ -276,15 +259,13 @@ h1 {
         z-index: 100;
     }
 
-/* Eventi che invadono lo spazio, limitando la loro altezza */
 .table td .events img {
-    width: 20px; /* Rende più piccole le icone */
-    height: 20px; /* Rende più piccole le icone */
+    width: 20px;
+    height: 20px;
     object-fit: cover;
     border-radius: 50%;
 }
 
-/* Contenitore mese con frecce */
 .month-navigation {
     position: relative;
     text-align: center;
@@ -320,88 +301,78 @@ h1 {
     }
 
 .left-arrow {
-    left: -40px; /* Posizionamento a sinistra */
+    left: -40px;
     border-radius: 50%;
 }
 
 .right-arrow {
-    right: -40px; /* Posizionamento a destra */
+    right: -40px;
     border-radius: 50%;
 }
 
-/* Modifiche al bottone "Aggiungi" */
 button[type="submit"].btn-primary.mt-2 {
-    margin-top: 16px; /* Aumenta il margine superiore */
+    margin-top: 16px;
 }
 
-/* Contenitore dei campi orari (orario inizio e fine) */
 .timeFields-@day.Date.ToString("yyyy-MM-dd") .time-range {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra i campi orario */
-    gap: 8px; /* Spaziatura tra i campi */
-    font-size: 12px; /* Font piccolo per tutta la sezione */
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
 }
 
-/* Stilizzazione per le etichette */
 .timeFields-@day.Date.ToString("yyyy-MM-dd") label {
     display: block;
-    font-weight: normal; /* Font leggermente più sottile */
+    font-weight: normal;
     margin-bottom: 3px;
-    font-size: 12px; /* Font più piccolo */
+    font-size: 12px;
     color: #333;
-    text-align: center; /* Centra il testo */
-    width: 80%; /* Stessa larghezza dell'input */
+    text-align: center;
+    width: 80%;
 }
 
-/* Stilizzazione per i campi di input (orario inizio e fine) */
 .timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"] {
-    width: 80%; /* Ridotto per rendere più piccolo l'input */
-    padding: 3px 6px; /* Ridotto padding per un campo più compatto */
-    margin-bottom: 8px; /* Ridotto margine tra i campi */
+    width: 80%;
+    padding: 3px 6px;
+    margin-bottom: 8px
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 11px; /* Font più piccolo */
+    font-size: 11px;
     background-color: #fff;
-    height: 30px; /* Impostato un'altezza minore */
+    height: 30px
 }
 
-    /* Focus sugli input */
     timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
-/* Aggiungi uno spazio tra i campi */
 .timeFields-@day.Date.ToString("yyyy-MM-dd") .form-control {
-    margin-bottom: 8px; /* Diminuito margine tra i campi */
-    height: 30px; /* Impostato un'altezza minore per il controllo */
+    margin-bottom: 8px;
+    height: 30px;
 }
 
-/* Centrare la form */
 .form-control {
-    font-size: 11px; /* Font più piccolo */
-    padding: 3px 6px; /* Ridotto padding per un campo più compatto */
+    font-size: 11px;
+    padding: 3px 6px;
     border-radius: 5px;
     border: 1px solid #ddd;
-    width: 80%; /* Ridotto per un campo più piccolo */
-    height: 30px; /* Impostato un'altezza minore */
+    width: 80%;
+    height: 30px;
 }
 
-    /* Aggiungi effetto focus */
     .form-control:focus {
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
-/* Effetto hover per i campi input */
 .timeFields-@day.Date.ToString("yyyy-MM-dd") input[type="time"]:hover {
     background-color: #f1f1f1;
 }
 
 
-/*  pop-up */
 .event-pop-up {
     position: absolute;
     background-color: white;
@@ -409,15 +380,15 @@ button[type="submit"].btn-primary.mt-2 {
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    display: none; /* Nascondi per default */
-    max-width: 80vw; /* Limita la larghezza al 80% della viewport */
-    max-height: 80vh; /* Limita l'altezza al 80% della viewport */
-    width: auto; /* Si adatta alla larghezza del contenuto */
-    height: auto; /* Si adatta all'altezza del contenuto */
-    box-sizing: border-box; /* Includi il padding nel calcolo delle dimensioni */
-    overflow: auto; /* Aggiungi la possibilità di scrollare se necessario */
-    word-wrap: break-word; /* Impedisce che le parole lunghe escano dai bordi */
-    text-align: left; /* Allinea tutto il testo a sinistra */
+    display: none;
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    box-sizing: border-box;
+    overflow: auto;
+    word-wrap: break-word;
+    text-align: left;
 }
 
 .event-pop-up ul {
@@ -430,13 +401,13 @@ button[type="submit"].btn-primary.mt-2 {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
-    font-size: 14px; /* Imposta la dimensione del testo a 14px (puoi modificarlo in base alle tue preferenze) */
-    word-wrap: break-word; /* Spezza le parole troppo lunghe */
+    font-size: 14px;
+    word-wrap: break-word;
 }
 
 .event-pop-up .event-icon {
-    width: 16px; /* Riduci la dimensione dell'icona a 16px */
-    height: 16px; /* Riduci l'altezza dell'icona a 16px */
-    margin-right: 8px; /* Riduci il margine tra icona e testo */
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
 }
 

@@ -7,7 +7,6 @@
     padding: 0;
 }
 
-/* Altri stili */
 h1 {
     font-size: 2rem;
     margin-bottom: 20px;
@@ -15,17 +14,15 @@ h1 {
     color: #333;
 }
 
-/* Contenitore principale del login */
 .container {
     margin: 40px auto;
     max-width: 400px;
-    background-color: rgba(255, 255, 255, 0.8); /* Sfondo leggermente trasparente */
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Stile per le etichette dei campi di input */
 label {
     font-size: 1rem;
     color: #333;
@@ -33,7 +30,6 @@ label {
     margin-bottom: 8px;
 }
 
-/* Campi di input */
 input[type="text"], input[type="password"], input[type="email"] {
     width: 100%;
     padding: 10px;
@@ -48,13 +44,11 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     border-color: #4da3ff;
 }
 
-/* Messaggi di errore */
 .text-danger {
     color: #e74c3c;
     font-size: 0.9rem;
 }
 
-/* Contenitore per il checkbox 'Rimani connesso' */
 .form-check {
     display: flex;
     align-items: center;
@@ -66,7 +60,6 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     color: #333;
 }
 
-/* Pulsante di login */
 button[type="submit"] {
     width: 100%;
     padding: 12px;
@@ -83,7 +76,6 @@ button[type="submit"]:hover {
     background-color: #2a8be7;
 }
 
-/* Stile per il link di "Forgot Password" (se presente) */
 .forgot-password {
     text-align: center;
     margin-top: 10px;
@@ -101,7 +93,7 @@ button[type="submit"]:hover {
 
 .error-message {
     margin-top: 50px;
-    background-color: #f09e94; /* Rosso per l'errore */
+    background-color: #f09e94; /* Red for error */
     border: 1px solid #c82333;
     padding: 15px;
 }

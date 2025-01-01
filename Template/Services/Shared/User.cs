@@ -28,7 +28,7 @@ namespace Template.Services.Shared
         public TimeSpan? Durata { get; set; }
         public string Stato { get; set; }
 
-        public string Img { get; set; } // Campo per immagine profilo
+        public string Img { get; set; } // User profile pic
         public List<Event> Events { get; internal set; } = new List<Event>();
 
         public bool IsMatchWithPassword(string password)
