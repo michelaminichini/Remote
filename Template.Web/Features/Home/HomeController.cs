@@ -267,10 +267,10 @@ namespace Template.Web.Features.Home
         // Funzione di supporto per gestire l'aggiunta dell'evento in base al ruolo
         private void AddEventForUserBasedOnRole(Request request, string userRole)
         {
-            // Impostiamo sempre lo stato della richiesta come "Approvata" per il ruolo "CEO"
+            // Impostiamo sempre lo stato della richiesta come "Accettata" per il ruolo "CEO"
             if (userRole.Equals("CEO", StringComparison.OrdinalIgnoreCase))
             {
-                request.Stato = "Approvata"; // Lo stato è sempre approvato per il CEO
+                request.Stato = "Accettata"; // Lo stato è sempre approvato per il CEO
                 DataGenerator.AddEventForUser(_dbContext, request); // Gestione tramite DataGenerator
             }
             else
@@ -336,7 +336,7 @@ namespace Template.Web.Features.Home
                 DataFine = eventEndDate,
                 Stato = (eventType.ToLower() == "smartworking" ||
                          eventType.ToLower() == "presenza" ||
-                         eventType.ToLower() == "trasferta") ? "Approvata" : "Da Approvare",
+                         eventType.ToLower() == "trasferta") ? "Accettata" : "Da Approvare",
                 OraInizio = startTime, // Imposta l'orario di inizio
                 OraFine = endTime, // Imposta l'orario di fine
                 LogoPath = GetEventIcon(eventType),
