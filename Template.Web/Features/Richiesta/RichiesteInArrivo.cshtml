@@ -95,14 +95,14 @@
                 const conferma = confirm(`Sei sicuro di voler ${azione === 'Approva' ? 'approvare' : 'rifiutare'} questa richiesta?`);
                 if (!conferma) return;
 
-                // Esegui la richiesta al backend per approvare o rifiutare
+                // Run the request to backend to approve or reject
                 fetch(`/Richiesta/${azione}?id=${id}`, {
                     method: 'POST'
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Dopo l'aggiornamento, recupera i dati aggiornati dal server
+                            // After the update, retrieve updated data from the server
                         this.aggiornaRichieste();
                         alert(`Richiesta ${azione === 'Approva' ? 'approvata' : 'rifiutata'} con successo.`);
                     } else {
@@ -116,7 +116,7 @@
             },
 
             aggiornaRichieste() {
-                // Recupera le richieste aggiornate dal server
+                // Retrieves the updated requests from the server
                 fetch('/Richiesta/Lista')
                     .then(response => response.json())
                     .then(data => {

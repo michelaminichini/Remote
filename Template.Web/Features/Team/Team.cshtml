@@ -12,7 +12,7 @@
 <!-- Vue.js app -->
 <div id="app" class="container">
 
-    <!-- Selezione del team -->
+    <!-- Team selection -->
 
     <a href="/" class="text-decoration-none py-5">
         <i class="bi bi-house-door"></i> Torna alla Home
@@ -28,7 +28,7 @@
         </select>
     </div>
 
-    <!-- Dettagli del team selezionato -->
+    <!-- Details of the selected team -->
     <div v-if="selectedTeam" class="card mt-4">
         <div class="card-body">
             <h3 class="card-title">Team: {{ selectedTeam }}</h3>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <!-- Messaggio se nessun team è selezionato -->
+    <!-- If no team is selected -->
     <div v-else class="alert alert-info mt-4">
         Seleziona un team per vedere i suoi membri.
     </div>
@@ -58,15 +58,15 @@
         el: '#app',
         data() {
             return {
-                selectedTeam: '', // Team selezionato
-                teams: @Html.Raw(ViewData["TeamsData"]), // Dati dei team passati dal controller
+                selectedTeam: '', // Selected team
+                teams: @Html.Raw(ViewData["TeamsData"]), // Team data retrieved from controller
                 teamManager: '',
                 teamMembers: []
             };
         },
         watch: {
             selectedTeam(newTeamName) {
-                // Trova il team selezionato e aggiorna i dettagli
+                // Find the selected team and update details
                 const selectedTeam = this.teams.find(team => team.TeamName === newTeamName);
                 if (selectedTeam) {
                     this.teamManager = selectedTeam.TeamManager;

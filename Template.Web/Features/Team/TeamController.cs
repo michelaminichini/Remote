@@ -48,7 +48,7 @@ namespace Template.Web.Features.Team {
                 return NotFound("No teams found.");
             }
 
-            // Passa i dati alla vista come JSON
+            // Send data to the view as JSON
             ViewData["TeamsData"] = JsonConvert.SerializeObject(model);
 
             return View();

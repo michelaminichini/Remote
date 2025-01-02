@@ -8,38 +8,38 @@ namespace Template.Web.Features.Richiesta
 {
     public class RichiestaViewModel
     {
-        // ID della richiesta (generato automaticamente, non visibile all'utente)
+        // Request ID (automatically generated, the user can't see it)
         [Key]
         public Guid Id { get; set; }
 
-        // Tipologia della richiesta (permessi o ferie)
+        // Type of request (permessi/ferie)
         [Required]
         [Display(Name = "Tipologia")]
         public string Tipologia { get; set; }
 
-        // Data di inizio del permesso/ferie
+        // Start date
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Data Inizio")]
         public DateTime DataInizio { get; set; }
 
-        // Data di fine del permesso/ferie
+        // End date
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Data Fine")]
         public DateTime DataFine { get; set; }
 
-        // Ora di inizio del permesso/ferie (opzionale per casi di permessi orari)
+        // Start time
         [DataType(DataType.Time)]
         [Display(Name = "Ora Inizio")]
         public TimeSpan? OraInizio { get; set; }
 
-        // Ora di fine del permesso/ferie (opzionale per casi di permessi orari)
+        // End time
         [DataType(DataType.Time)]
         [Display(Name = "Ora Fine")]
         public TimeSpan? OraFine { get; set; }
 
-        // Stato della richiesta
+        // Request status
         [Required]
         [Display(Name = "Stato")]
         public string Stato { get; set; } = "Da Approvare";

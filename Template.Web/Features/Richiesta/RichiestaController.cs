@@ -37,7 +37,7 @@ namespace Template.Web.Features.Richiesta
         {
             try
             {
-                // Recupera il nome del team dell'utente loggato
+                // Retrieve the team name of the logged-in user
                 var userName = User.Identity.Name;
                 var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
                 var userRole = user.Role;
@@ -52,7 +52,6 @@ namespace Template.Web.Features.Richiesta
                 List<Request> richieste;
                 if (userRole == "Manager")
                 {
-                    // Lista richiesta per manager
                     richieste = await _sharedService.GetManagerRequest(teamName);
                 }
                 else if (userRole == "CEO")
@@ -61,8 +60,7 @@ namespace Template.Web.Features.Richiesta
                 }
                 else
                 {
-                    // Lista richiesta per dipendenti
-                    richieste = await _sharedService.GetUserRequest(user.Email);
+                    richieste = await _sharedService.GetUserRequest(user.Email); // For user with role = "Dipendente"
                 }
                 return View(richieste);
             }
@@ -121,7 +119,7 @@ namespace Template.Web.Features.Richiesta
                 }
                 catch (Exception ex)
                 {
-                    // Gestisci l'errore e aggiungi un messaggio di errore
+                    // Manage the error and add an error message
                     Console.WriteLine("Errore durante l'elaborazione della richiesta: " + ex.Message);
                     TempData["ErrorMessage"] = "Si è verificato un errore durante l'invio della richiesta: " + ex.Message;
                 }
@@ -137,7 +135,7 @@ namespace Template.Web.Features.Richiesta
             Console.WriteLine($"ID ricevuto: {id}");
             try
             {
-                // Verifica se l'id è valido
+                // Check if the id is valid
                 if (id == Guid.Empty)
                 {
                     return BadRequest(new { success = false, message = "ID non valido." });
@@ -155,13 +153,13 @@ namespace Template.Web.Features.Richiesta
                     return BadRequest(new { success = false, message = "Richiesta non trovata." });
                 }
 
-                // Assicurati che l'email della richiesta non sia null o vuota
+                // Make sure the request email is not null or empty
                 if (string.IsNullOrEmpty(richiesta.UserName))
                 {
                     return BadRequest(new { success = false, message = "L'email dell'utente non è presente nella richiesta." });
                 }
 
-                // Cerca l'utente tramite la sua email
+                // Search the user via his/her email
                 var user = await _dbContext.Users
                     .FirstOrDefaultAsync(u => u.Email == richiesta.UserName);
 
@@ -170,13 +168,13 @@ namespace Template.Web.Features.Richiesta
                     return BadRequest(new { success = false, message = "Utente non trovato per questa richiesta." });
                 }
 
-                // Verifica che l'utente abbia eventi e che la lista non sia null
+                // Verify that the user has events and that the list is not null
                 if (user.Events == null)
                 {
                     return BadRequest(new { success = false, message = "L'utente non ha eventi registrati." });
                 }
 
-                // Controllo se un evento simile è già presente per l'utente
+                // Check if a similar event is already present for the user
                 var existingEvent = user.Events
                     .FirstOrDefault(e => e.DataRichiesta == DateTime.Now &&
                                          e.Tipologia == richiesta.Tipologia &&
@@ -187,7 +185,7 @@ namespace Template.Web.Features.Richiesta
                     return BadRequest(new { success = false, message = "Un evento simile è già stato registrato." });
                 }
 
-                // Aggiungi l'evento per l'utente corrispondente
+                // Add the event for the corresponding user
                 DataGenerator.AddEventForUser(_dbContext, richiesta);
 
                 return Json(new { success = true });
@@ -224,7 +222,6 @@ namespace Template.Web.Features.Richiesta
             List<Request> richieste;
             if (userRole == "Manager")
             {
-                // Lista richiesta per manager
                 richieste = await _sharedService.GetManagerRequest(teamName);
             }
             else if (userRole == "CEO")
@@ -233,12 +230,9 @@ namespace Template.Web.Features.Richiesta
             }
             else
             {
-                // Lista richiesta per dipendenti
                 richieste = await _sharedService.GetUserRequest(user.Email);
             }
             return Json(richieste);
         }
-
-
     }
 }
