@@ -46,7 +46,7 @@ namespace Template.Web.Features.Home
                 currentYear++;
             }
 
-            // Verifica che la data 'dal' non sia successiva alla data 'al'
+            // Check that the date 'from' is not later than the date 'to'
             if (dateFrom.HasValue && dateTo.HasValue && dateFrom.Value > dateTo.Value)
             {
                 TempData["ErrorMessage"] = "La data 'dal' non può essere successiva alla data 'al'.";
@@ -68,23 +68,23 @@ namespace Template.Web.Features.Home
                         e.DataInizio,
                         e.DataFine,
                         e.Stato,
-                        e.LogoPath // Non normalizzo qui, uso direttamente il valore salvato
+                        e.LogoPath
                     })
                 .ToList();
 
-            if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente") // Filtra gli eventi per il proprio team
+            if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente")
             {
                 events = events.Where(e => e.TeamName == currentUser.TeamName || e.Role == "CEO").ToList();
             }
 
-            // Mappa gli eventi anonimi in una lista di EventIconViewModel
+            // Map anonymous events to a list of EventIconViewModel
             var eventIcons = events.Select(e => new EventIconViewModel
             {
-                Icon = e.LogoPath, // Usa il LogoPath per l'icona
-                UserName = e.Email // Usa l'Email per la lista degli utenti
+                Icon = e.LogoPath, // Use LogoPath for the icon
+                UserName = e.Email // Use email for users list
             }).ToList();
 
-            // Crea il modello per la vista
+            // Create the template for the view
             var model = new HomeViewModel
             {
                 UserEmail = currentUser?.Email,
@@ -94,21 +94,21 @@ namespace Template.Web.Features.Home
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 UserProfileImage = currentUser?.Img,
-                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo, eventIcons)  // Passa gli eventi come EventIconViewModel
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo, eventIcons)  // Passes events as EventIconViewModel
             };
 
-            // Associa gli eventi ai giorni del calendario
+            // Associate events with calendar days
             foreach (var week in model.Weeks)
             {
-                foreach (var day in week) // Per ogni giorno della settimana
+                foreach (var day in week) // For each day of the week
                 {
-                    // Inizializza la lista degli eventi se non è già stata inizializzata
+                    // Initialize the event list if it has not already been initialized
                     if (day.Events == null)
                     {
                         day.Events = new List<EventIconViewModel>();
                     }
 
-                    // Filtra gli eventi che si sovrappongono con il giorno specifico
+                    //  Filters events that overlap with the specific day
                     var dayEvents = events.Where(e =>
                         e.DataInizio.HasValue && e.DataFine.HasValue &&
                         e.DataInizio.Value.Date <= day.Date.Date &&
@@ -125,18 +125,18 @@ namespace Template.Web.Features.Home
                     {
                         var eventIcon = GetEventIcon(eventInfo.Tipologia);
 
-                        // Raccoglie solo gli utenti che hanno l'evento in quel giorno
+                        // Only collects users who have the event on that day
                         var userNames = dayEvents
                                         .Where(e => e.Tipologia == eventInfo.Tipologia && e.Email == eventInfo.Email)
                                         .Select(e => e.Email)
                                         .Distinct()
                                         .ToList();
 
-                        // Aggiungi l'evento con l'icona e il nome dell'utente specifico per quel giorno
+                        // Add the event with the icon and name of the specific user for that day
                         day.Events.Add(new EventIconViewModel
                         {
                             Icon = eventIcon,
-                            UserName = string.Join(", ", userNames) // Concateno l'email dell'utente per il tooltip
+                            UserName = string.Join(", ", userNames) // Connect the user’s email for the tooltip
                         });
                     }
                 }
@@ -154,7 +154,7 @@ namespace Template.Web.Features.Home
                 "trasferta" => "/images/Logo/trasferta.png",
                 "permessi" => "/images/Logo/permessi.png",
                 "smartworking" => "/images/Logo/smartworking.png",
-                _ => "/images/Logo/default.png", // Icona predefinita
+                _ => "/images/Logo/default.png",
             };
         }
 
@@ -172,7 +172,7 @@ namespace Template.Web.Features.Home
                     DateTime eventStartDate = selectedDate.Date;
                     DateTime eventEndDate = selectedDate.Date;
 
-                    // Logica per Smartworking, Trasferta, Presenza (gestiti tramite DataGenerator)
+                    // Logic for Smartworking, Trasferta, Presenza
                     if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
                     {
                         if (ValidateSmartworkingAvailability(userEmail, eventStartDate))
@@ -202,14 +202,14 @@ namespace Template.Web.Features.Home
                     }
                     else if (eventType.Equals("Presenza", StringComparison.OrdinalIgnoreCase))
                     {
-                        // Gestisce l'evento di "Presenza" come un evento che copre tutta la giornata
+                        // Manages the "Presence" event as a full day event
                         eventStartDate = selectedDate.Date;
-                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1); // Copre tutta la giornata
+                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1);
 
                         var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
                         AddEventForUserBasedOnRole(richiesta, currentUser.Role);
                     }
-                    // Logica per Ferie e Permessi (gestiti tramite _dbContext.Requests.Add)
+                    // Logic for Ferie and Permessi (managed by _dbContext.Requests.Add)
                     else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
                     {
                         if (ValidateFerieAvailability(userEmail, eventStartDate))
@@ -220,7 +220,7 @@ namespace Template.Web.Features.Home
                             var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
                             AddEventForUserBasedOnRole(request, currentUser.Role);
 
-                            // Solo se non è un CEO, mostra il messaggio di successo
+                            // Only if user is not a CEO, show the message of success
                             if (!currentUser.Role.Equals("CEO", StringComparison.OrdinalIgnoreCase))
                             {
                                 TempData["Message"] = "Richiesta inviata con successo!!";
@@ -242,7 +242,7 @@ namespace Template.Web.Features.Home
                             var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
                             AddEventForUserBasedOnRole(request, currentUser.Role);
 
-                            // Solo se non è un CEO, mostra il messaggio di successo
+                            // Only if user is not a CEO, show the message of success
                             if (!currentUser.Role.Equals("CEO", StringComparison.OrdinalIgnoreCase))
                             {
                                 TempData["Message"] = "Richiesta inviata con successo!!";
@@ -264,14 +264,14 @@ namespace Template.Web.Features.Home
             return RedirectToAction("Home");
         }
 
-        // Funzione di supporto per gestire l'aggiunta dell'evento in base al ruolo
+        // Support function to manage the addition of event based on role
         private void AddEventForUserBasedOnRole(Request request, string userRole)
         {
-            // Impostiamo sempre lo stato della richiesta come "Accettata" per il ruolo "CEO"
+            // Always set the status of the application as "Accepted" for the role "CEO"
             if (userRole.Equals("CEO", StringComparison.OrdinalIgnoreCase))
             {
-                request.Stato = "Accettata"; // Lo stato è sempre approvato per il CEO
-                DataGenerator.AddEventForUser(_dbContext, request); // Gestione tramite DataGenerator
+                request.Stato = "Accettata"; // Always approved for CEO
+                DataGenerator.AddEventForUser(_dbContext, request);
             }
             else
             {
@@ -337,8 +337,8 @@ namespace Template.Web.Features.Home
                 Stato = (eventType.ToLower() == "smartworking" ||
                          eventType.ToLower() == "presenza" ||
                          eventType.ToLower() == "trasferta") ? "Accettata" : "Da Approvare",
-                OraInizio = startTime, // Imposta l'orario di inizio
-                OraFine = endTime, // Imposta l'orario di fine
+                OraInizio = startTime,
+                OraFine = endTime,
                 LogoPath = GetEventIcon(eventType),
                 Role = userRole
             };
