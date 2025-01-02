@@ -87,6 +87,16 @@ namespace Template.Infrastructure
                             DataFine = DateTime.Now.AddMonths(-3).AddHours(16),
                             Durata = new TimeSpan(2, 0, 0),
                             Stato = "Rifiutata"
+                        },
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = new DateTime(2024, 3, 15),  // richiesta effettuata il 15 marzo 2024
+                            Tipologia = "Ferie",
+                            DataInizio = new DateTime(2024, 8, 5),  // data inizio il 5 agosto 2024
+                            DataFine = new DateTime(2024, 8, 12),  // data fine il 12 agosto 2024
+                            Durata = new TimeSpan(7, 0, 0, 0),  // durata di 7 giorni (una settimana)
+                            Stato = "Accettata"
                         }
                     }
                 },
@@ -116,13 +126,24 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-2),
-                            Tipologia = "Presenza",
+                            DataRichiesta = new DateTime(2024, 9, 17),
+                            Tipologia = "Trasferta",
                             DataInizio = new DateTime(2024, 11, 20, 0, 0, 0),
                             DataFine = new DateTime(2024, 11, 20, 23, 59, 59),
                             Durata = new TimeSpan(1, 0, 0, 0),  // 1 day
                             Stato = "Accettata",
+                        },
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = new DateTime(2024, 9, 10),  // richiesta effettuata il 10 settembre 2024
+                            Tipologia = "Permessi",
+                            DataInizio = new DateTime(2024, 9, 12, 14, 0, 0),  // data inizio il 12 settembre 2024 alle 14:00
+                            DataFine = new DateTime(2024, 9, 12, 16, 0, 0),  // data fine il 12 settembre 2024 alle 16:00
+                            Durata = new TimeSpan(2, 0, 0),  // durata di 2 ore
+                            Stato = "Accettata"
                         }
+
                     }
                 },
                 new User
@@ -140,11 +161,11 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-2),
-                            Tipologia = "Presenza",
-                            DataInizio = new DateTime(2024, 11, 20),
-                            DataFine = new DateTime(2024, 11, 20),
-                            Durata = new TimeSpan(1, 0, 0, 0),
+                            DataRichiesta = new DateTime(2024, 10, 8),
+                            Tipologia = "Permessi",
+                            DataInizio = new DateTime(2024, 10, 10, 9, 0, 0),
+                            DataFine = new DateTime(2024, 10, 10, 13, 0, 0),
+                            Durata = new TimeSpan(4, 0, 0),
                             Stato = "Accettata"
                         }
                     }
@@ -164,13 +185,24 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = new DateTime(2024, 9, 27),
+                            DataRichiesta = new DateTime(2024, 9, 26),
                             Tipologia = "Permessi",
                             DataInizio = new DateTime(2024, 9, 27, 14, 0, 0),
                             DataFine = new DateTime(2024, 9, 27, 16, 0, 0),
                             Durata = new TimeSpan(2, 0, 0),
                             Stato = "Accettata"
+                        },
+                        new Event
+                        {
+                            EventId = Guid.NewGuid(),
+                            DataRichiesta = new DateTime(2024, 6, 5),  // richiesta effettuata il 5 giugno 2024
+                            Tipologia = "Ferie",
+                            DataInizio = new DateTime(2024, 7, 20),  // data inizio il 20 luglio 2024
+                            DataFine = new DateTime(2024, 8, 3),  // data fine il 3 agosto 2024
+                            Durata = new TimeSpan(14, 0, 0, 0),  // durata di 14 giorni (2 settimane)
+                            Stato = "Accettata"
                         }
+
                     }
                 },
                 new User
@@ -195,24 +227,7 @@ namespace Template.Infrastructure
                             Durata = new TimeSpan(5, 0, 0, 0),
                             Stato = "Rifiutata"
                         },
-                        new Event
-                        {
-                            EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now,
-                            Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 12, 24),
-                            DataFine = new DateTime(2024, 12, 24),
-                            Stato = "Accettata"
-                        },
-                        new Event
-                        {
-                            EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now,
-                            Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 12, 27),
-                            DataFine = new DateTime(2024, 12, 27),
-                            Stato = "Accettata"
-                        }
+                        
                     }
                 },
                 new User
@@ -233,17 +248,18 @@ namespace Template.Infrastructure
                             DataRichiesta = new DateTime(2024, 10, 24), 
                             Tipologia = "Permessi",
                             DataInizio = new DateTime(2024, 11, 20, 9, 0, 0),
-                            DataFine = new DateTime(2024, 11, 20, 11, 0, 0),
-                            Durata = new TimeSpan(2, 0, 0),
+                            DataFine = new DateTime(2024, 11, 20, 12, 0, 0),
+                            Durata = new TimeSpan(3, 0, 0), // 3 hours
                             Stato = "Accettata"
                         },
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now,
-                            Tipologia = "Smartworking",
-                            DataInizio = new DateTime(2024, 11, 20),
-                            DataFine = new DateTime(2024, 11, 20),
+                            DataRichiesta = new DateTime(2024, 11, 12),
+                            Tipologia = "Trasferta",
+                            DataInizio = new DateTime(2024, 11, 20, 9, 0, 0),
+                            DataFine = new DateTime(2024, 11, 20, 13, 0, 0),
+                            Durata = new TimeSpan(4, 0, 0),
                             Stato = "Accettata"
                         }
                     }
@@ -267,7 +283,7 @@ namespace Template.Infrastructure
                             Tipologia = "Ferie",
                             DataInizio = new DateTime(2024, 11, 20),
                             DataFine = new DateTime(2024, 11, 22), 
-                            Durata = new DateTime(2024, 11, 20).Subtract(new DateTime(2024, 11, 22)),
+                            Durata = new TimeSpan(2,0,0,0), // 2 days
                             Stato = "Accettata"
                         },
                         new Event

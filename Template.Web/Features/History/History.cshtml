@@ -55,7 +55,7 @@
                     <th>Tipologia</th>
                     <th>Data inizio</th>
                     <th>Data fine</th>
-                    <th>Durata</th>
+                    <th id="durata-header">Durata</th>
                     <th>Stato</th>
                 </tr>
             </thead>
@@ -67,7 +67,17 @@
                         <td>@(string.IsNullOrEmpty(eventItem.Tipologia?.Trim()) ? "N/A" : eventItem.Tipologia)</td>
                         <td>@(eventItem.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                         <td>@(eventItem.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(eventItem.Durata?.ToString(@"hh\:mm") ?? "N/A")</td> <!-- Format as hh:mm -->
+                        <td class="durata-column">
+                            @if (eventItem.Durata.HasValue)
+                            {
+                                @eventItem.Durata?.ToString(@"hh\:mm") <!-- Se la durata esiste, la formatta come hh:mm -->
+                            }
+                            else
+                            {
+                                @: N/A
+                            }
+
+                        </td>
                         <td>@eventItem.Stato</td>
                     </tr>
                 }
@@ -99,5 +109,38 @@
                 }
             });
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll('.historyRow');
+            const durataHeader = document.getElementById('durata-header'); // Get the "Durata" header
+            let showDurata = false;
+
+            // Check if any row has "Permessi" or "Trasferta" in the "Tipologia" column
+            rows.forEach(row => {
+                const tipologia = row.cells[1].innerText.trim(); // Get "Tipologia" value
+                if (tipologia === "Permessi" || tipologia === "Trasferta") {
+                    showDurata = true; // Set flag to show "Durata"
+                }
+            });
+
+            // Show or hide the "Durata" column header based on the condition
+            if (showDurata) {
+                durataHeader.style.display = ''; // Show "Durata" header
+            } else {
+                durataHeader.style.display = 'none'; // Hide "Durata" header
+            }
+
+            // Now loop through each row to handle the visibility of the "Durata" column
+            rows.forEach(row => {
+                const tipologia = row.cells[1].innerText.trim(); // Get "Tipologia" value
+                const durataColumn = row.querySelector('.durata-column'); // Get the "Durata" column
+
+                if (tipologia === "Permessi" || tipologia === "Trasferta") {
+                    durataColumn.style.display = ''; // Show "Durata" column
+                } else {
+                    durataColumn.style.display = 'none'; // Hide "Durata" column
+                }
+            });
+        });
     </script>
 </div>
