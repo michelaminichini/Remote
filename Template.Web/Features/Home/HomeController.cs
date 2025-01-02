@@ -74,7 +74,7 @@ namespace Template.Web.Features.Home
 
             if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente") // Filtra gli eventi per il proprio team
             {
-                events = events.Where(e => e.TeamName == currentUser.TeamName).ToList();
+                events = events.Where(e => e.TeamName == currentUser.TeamName || e.Role == "CEO").ToList();
             }
 
             // Mappa gli eventi anonimi in una lista di EventIconViewModel
@@ -159,7 +159,7 @@ namespace Template.Web.Features.Home
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> AddEvent(DateTime selectedDate, string eventType, TimeSpan? startTime, TimeSpan? endTime)
+        public virtual IActionResult AddEvent(DateTime selectedDate, string eventType, TimeSpan? startTime, TimeSpan? endTime)
         {
             var userEmail = User.Identity?.Name;
             var currentUser = _dbContext.Users
