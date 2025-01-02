@@ -52,7 +52,7 @@
             </div>
         }
 
-        <!-- Area per mostrare i messaggi di errore -->
+        <!-- Area to show error messages -->
         <div v-if="errorMessage" class="alert alert-danger" role="alert">
             {{ errorMessage }}
         </div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-            <!-- Mostra i campi orari solo se la tipologia è "Permessi" -->
+            <!-- Show time fields only if the type is "Permissions" -->
             <div v-if="tipologia == 'Permessi'" class="row mb-3">
                 <div class="col-sm-6">
                     <label asp-for="OraInizio" class="form-label">Dalle:</label>
@@ -126,7 +126,7 @@
                 oraFine: null,
                 dataInizio: '',
                 dataFine: '',
-                errorMessage: '' // Variabile per mostrare i messaggi di errore
+                errorMessage: '' // Variable to show error messages
             },
             methods: {
                 checkWeekend() {
@@ -137,28 +137,28 @@
 
                         if (day === 0 || day === 6) {
                             this.errorMessage = 'Non puoi selezionare giorno del weekend';
-                            this[field] = ''; // Cancella la data selezionata
+                            this[field] = ''; // Delete the selected date
                         }
                     });
                 },
                 validateForm(event) {
-                    this.errorMessage = ''; // Resetta il messaggio di errore
+                    this.errorMessage = ''; // Resets the error message
 
-                    // Validazione della data fine rispetto alla data inizio
+                    // Validation of end date against start date
                     if (this.dataFine && this.dataInizio && new Date(this.dataFine) < new Date(this.dataInizio)) {
                         this.errorMessage = "La data fine non può essere precedente alla data inizio.";
                         event.preventDefault();
                         return false;
                     }
 
-                    // Validazione dell'ora fine rispetto all'ora inizio per i permessi
+                    // Validation of the end time versus start time for permissions
                     if (this.tipologia === 'Permessi' && this.oraFine && this.oraInizio && new Date('1970-01-01T' + this.oraFine) < new Date('1970-01-01T' + this.oraInizio)) {
                         this.errorMessage = "L'ora fine non può essere precedente all'ora inizio.";
                         event.preventDefault();
                         return false;
                     }
 
-                    // Controllo campi vuoti
+                    // Checking empty fields
                     if (!this.dataInizio || !this.dataFine) {
                         this.errorMessage = "Data Inizio e Data Fine sono obbligatorie.";
                         event.preventDefault();
@@ -171,7 +171,7 @@
                         return false;
                     }
 
-                    return true; // Se tutto va bene
+                    return true;
                 }
             },
             watch: {
@@ -179,10 +179,10 @@
                     if (!this.dataFine) {
                         this.dataFine = newValue;
                     }
-                    this.checkWeekend(); // Controlla se la data è un sabato o una domenica
+                    this.checkWeekend(); // Check whether the date is a Saturday or a Sunday
                 },
                 dataFine(newValue) {
-                    this.checkWeekend(); // Controlla se la data è un sabato o una domenica
+                    this.checkWeekend(); // Check whether the date is a Saturday or a Sunday
                 }
             },
             mounted() {

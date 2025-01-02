@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="/css/HomeStyle.css" />
     </head>
 
-    <!-- Contenuto principale della pagina -->
+    <!-- Main content of the page -->
     <div class="title-container">
         <h1 class="title-text">@ViewData["Title"]</h1>
 
@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <!-- Messaggio di successo o errore -->
+    <!-- Success/error message -->
     @if (!string.IsNullOrEmpty(successMessage))
     {
         <div class="alert alert-success">
@@ -48,7 +48,7 @@
         <button class="btn btn-primary" onclick="location.href='@Url.Action("History", "History")'">Storico</button>
     </div>
 
-    <!-- Filtro per data -->
+    <!-- Filter by date -->
     <form method="get" action="@Url.Action("Home", "Home")">
         <div class="date-selectors mb-4">
             <label for="dateFrom">Dal:</label>
@@ -59,7 +59,7 @@
         </div>
     </form>
 
-    <!-- Calendario -->
+    <!-- Calendar -->
     <div class="calendar text-center mt-4">
         <div class="month-navigation">
             <h2 class="month-title">
@@ -92,7 +92,7 @@
                                 <div class="day-header d-flex justify-content-between align-items-start">
                                     <span>@day.Date.Day</span>
 
-                                    <!-- Condizione per mostrare il pulsante solo se non è sabato o domenica -->
+                                    <!-- Show the button only if it is not Saturday or Sunday -->
                                     @if (day.Date.DayOfWeek != DayOfWeek.Saturday && day.Date.DayOfWeek != DayOfWeek.Sunday)
                                     {
                                         <button class="btn btn-sm add-event-button" onclick="toggleEventMenu(this, '@day.Date.ToString("yyyy-MM-dd")')">
@@ -104,7 +104,7 @@
                                     <form method="post" action="@Url.Action("AddEvent", "Home")">
                                         <input type="hidden" name="selectedDate" value="@day.Date.ToString("yyyy-MM-dd")" />
 
-                                        <!-- Dropdown per selezionare il tipo di evento -->
+                                        <!-- Dropdown to select the event type -->
                                         <select name="eventType" id="eventType-@day.Date.ToString("yyyy-MM-dd")" class="form-select" onchange="showEventFields(this, '@day.Date.ToString("yyyy-MM-dd")')">
                                             <option value="Smartworking">Smartworking</option>
                                             <option value="Presenza">Presenza</option>
@@ -113,7 +113,7 @@
                                             <option value="Permessi">Permessi</option>
                                         </select>
 
-                                        <!-- Sezione per gli orari (Visibile solo per Trasferta e Permessi) -->
+                                        <!-- Section for the schedules (only for "Trasferta" e "Permessi") -->
                                         <div id="timeFields-@day.Date.ToString("yyyy-MM-dd")" style="display: none;">
                                             <label for="orarioInizio-@day.Date.ToString("yyyy-MM-dd")">Orario Inizio:</label>
                                             <input type="time" name="startTime" id="orarioInizio-@day.Date.ToString("yyyy-MM-dd")" class="form-control">
@@ -121,22 +121,22 @@
                                             <input type="time" name="endTime" id="orarioFine-@day.Date.ToString("yyyy-MM-dd")" class="form-control">
                                         </div>
 
-                                        <!-- Bottone per inviare il form -->
+                                        <!-- Send the form -->
                                         <button type="submit" class="btn btn-sm btn-primary mt-2">Aggiungi</button>
                                     </form>
                                 </div>
                                 <div class="events mt-2">
                                     @foreach (var eventItem in day.Events.GroupBy(e => e.Icon))
                                     {
-                                        var eventIcon = Url.Content(eventItem.Key); // Usa Url.Content per garantire percorsi corretti
+                                        var eventIcon = Url.Content(eventItem.Key);
                                         var userName = string.Join(", ", eventItem.Select(e => e.UserName).Distinct());
                                         <div class="events">
-                                            <!-- Mostra l'icona dell'evento -->
+                                            <!-- Show the event icon -->
                                             <img src="@eventIcon" alt="Event Icon" class="event-icon" title="Eventi di: @userName" />
                                         </div>
                                     }
 
-                                    <!-- Pop-up contenente eventi del giorno -->
+                                    <!-- Pop-up that shows the events of the day -->
                                     <div class="event-pop-up" id="event-pop-up-@day.Date.ToString("yyyy-MM-dd")" style="display:none;">
                                         <ul>
                                             @foreach (var eventItem in day.Events)
@@ -167,14 +167,14 @@
             }
         }
 
-        // Funzione per mostrare i campi orari quando viene selezionato Trasferta o Permessi
+        // Shows the time fields when "Trasferta" or "Permessi" is selected
         function showEventFields(select, date) {
             var selectedEventType = select.value;
             var timeFields = document.getElementById('timeFields-' + date);
 
-            // Mostra o nascondi i campi per orario in base al tipo di evento
+        // Show or hide time fields by event type
             if (selectedEventType === 'Trasferta' || selectedEventType === 'Permessi') {
-                timeFields.style.display = 'block'; // Mostra i campi orario
+                timeFields.style.display = 'block';
             } else {
                 timeFields.style.display = 'none';
             }
