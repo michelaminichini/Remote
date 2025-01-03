@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Template.Infrastructure;
 
 namespace Template.Services.Shared
 {
@@ -33,7 +34,15 @@ namespace Template.Services.Shared
                 OraFine = cmd.OraFine,
                 Stato = cmd.Stato
             };
-            _dbContext.Requests.Add(request);
+
+            if (cmd.UserName == "ceo@ceo.it")
+            {
+                DataGenerator.AddEventForUser(_dbContext, request);
+            }
+            else
+            {
+                _dbContext.Requests.Add(request);
+            }
             await _dbContext.SaveChangesAsync();
 
             return request.Id;

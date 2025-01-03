@@ -114,7 +114,8 @@ namespace Template.Web.Features.Richiesta
    
                     var id = await _sharedService.HandleRequest(cmd);
 
-                    TempData["Message"] = "Richiesta inviata con successo!";
+
+                        TempData["Message"] = "Richiesta inviata con successo!";
                     return RedirectToAction("Richiesta");
                 }
                 catch (Exception ex)
