@@ -227,7 +227,6 @@ namespace Template.Web.Features.Home
                             }
                             else if (currentUser.Role.Equals("manager", StringComparison.OrdinalIgnoreCase) || currentUser.Role.Equals("dipendente", StringComparison.OrdinalIgnoreCase))
                             {
-                                request.Stato = "Da approvare"; // Status to be approved for Manager and Employee
                                 _dbContext.Requests.Add(request);
                                 await _dbContext.SaveChangesAsync();
                                 TempData["Message"] = "Richiesta inviata con successo!!";
@@ -255,7 +254,6 @@ namespace Template.Web.Features.Home
                             }
                             else if (currentUser.Role.Equals("manager", StringComparison.OrdinalIgnoreCase) || currentUser.Role.Equals("dipendente", StringComparison.OrdinalIgnoreCase))
                             {
-                                request.Stato = "Da approvare"; // Status to be approved for Manager and Employee
                                 _dbContext.Requests.Add(request);
                                 await _dbContext.SaveChangesAsync();
                                 TempData["Message"] = "Richiesta inviata con successo!!";
