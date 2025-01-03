@@ -94,8 +94,8 @@ namespace Template.Infrastructure
                             DataRichiesta = new DateTime(2024, 3, 15),  // richiesta effettuata il 15 marzo 2024
                             Tipologia = "Ferie",
                             DataInizio = new DateTime(2024, 8, 5),  // data inizio il 5 agosto 2024
-                            DataFine = new DateTime(2024, 8, 12),  // data fine il 12 agosto 2024
-                            Durata = new TimeSpan(7, 0, 0, 0),  // durata di 7 giorni (una settimana)
+                            DataFine = new DateTime(2024, 8, 9),  // data fine il 7 agosto 2024
+                            Durata = new TimeSpan(5, 0, 0, 0),  
                             Stato = "Accettata"
                         }
                     }
@@ -200,7 +200,7 @@ namespace Template.Infrastructure
                             DataInizio = new DateTime(2024, 7, 20),  // data inizio il 20 luglio 2024
                             DataFine = new DateTime(2024, 8, 3),  // data fine il 3 agosto 2024
                             Durata = new TimeSpan(14, 0, 0, 0),  // durata di 14 giorni (2 settimane)
-                            Stato = "Accettata"
+                            Stato = "Rifiutata"
                         }
 
                     }

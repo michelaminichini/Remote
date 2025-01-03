@@ -70,13 +70,30 @@
                         <td class="durata-column">
                             @if (eventItem.Durata.HasValue)
                             {
-                                @eventItem.Durata?.ToString(@"hh\:mm") <!-- Se la durata esiste, la formatta come hh:mm -->
+                                if (eventItem.Tipologia == "Ferie" || eventItem.Tipologia == "Smartworking" || eventItem.Tipologia == "Presenza")
+                                {
+                                    // Se la durata è di un solo giorno
+                                    if (eventItem.DataInizio?.Date == eventItem.DataFine?.Date)
+                                    {
+                                        @:Tutto il giorno
+                                    }
+                                    else
+                                    {
+                                        // Se la durata è più di un giorno
+                                        var giorniDurata = (eventItem.DataFine?.Date - eventItem.DataInizio?.Date).Value.Days + 1;
+                                        @:@giorniDurata giorni
+                                    }
+                                }
+                                else
+                                {
+                                    // Se non è una delle tipologie specifiche, continua a mostrare la durata come hh:mm
+                                    @eventItem.Durata?.ToString(@"hh\:mm")
+                                }
                             }
                             else
                             {
-                                @: N/A
+                                @:N/A
                             }
-
                         </td>
                         <td>@eventItem.Stato</td>
                     </tr>
@@ -95,7 +112,7 @@
         <div class="no-request-text">Non ci sono richieste passate</div>
     }
 
-    
+
     <script>
         function applyFilter() {
             const selectedStatus = document.getElementById('filterStatus').value;
@@ -112,35 +129,33 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const rows = document.querySelectorAll('.historyRow');
-            const durataHeader = document.getElementById('durata-header'); // Get the "Durata" header
+            const durataHeader = document.getElementById('durata-header');
             let showDurata = false;
 
-            // Check if any row has "Permessi" or "Trasferta" in the "Tipologia" column
             rows.forEach(row => {
-                const tipologia = row.cells[1].innerText.trim(); // Get "Tipologia" value
-                if (tipologia === "Permessi" || tipologia === "Trasferta") {
-                    showDurata = true; // Set flag to show "Durata"
+                const tipologia = row.cells[1].innerText.trim();
+                if (["Permessi", "Trasferta", "Ferie", "Smartworking", "Presenza"].includes(tipologia)) {
+                    showDurata = true;
                 }
             });
 
-            // Show or hide the "Durata" column header based on the condition
             if (showDurata) {
-                durataHeader.style.display = ''; // Show "Durata" header
+                durataHeader.style.display = '';
             } else {
-                durataHeader.style.display = 'none'; // Hide "Durata" header
+                durataHeader.style.display = 'none';
             }
 
-            // Now loop through each row to handle the visibility of the "Durata" column
             rows.forEach(row => {
-                const tipologia = row.cells[1].innerText.trim(); // Get "Tipologia" value
-                const durataColumn = row.querySelector('.durata-column'); // Get the "Durata" column
+                const tipologia = row.cells[1].innerText.trim();
+                const durataColumn = row.querySelector('.durata-column');
 
-                if (tipologia === "Permessi" || tipologia === "Trasferta") {
-                    durataColumn.style.display = ''; // Show "Durata" column
+                if (["Permessi", "Trasferta", "Ferie", "Smartworking", "Presenza"].includes(tipologia)) {
+                    durataColumn.style.display = '';
                 } else {
-                    durataColumn.style.display = 'none'; // Hide "Durata" column
+                    durataColumn.style.display = 'none';
                 }
             });
         });
     </script>
+
 </div>
