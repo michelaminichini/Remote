@@ -31,7 +31,7 @@
                         <th>Ora Inizio</th>
                         <th>Ora Fine</th>
                         <th>Stato</th>
-                        <th v-if="(isManager || isCEO) && hasPendingRequests">Azioni</th>
+                        <th v-if="(isCEO || (isManager && richieste.some(r => r.role !== 'Manager' && r.userName !== currentUserName && r.stato === 'Da Approvare'))) && hasPendingRequests">Azioni</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +47,7 @@
                                 {{ richiesta.stato }}
                             </span>
                         </td>
-                        <td v-if="(isCEO || (isManager && richiesta.role !== 'Manager')) && richiesta.stato === 'Da Approvare'" class="text-center">
+                        <td v-if="(isCEO || (isManager && richiesta.role !== 'Manager' && richiesta.userName !== currentUserName)) && richiesta.stato === 'Da Approvare'" class="text-center">
                             <button class="btn btn-success btn-sm me-1" v-on:click="gestisciRichiesta(richiesta.id, 'Approva')">
                                 Accetta
                             </button>
@@ -72,7 +72,8 @@
         data: {
             richieste: @Html.Raw(Json.Serialize(Model)),
             isManager: @User.IsInRole("Manager").ToString().ToLower(),
-            isCEO: @User.IsInRole("CEO").ToString().ToLower()
+            isCEO: @User.IsInRole("CEO").ToString().ToLower(),
+            currentUserName: '@User.Identity.Name'
         },
         computed: {
             // Check if there are any pending requests (Da Approvare)
