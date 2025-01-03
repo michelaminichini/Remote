@@ -46,7 +46,7 @@ namespace Template.Web.Features.Home
                 currentYear++;
             }
 
-            // Check that the date 'from' is not later than the date 'to'
+            // Verify that the 'from' date is not later than the 'to' date
             if (dateFrom.HasValue && dateTo.HasValue && dateFrom.Value > dateTo.Value)
             {
                 TempData["ErrorMessage"] = "La data 'dal' non può essere successiva alla data 'al'.";
@@ -74,17 +74,22 @@ namespace Template.Web.Features.Home
 
             if (currentUser?.Role == "Manager" || currentUser?.Role == "Dipendente")
             {
-                events = events.Where(e => e.TeamName == currentUser.TeamName || e.Role == "CEO").ToList();
+                events = events.Where(e => e.Role == "CEO" || e.TeamName == currentUser.TeamName).ToList();
+            }
+            else if (currentUser?.Role == "CEO")
+            {
+                // CEOs can see all events without team limitations
+                events = events.ToList();
             }
 
-            // Map anonymous events to a list of EventIconViewModel
+            // Map events to a list of EventIconViewModel
             var eventIcons = events.Select(e => new EventIconViewModel
             {
-                Icon = e.LogoPath, // Use LogoPath for the icon
-                UserName = e.Email // Use email for users list
+                Icon = e.LogoPath,
+                UserName = e.Email
             }).ToList();
 
-            // Create the template for the view
+            // Creating a model for the view
             var model = new HomeViewModel
             {
                 UserEmail = currentUser?.Email,
@@ -94,21 +99,19 @@ namespace Template.Web.Features.Home
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 UserProfileImage = currentUser?.Img,
-                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo, eventIcons)  // Passes events as EventIconViewModel
+                Weeks = Calendar.GetWeeksInMonth(currentYear, currentMonth, dateFrom, dateTo, eventIcons)
             };
 
-            // Associate events with calendar days
+            // Assigning events to calendar days
             foreach (var week in model.Weeks)
             {
-                foreach (var day in week) // For each day of the week
+                foreach (var day in week)
                 {
-                    // Initialize the event list if it has not already been initialized
                     if (day.Events == null)
                     {
                         day.Events = new List<EventIconViewModel>();
                     }
 
-                    //  Filters events that overlap with the specific day
                     var dayEvents = events.Where(e =>
                         e.DataInizio.HasValue && e.DataFine.HasValue &&
                         e.DataInizio.Value.Date <= day.Date.Date &&
@@ -125,18 +128,16 @@ namespace Template.Web.Features.Home
                     {
                         var eventIcon = GetEventIcon(eventInfo.Tipologia);
 
-                        // Only collects users who have the event on that day
                         var userNames = dayEvents
-                                        .Where(e => e.Tipologia == eventInfo.Tipologia && e.Email == eventInfo.Email)
-                                        .Select(e => e.Email)
-                                        .Distinct()
-                                        .ToList();
+                            .Where(e => e.Tipologia == eventInfo.Tipologia && e.Email == eventInfo.Email)
+                            .Select(e => e.Email)
+                            .Distinct()
+                            .ToList();
 
-                        // Add the event with the icon and name of the specific user for that day
                         day.Events.Add(new EventIconViewModel
                         {
                             Icon = eventIcon,
-                            UserName = string.Join(", ", userNames) // Connect the user’s email for the tooltip
+                            UserName = string.Join(", ", userNames)
                         });
                     }
                 }
@@ -159,7 +160,7 @@ namespace Template.Web.Features.Home
         }
 
         [HttpPost]
-        public virtual IActionResult AddEvent(DateTime selectedDate, string eventType, TimeSpan? startTime, TimeSpan? endTime)
+        public virtual async Task<IActionResult> AddEvent(DateTime selectedDate, string eventType, TimeSpan? startTime, TimeSpan? endTime)
         {
             var userEmail = User.Identity?.Name;
             var currentUser = _dbContext.Users
@@ -172,7 +173,7 @@ namespace Template.Web.Features.Home
                     DateTime eventStartDate = selectedDate.Date;
                     DateTime eventEndDate = selectedDate.Date;
 
-                    // Logic for Smartworking, Trasferta, Presenza
+                    // Logic for Smartworking, Travel, Presence (managed via DataGenerator)
                     if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
                     {
                         if (ValidateSmartworkingAvailability(userEmail, eventStartDate))
@@ -181,7 +182,7 @@ namespace Template.Web.Features.Home
                             eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
 
                             var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            AddEventForUserBasedOnRole(richiesta, currentUser.Role);
+                            DataGenerator.AddEventForUser(_dbContext, richiesta);
                         }
                         else
                         {
@@ -197,19 +198,19 @@ namespace Template.Web.Features.Home
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
 
                             var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            AddEventForUserBasedOnRole(richiesta, currentUser.Role);
+                            DataGenerator.AddEventForUser(_dbContext, richiesta);
                         }
                     }
                     else if (eventType.Equals("Presenza", StringComparison.OrdinalIgnoreCase))
                     {
-                        // Manages the "Presence" event as a full day event
+                        // "Presence" event management as an all-day event like smartworking and holidays
                         eventStartDate = selectedDate.Date;
-                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1);
+                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1); // Covers the whole day
 
                         var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                        AddEventForUserBasedOnRole(richiesta, currentUser.Role);
+                        DataGenerator.AddEventForUser(_dbContext, richiesta);
                     }
-                    // Logic for Ferie and Permessi (managed by _dbContext.Requests.Add)
+                    // Logic for Holidays and Permits
                     else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
                     {
                         if (ValidateFerieAvailability(userEmail, eventStartDate))
@@ -218,11 +219,17 @@ namespace Template.Web.Features.Home
                             eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
 
                             var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            AddEventForUserBasedOnRole(request, currentUser.Role);
 
-                            // Only if user is not a CEO, show the message of success
-                            if (!currentUser.Role.Equals("CEO", StringComparison.OrdinalIgnoreCase))
+                            if (currentUser.Role.Equals("ceo", StringComparison.OrdinalIgnoreCase))
                             {
+                                request.Stato = "Accettata"; // Always accepted status for CEO
+                                DataGenerator.AddEventForUser(_dbContext, request);
+                            }
+                            else if (currentUser.Role.Equals("manager", StringComparison.OrdinalIgnoreCase) || currentUser.Role.Equals("dipendente", StringComparison.OrdinalIgnoreCase))
+                            {
+                                request.Stato = "Da approvare"; // Status to be approved for Manager and Employee
+                                _dbContext.Requests.Add(request);
+                                await _dbContext.SaveChangesAsync();
                                 TempData["Message"] = "Richiesta inviata con successo!!";
                             }
                         }
@@ -240,11 +247,17 @@ namespace Template.Web.Features.Home
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
 
                             var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
-                            AddEventForUserBasedOnRole(request, currentUser.Role);
 
-                            // Only if user is not a CEO, show the message of success
-                            if (!currentUser.Role.Equals("CEO", StringComparison.OrdinalIgnoreCase))
+                            if (currentUser.Role.Equals("ceo", StringComparison.OrdinalIgnoreCase))
                             {
+                                request.Stato = "Accettata"; // Always accepted status for CEO
+                                DataGenerator.AddEventForUser(_dbContext, request);
+                            }
+                            else if (currentUser.Role.Equals("manager", StringComparison.OrdinalIgnoreCase) || currentUser.Role.Equals("dipendente", StringComparison.OrdinalIgnoreCase))
+                            {
+                                request.Stato = "Da approvare"; // Status to be approved for Manager and Employee
+                                _dbContext.Requests.Add(request);
+                                await _dbContext.SaveChangesAsync();
                                 TempData["Message"] = "Richiesta inviata con successo!!";
                             }
                         }
@@ -263,23 +276,6 @@ namespace Template.Web.Features.Home
 
             return RedirectToAction("Home");
         }
-
-        // Support function to manage the addition of event based on role
-        private void AddEventForUserBasedOnRole(Request request, string userRole)
-        {
-            // Always set the status of the application as "Accepted" for the role "CEO"
-            if (userRole.Equals("CEO", StringComparison.OrdinalIgnoreCase))
-            {
-                request.Stato = "Accettata"; // Always approved for CEO
-                DataGenerator.AddEventForUser(_dbContext, request);
-            }
-            else
-            {
-                _dbContext.Requests.Add(request);
-                _dbContext.SaveChanges();
-            }
-        }
-
 
         private bool ValidateSmartworkingAvailability(string userEmail, DateTime eventStartDate)
         {
@@ -337,13 +333,12 @@ namespace Template.Web.Features.Home
                 Stato = (eventType.ToLower() == "smartworking" ||
                          eventType.ToLower() == "presenza" ||
                          eventType.ToLower() == "trasferta") ? "Accettata" : "Da Approvare",
-                OraInizio = startTime,
-                OraFine = endTime,
+                OraInizio = startTime, // Set the start time
+                OraFine = endTime, // Set the end time
                 LogoPath = GetEventIcon(eventType),
                 Role = userRole
             };
         }
-
 
         [HttpPost]
         public virtual IActionResult ChangeLanguageTo(string cultureName)
