@@ -144,48 +144,55 @@
                         }
                     });
                 },
-                validateForm(event) {
-                    this.errorMessage = ''; // Resets the error message
+        validateForm(event) {
+            this.errorMessage = ''; // Resetta il messaggio di errore
 
-                    // Validation of end date against start date
-                    if (this.dataFine && this.dataInizio && new Date(this.dataFine) < new Date(this.dataInizio)) {
-                        this.errorMessage = "La data fine non può essere precedente alla data inizio.";
-                        event.preventDefault();
-                        return false;
-                    }
+            // Validazione dei campi obbligatori
+            if (!this.dataInizio || !this.dataFine) {
+                this.errorMessage = "Data Inizio e Data Fine sono obbligatorie.";
+                event.preventDefault();
+                return false;
+            }
 
-                    // Validation of the end time versus start time for permissions
-                    if (this.tipologia === 'Permessi' && this.oraFine && this.oraInizio && new Date('1970-01-01T' + this.oraFine) < new Date('1970-01-01T' + this.oraInizio)) {
-                        this.errorMessage = "L'ora fine non può essere precedente all'ora inizio.";
-                        event.preventDefault();
-                        return false;
-                    }
-
-                    // Checking empty fields
-                    if (!this.dataInizio || !this.dataFine) {
-                        this.errorMessage = "Data Inizio e Data Fine sono obbligatorie.";
-                        event.preventDefault();
-                        return false;
-                    }
-
-                    if (this.tipologia === 'Permessi' && (!this.oraInizio || !this.oraFine)) {
-                        this.errorMessage = "Gli orari di inizio e fine sono obbligatori per Permessi.";
-                        event.preventDefault();
-                        return false;
-                    }
-
-                    return true;
+            if (this.tipologia === 'Permessi') {
+                if (!this.oraInizio || !this.oraFine) {
+                    this.errorMessage = "Gli orari di inizio e fine sono obbligatori per Permessi.";
+                    event.preventDefault();
+                    return false;
                 }
+
+                // Confronto degli orari
+                if (new Date('1970-01-01T' + this.oraFine) < new Date('1970-01-01T' + this.oraInizio)) {
+                    this.errorMessage = "L'ora fine non può essere precedente all'ora inizio.";
+                    event.preventDefault();
+                    return false;
+                }
+            }
+
+            // Confronto delle date
+            if (new Date(this.dataFine) < new Date(this.dataInizio)) {
+                this.errorMessage = "La data fine non può essere precedente alla data inizio.";
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+
             },
             watch: {
                 dataInizio(newValue) {
-                    if (!this.dataFine) {
+                    if (!this.dataFine || new Date(this.dataFine) < new Date(newValue)) {
                         this.dataFine = newValue;
                     }
                     this.checkWeekend(); // Check whether the date is a Saturday or a Sunday
                 },
-                dataFine(newValue) {
-                    this.checkWeekend(); // Check whether the date is a Saturday or a Sunday
+        dataFine(newValue) {
+            if (new Date(newValue) < new Date(this.dataInizio)) {
+                this.errorMessage = "La data fine non può essere precedente alla data inizio.";
+                this.dataFine = this.dataInizio; // Correggi automaticamente
+            }
+            this.checkWeekend();
                 }
             },
             mounted() {
