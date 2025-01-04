@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .table th, .table td {
             vertical-align: middle;
@@ -20,7 +21,7 @@
         </a>
         <h1 class="text-left my-4">Richieste Inviate</h1>
 
-        <div v-if="richieste.length" class="table-responsive p-3  rounded">
+        <div v-if="richieste.length" class="table-responsive p-3 rounded">
             <table class="table table-bordered table-striped align-middle">
                 <thead class="bg-white text-center">
                     <tr>
@@ -48,10 +49,10 @@
                             </span>
                         </td>
                         <td v-if="(isCEO || (isManager && richiesta.role !== 'Manager' && richiesta.userName !== currentUserName)) && richiesta.stato === 'Da Approvare'" class="text-center">
-                            <button class="btn btn-success btn-sm me-1" v-on:click="gestisciRichiesta(richiesta.id, 'Approva')">
+                            <button class="btn btn-success btn-sm me-1" v-on:click="apriModal(richiesta.id, 'approvare')">
                                 Accetta
                             </button>
-                            <button class="btn btn-danger btn-sm" v-on:click="gestisciRichiesta(richiesta.id, 'Rifiuta')">
+                            <button class="btn btn-danger btn-sm" v-on:click="apriModal(richiesta.id, 'rifiutare')">
                                 Rifiuta
                             </button>
                         </td>
@@ -62,71 +63,120 @@
         <div v-else class="alert alert-warning text-center shadow-sm mt-4" role="alert">
             <strong>Non ci sono richieste salvate.</strong>
         </div>
-    </div>
-</body>
-</html>
 
-<script>
-    new Vue({
-        el: '#app',
-        data: {
-            richieste: @Html.Raw(Json.Serialize(Model)),
-            isManager: @User.IsInRole("Manager").ToString().ToLower(),
-            isCEO: @User.IsInRole("CEO").ToString().ToLower(),
-            currentUserName: '@User.Identity.Name'
-        },
-        computed: {
-            // Check if there are any pending requests (Da Approvare)
-            hasPendingRequests() {
-                return this.richieste.some(richiesta => richiesta.stato === 'Da Approvare');
-            }
-        },
-        methods: {
-            formatDate(date) {
-                return new Date(date).toLocaleDateString('it-IT');
+        <!-- Modal di conferma azione -->
+        <div class="modal fade" id="confermaModal" tabindex="-1" aria-labelledby="confermaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confermaModalLabel">Conferma Azione</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Sei sicuro di voler <strong>{{ azioneSelezionata === 'approvare' ? 'approvare' : 'rifiutare' }}</strong> questa richiesta?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-primary" v-on:click="eseguiAzione">Conferma</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal di successo -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Operazione Riuscita</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ messaggioConferma }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                richieste: @Html.Raw(Json.Serialize(Model)),
+                isManager: @User.IsInRole("Manager").ToString().ToLower(),
+                isCEO: @User.IsInRole("CEO").ToString().ToLower(),
+                currentUserName: '@User.Identity.Name',
+                richiestaIdSelezionata: null,
+                azioneSelezionata: '',
+                messaggioConferma: '' // Messaggio di conferma per il modal di successo
             },
-            getBadgeClass(stato) {
-                switch (stato) {
-                    case 'Accettata': return 'bg-success';
-                    case 'Rifiutata': return 'bg-danger';
-                    default: return 'bg-primary';
+            computed: {
+                hasPendingRequests() {
+                    return this.richieste.some(richiesta => richiesta.stato === 'Da Approvare');
                 }
             },
-            gestisciRichiesta(id, azione) {
-                const conferma = confirm(`Sei sicuro di voler ${azione === 'Approva' ? 'approvare' : 'rifiutare'} questa richiesta?`);
-                if (!conferma) return;
-
-                // Run the request to backend to approve or reject
-                fetch(`/Richiesta/${azione}?id=${id}`, {
-                    method: 'POST'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                            // After the update, retrieve updated data from the server
-                        this.aggiornaRichieste();
-                        alert(`Richiesta ${azione === 'Approva' ? 'approvata' : 'rifiutata'} con successo.`);
-                    } else {
-                        alert('Errore durante l\'operazione: ' + data.message);
+            methods: {
+                formatDate(date) {
+                    return new Date(date).toLocaleDateString('it-IT');
+                },
+                getBadgeClass(stato) {
+                    switch (stato) {
+                        case 'Accettata': return 'bg-success';
+                        case 'Rifiutata': return 'bg-danger';
+                        default: return 'bg-primary';
                     }
-                })
-                .catch(error => {
-                    console.error('Errore durante l\'operazione:', error);
-                    alert('Errore durante l\'operazione. Per favore, riprova.');
-                });
-            },
+                },
+                apriModal(id, azione) {
+                    this.richiestaIdSelezionata = id;
+                    this.azioneSelezionata = azione === 'approvare' ? 'approvare' : 'rifiutare';
+                    const modal = new bootstrap.Modal(document.getElementById('confermaModal'));
+                    modal.show();
+                },
+                eseguiAzione() {
+                    const id = this.richiestaIdSelezionata;
+                    const azione = this.azioneSelezionata === 'approvare' ? 'Approva' : 'Rifiuta';
 
-            aggiornaRichieste() {
-                // Retrieves the updated requests from the server
-                fetch('/Richiesta/Lista')
+                    fetch(`/Richiesta/${azione}?id=${id}`, {
+                        method: 'POST'
+                    })
                     .then(response => response.json())
                     .then(data => {
-                        this.richieste = data;
+                        if (data.success) {
+                            this.aggiornaRichieste();
+
+                            // Mostra il modal di successo
+                            this.messaggioConferma = `Richiesta ${this.azioneSelezionata} con successo.`;
+                            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                            successModal.show();
+                        } else {
+                            alert('Errore durante l\'operazione: ' + data.message);
+                        }
                     })
                     .catch(error => {
-                        console.error('Errore durante il recupero delle richieste:', error);
+                        console.error('Errore durante l\'operazione:', error);
+                        alert('Errore durante l\'operazione. Per favore, riprova.');
                     });
+
+                    // Chiudi il modal di conferma azione
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('confermaModal'));
+                    modal.hide();
+                },
+                aggiornaRichieste() {
+                    fetch('/Richiesta/Lista')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.richieste = data;
+                        })
+                        .catch(error => {
+                            console.error('Errore durante il recupero delle richieste:', error);
+                        });
+                }
             }
-        }
-    });
-</script>
+        });
+    </script>
+</body>
+</html>
