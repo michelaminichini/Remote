@@ -64,5 +64,23 @@ namespace Template.Services.Shared
             return await _dbContext.Requests.ToListAsync();
         }
 
+        public async Task<List<Request>> GetRequestsByRole(string userEmail)
+        {
+            var currentUser = await GetCurrentUser(userEmail);
+
+            if (currentUser == null)
+                throw new Exception("Utente non trovato.");
+
+            if (string.IsNullOrEmpty(currentUser.Role))
+                throw new Exception("Ruolo dell'utente non determinato.");
+
+            return currentUser.Role switch
+            {
+                "Manager" => await GetManagerRequest(currentUser.TeamName),
+                "CEO" => await GetAllRequests(),
+                _ => await GetUserRequest(userEmail) // default option
+            };
+        }
+
     }
 }

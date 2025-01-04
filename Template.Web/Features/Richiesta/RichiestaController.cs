@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Template.Infrastructure;
 using Template.Services;
 using Template.Services.Shared;
-using Template.Web.Infrastructure;
 
 namespace Template.Web.Features.Richiesta
 {
@@ -18,13 +14,11 @@ namespace Template.Web.Features.Richiesta
         private readonly SharedService _sharedService;
         private readonly TemplateDbContext _dbContext;
 
-        // Costruttore che inietta il servizio SharedService
         public RichiestaController(SharedService sharedService, TemplateDbContext dbContext)
         {
             _sharedService = sharedService ?? throw new ArgumentNullException(nameof(sharedService));
             _dbContext = dbContext;
         }
-
 
         [HttpGet]
         public virtual IActionResult Richiesta(RichiestaViewModel model)
@@ -38,30 +32,9 @@ namespace Template.Web.Features.Richiesta
             try
             {
                 // Retrieve the team name of the logged-in user
-                var userName = User.Identity.Name;
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
-                var userRole = user.Role;
-                var teamName = user.TeamName;
+                var currentUserEmail = User.Identity.Name;
+                var richieste = await _sharedService.GetRequestsByRole(currentUserEmail);
 
-                if (string.IsNullOrEmpty(teamName))
-                {
-                    TempData["ErrorMessage"] = "Impossibile determinare il team dell'utente loggato.";
-                    return RedirectToAction("Richiesta");
-                }
-
-                List<Request> richieste;
-                if (userRole == "Manager")
-                {
-                    richieste = await _sharedService.GetManagerRequest(teamName);
-                }
-                else if (userRole == "CEO")
-                {
-                    richieste = await _sharedService.GetAllRequests();
-                }
-                else
-                {
-                    richieste = await _sharedService.GetUserRequest(user.Email); // For user with role = "Dipendente"
-                }
                 return View(richieste);
             }
             catch (Exception ex)
@@ -79,43 +52,22 @@ namespace Template.Web.Features.Richiesta
             {
                 try
                 {
-                    var userName = User.Identity.Name;
-                    var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
-                    var userRole = user.Role;
+                    var currentUserEmail = User.Identity.Name;
+                    var currentUser = await _sharedService.GetCurrentUser(currentUserEmail);
 
-                    AddRequestCommand cmd;
-                    if (userRole == "CEO")
+                    var cmd = new AddRequestCommand
                     {
-                        cmd = new AddRequestCommand
-                        {
-                            UserName = User.Identity.Name,
-                            Tipologia = richiesta.Tipologia,
-                            DataInizio = richiesta.DataInizio,
-                            DataFine = richiesta.DataFine,
-                            OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
-                            OraFine = richiesta.OraFine ?? TimeSpan.Zero,
-                            Stato = "Accettata"
-                        };
-                    }
-                    else
-                    {
-                        cmd = new AddRequestCommand
-                        {
-                            UserName = User.Identity.Name,
-                            Tipologia = richiesta.Tipologia,
-                            DataInizio = richiesta.DataInizio,
-                            DataFine = richiesta.DataFine,
-                            OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
-                            OraFine = richiesta.OraFine ?? TimeSpan.Zero,
-                            Stato = richiesta.Stato
-                        };
-                    }
-               
-   
+                        UserName = currentUserEmail,
+                        Tipologia = richiesta.Tipologia,
+                        DataInizio = richiesta.DataInizio,
+                        DataFine = richiesta.DataFine,
+                        OraInizio = richiesta.OraInizio ?? TimeSpan.Zero,
+                        OraFine = richiesta.OraFine ?? TimeSpan.Zero,
+                        Stato = currentUser.Role == "CEO" ? "Accettata" : richiesta.Stato
+                    };
+
                     var id = await _sharedService.HandleRequest(cmd);
-
-
-                        TempData["Message"] = "Richiesta inviata con successo!";
+                    TempData["Message"] = "Richiesta inviata con successo!";
                     return RedirectToAction("Richiesta");
                 }
                 catch (Exception ex)
@@ -212,28 +164,21 @@ namespace Template.Web.Features.Richiesta
 
 
         [HttpGet]
-        public virtual async Task<IActionResult> Lista()
+        public virtual async Task<IActionResult> AggiornaLista()
         {
-            var userName = User.Identity.Name;
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userName);
-            var userRole = user.Role;
-            var teamName = user.TeamName;
+            try
+            {
+                var currentUserEmail = User.Identity.Name;
+                var richieste = await _sharedService.GetRequestsByRole(currentUserEmail);
 
-
-            List<Request> richieste;
-            if (userRole == "Manager")
-            {
-                richieste = await _sharedService.GetManagerRequest(teamName);
+                return Json(richieste);
             }
-            else if (userRole == "CEO")
+            catch (Exception ex)
             {
-                richieste = await _sharedService.GetAllRequests();
+                Console.WriteLine("Errore durante l'aggiornamento della lista: " + ex.Message);
+                return Json(new { success = false, message = "Errore durante l'aggiornamento della lista." });
             }
-            else
-            {
-                richieste = await _sharedService.GetUserRequest(user.Email);
-            }
-            return Json(richieste);
         }
+
     }
 }

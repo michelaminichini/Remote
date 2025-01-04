@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
-using Template.Services.Shared;
 
 namespace Template.Web.Features.Richiesta
 {
@@ -43,6 +40,5 @@ namespace Template.Web.Features.Richiesta
         [Required]
         [Display(Name = "Stato")]
         public string Stato { get; set; } = "Da Approvare";
-
     }
 }

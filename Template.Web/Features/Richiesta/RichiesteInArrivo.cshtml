@@ -112,7 +112,7 @@
                 currentUserName: '@User.Identity.Name',
                 richiestaIdSelezionata: null,
                 azioneSelezionata: '',
-                messaggioConferma: '' // Messaggio di conferma per il modal di successo
+                messaggioConferma: ''
             },
             computed: {
                 hasPendingRequests() {
@@ -166,7 +166,7 @@
                     modal.hide();
                 },
                 aggiornaRichieste() {
-                    fetch('/Richiesta/Lista')
+                    fetch('/Richiesta/AggiornaLista')
                         .then(response => response.json())
                         .then(data => {
                             this.richieste = data;

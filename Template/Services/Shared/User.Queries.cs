@@ -176,5 +176,39 @@ namespace Template.Services.Shared
                 Role = user.Role
             };
         }
+
+        /// <summary>
+        /// Retrieves the details of the currently logged-in user.
+        /// </summary>
+        /// <param name="currentUserEmail">The email of the currently authenticated user.</param>
+        /// <returns>UserDetailDTO containing the user's details.</returns>
+        /// <exception cref="UnauthorizedAccessException">Thrown if the user cannot be found.</exception>
+        public async Task<UserDetailDTO> GetCurrentUser(string currentUserEmail)
+        {
+            if (string.IsNullOrEmpty(currentUserEmail))
+            {
+                throw new UnauthorizedAccessException("User is not authenticated.");
+            }
+
+            var user = await _dbContext.Users
+                .Where(u => u.Email == currentUserEmail)
+                .Select(u => new UserDetailDTO
+                {
+                    Id = u.Id,
+                    Email = u.Email,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Role = u.Role,
+                    TeamName = u.TeamName
+                })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("Authenticated user not found in the database.");
+            }
+
+            return user;
+        }
     }
 }

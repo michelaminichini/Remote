@@ -2,80 +2,80 @@
     ViewData["Title"] = "Team";
 }
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center my-4">@ViewData["Title"]</h2>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Link to Home -->
+        <a href="/" class="text-decoration-none py-5">
+            <i class="bi bi-house-door"></i> Torna alla Home
+        </a>
 
+        <!-- Team selection -->
+        <div class="mb-4">
+            <label for="teamName" class="form-label pt-2">Seleziona Team:</label>
+            <select v-model="selectedTeam" class="form-select">
+                <option value="">-- Seleziona un Team --</option>
+                <option v-for="team in teams" :key="team.TeamName" :value="team.TeamName">{{ team.TeamName }}</option>
+            </select>
+        </div>
 
-<h2 class="text-center my-4">@ViewData["Title"]</h2>
+        <!-- Details of the selected team -->
+        <div v-if="selectedTeam" class="card mt-4">
+            <div class="card-body">
+                <h3 class="card-title">Team: {{ selectedTeam }}</h3>
+                <p><strong>Manager:</strong> {{ teamManager }}</p>
 
-<!-- Vue.js app -->
-<div id="app" class="container">
+                <h4 class="mt-3">Membri:</h4>
+                <ul class="list-group">
+                    <li v-for="member in teamMembers" :key="member.FirstName" class="list-group-item">
+                        {{ member.FirstName }} {{ member.LastName }}
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-    <!-- Team selection -->
-
-    <a href="/" class="text-decoration-none py-5">
-        <i class="bi bi-house-door"></i> Torna alla Home
-    </a>
-
-
-    <div class="mb-4">
-        <label for="teamName" class="form-label pt-2">Seleziona Team:</label>
-
-        <select v-model="selectedTeam" class="form-select">
-            <option value="">-- Seleziona un Team --</option>
-            <option v-for="team in teams" :key="team.TeamName" :value="team.TeamName">{{ team.TeamName }}</option>
-        </select>
-    </div>
-
-    <!-- Details of the selected team -->
-    <div v-if="selectedTeam" class="card mt-4">
-        <div class="card-body">
-            <h3 class="card-title">Team: {{ selectedTeam }}</h3>
-            <p><strong>Manager:</strong> {{ teamManager }}</p>
-
-            <h4 class="mt-3">Membri:</h4>
-            <ul class="list-group">
-                <li v-for="member in teamMembers" :key="member.FirstName" class="list-group-item">
-                    {{ member.FirstName }} {{ member.LastName }}
-                </li>
-            </ul>
+        <!-- If no team is selected -->
+        <div v-else class="alert alert-info mt-4">
+            Seleziona un team per vedere i suoi membri.
         </div>
     </div>
 
-    <!-- If no team is selected -->
-    <div v-else class="alert alert-info mt-4">
-        Seleziona un team per vedere i suoi membri.
-    </div>
-
-</div>
-
-<!-- Include Vue.js -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
-<script>
-    new Vue({
-        el: '#app',
-        data() {
-            return {
-                selectedTeam: '', // Selected team
-                teams: @Html.Raw(ViewData["TeamsData"]), // Team data retrieved from controller
-                teamManager: '',
-                teamMembers: []
-            };
-        },
-        watch: {
-            selectedTeam(newTeamName) {
-                // Find the selected team and update details
-                const selectedTeam = this.teams.find(team => team.TeamName === newTeamName);
-                if (selectedTeam) {
-                    this.teamManager = selectedTeam.TeamManager;
-                    this.teamMembers = selectedTeam.Employee;
-                } else {
-                    this.teamManager = '';
-                    this.teamMembers = [];
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    selectedTeam: '', // Selected team
+                    teams: @Html.Raw(ViewData["TeamsData"]), // Team data retrieved from controller
+                    teamManager: '',
+                    teamMembers: []
+                };
+            },
+            watch: {
+                selectedTeam(newTeamName) {
+                    // Find the selected team and update details
+                    const selectedTeam = this.teams.find(team => team.TeamName === newTeamName);
+                    if (selectedTeam) {
+                        this.teamManager = selectedTeam.TeamManager;
+                        this.teamMembers = selectedTeam.Employee;
+                    } else {
+                        this.teamManager = '';
+                        this.teamMembers = [];
+                    }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
+</body>
+</html>

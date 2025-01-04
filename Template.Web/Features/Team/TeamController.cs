@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Template.Services;
 using Template.Services.Shared;
-using Template.Web.Features.History;
-using Template.Web.Features.Team;
+
 
 namespace Template.Web.Features.Team {
     public partial class TeamController : Controller
@@ -49,7 +47,7 @@ namespace Template.Web.Features.Team {
             }
 
             // Send data to the view as JSON
-            ViewData["TeamsData"] = JsonConvert.SerializeObject(model);
+            ViewData["TeamsData"] = JsonConvert.SerializeObject(teams);
 
             return View();
         }
