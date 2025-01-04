@@ -18,7 +18,7 @@ namespace Template.Web.Features.Richiesta
         private readonly SharedService _sharedService;
         private readonly TemplateDbContext _dbContext;
 
-        // Costruttore che inietta il servizio SharedService
+        // Costruttore
         public RichiestaController(SharedService sharedService, TemplateDbContext dbContext)
         {
             _sharedService = sharedService ?? throw new ArgumentNullException(nameof(sharedService));

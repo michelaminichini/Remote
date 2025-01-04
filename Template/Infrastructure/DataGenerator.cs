@@ -91,11 +91,11 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = new DateTime(2024, 3, 15),  // richiesta effettuata il 15 marzo 2024
+                            DataRichiesta = new DateTime(2024, 3, 15),
                             Tipologia = "Ferie",
-                            DataInizio = new DateTime(2024, 8, 5),  // data inizio il 5 agosto 2024
-                            DataFine = new DateTime(2024, 8, 9),  // data fine il 7 agosto 2024
-                            Durata = new TimeSpan(5, 0, 0, 0),  
+                            DataInizio = new DateTime(2024, 8, 5),
+                            DataFine = new DateTime(2024, 8, 9),
+                            Durata = new DateTime(2024, 8, 9).Subtract(new DateTime(2024, 8, 5)),  
                             Stato = "Accettata"
                         }
                     }
@@ -136,11 +136,11 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = new DateTime(2024, 9, 10),  // richiesta effettuata il 10 settembre 2024
+                            DataRichiesta = new DateTime(2024, 9, 10),
                             Tipologia = "Permessi",
-                            DataInizio = new DateTime(2024, 9, 12, 14, 0, 0),  // data inizio il 12 settembre 2024 alle 14:00
-                            DataFine = new DateTime(2024, 9, 12, 16, 0, 0),  // data fine il 12 settembre 2024 alle 16:00
-                            Durata = new TimeSpan(2, 0, 0),  // durata di 2 ore
+                            DataInizio = new DateTime(2024, 9, 12, 14, 0, 0),
+                            DataFine = new DateTime(2024, 9, 12, 16, 0, 0),
+                            Durata = new TimeSpan(2, 0, 0),
                             Stato = "Accettata"
                         }
 
@@ -195,11 +195,11 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = new DateTime(2024, 6, 5),  // richiesta effettuata il 5 giugno 2024
+                            DataRichiesta = new DateTime(2024, 6, 5),
                             Tipologia = "Ferie",
-                            DataInizio = new DateTime(2024, 7, 20),  // data inizio il 20 luglio 2024
-                            DataFine = new DateTime(2024, 8, 3),  // data fine il 3 agosto 2024
-                            Durata = new TimeSpan(14, 0, 0, 0),  // durata di 14 giorni (2 settimane)
+                            DataInizio = new DateTime(2024, 7, 20),
+                            DataFine = new DateTime(2024, 8, 3),
+                            Durata = new DateTime(2024, 8, 3).Subtract(new DateTime(2024, 7, 20)),
                             Stato = "Rifiutata"
                         }
 
@@ -220,11 +220,11 @@ namespace Template.Infrastructure
                         new Event
                         {
                             EventId = Guid.NewGuid(),
-                            DataRichiesta = DateTime.Now.AddMonths(-1),
+                            DataRichiesta = new DateTime(2024, 10, 23),
                             Tipologia = "Ferie",
-                            DataInizio = DateTime.Now.AddMonths(-1).AddDays(5),
-                            DataFine = DateTime.Now.AddMonths(-1).AddDays(10),
-                            Durata = new TimeSpan(5, 0, 0, 0),
+                            DataInizio = new DateTime(2024, 11, 18),
+                            DataFine = new DateTime(2024, 11, 22),
+                            Durata = new DateTime(2024, 11, 22).Subtract(new DateTime(2024, 11, 18)),
                             Stato = "Rifiutata"
                         },
                         
@@ -283,7 +283,7 @@ namespace Template.Infrastructure
                             Tipologia = "Ferie",
                             DataInizio = new DateTime(2024, 11, 20),
                             DataFine = new DateTime(2024, 11, 22), 
-                            Durata = new TimeSpan(2,0,0,0), // 2 days
+                            Durata = new DateTime(2024, 11, 22).Subtract(new DateTime(2024, 11, 20)),
                             Stato = "Accettata"
                         },
                         new Event

@@ -72,21 +72,20 @@
                             {
                                 if (eventItem.Tipologia == "Ferie" || eventItem.Tipologia == "Smartworking" || eventItem.Tipologia == "Presenza")
                                 {
-                                    // Se la durata è di un solo giorno
+                                    // If the event lasts 1 day
                                     if (eventItem.DataInizio?.Date == eventItem.DataFine?.Date)
                                     {
                                         @:Tutto il giorno
                                     }
                                     else
                                     {
-                                        // Se la durata è più di un giorno
+                                        // if the event lasts more than 1 day
                                         var giorniDurata = (eventItem.DataFine?.Date - eventItem.DataInizio?.Date).Value.Days + 1;
                                         @:@giorniDurata giorni
                                     }
                                 }
                                 else
                                 {
-                                    // Se non è una delle tipologie specifiche, continua a mostrare la durata come hh:mm
                                     @eventItem.Durata?.ToString(@"hh\:mm")
                                 }
                             }

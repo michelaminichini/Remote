@@ -64,7 +64,7 @@
             <strong>Non ci sono richieste salvate.</strong>
         </div>
 
-        <!-- Modal di conferma azione -->
+        <!-- Action confirmation -->
         <div class="modal fade" id="confermaModal" tabindex="-1" aria-labelledby="confermaModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -83,7 +83,7 @@
             </div>
         </div>
 
-        <!-- Modal di successo -->
+        <!-- Success -->
         <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -112,7 +112,7 @@
                 currentUserName: '@User.Identity.Name',
                 richiestaIdSelezionata: null,
                 azioneSelezionata: '',
-                messaggioConferma: '' // Messaggio di conferma per il modal di successo
+                messaggioConferma: ''
             },
             computed: {
                 hasPendingRequests() {
@@ -148,7 +148,7 @@
                         if (data.success) {
                             this.aggiornaRichieste();
 
-                            // Mostra il modal di successo
+                            // Show success message
                             this.messaggioConferma = `Richiesta ${this.azioneSelezionata} con successo.`;
                             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
                             successModal.show();
@@ -161,7 +161,7 @@
                         alert('Errore durante l\'operazione. Per favore, riprova.');
                     });
 
-                    // Chiudi il modal di conferma azione
+                    // Close the action confirmation panel
                     const modal = bootstrap.Modal.getInstance(document.getElementById('confermaModal'));
                     modal.hide();
                 },

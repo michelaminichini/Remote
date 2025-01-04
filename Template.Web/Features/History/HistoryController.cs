@@ -79,7 +79,7 @@ namespace Template.Web.Features.History
                     DataRichiesta = e.DataRichiesta ?? (DateTime?)null, // Handle null values for nullable DateTime
                     DataInizio = e.DataInizio ?? (DateTime?)null,
                     DataFine = e.DataFine ?? (DateTime?)null,
-                    Durata = e.Durata,                       // Directly use the Durata field (TimeSpan)
+                    Durata = e.Durata,
                     Stato = e.Stato
                 }).ToList()
             }).ToList();
