@@ -81,7 +81,8 @@
                                         null,
                                         "Ferie").Days;
 
-                                        @:@giorniDurata giorni
+                                        // plural and singular day management
+                                        @:@giorniDurata (giorniDurata == 1 ? "giorno" : "giorni")
                                     }
                                     else if (eventItem.DataInizio?.Date == eventItem.DataFine?.Date)
                                     {
@@ -103,7 +104,6 @@
                             {
                                 @:N/A
                             }
-
                         </td>
                         <td>@eventItem.Stato</td>
                     </tr>
