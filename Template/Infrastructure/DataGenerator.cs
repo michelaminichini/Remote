@@ -128,8 +128,8 @@ namespace Template.Infrastructure
                             EventId = Guid.NewGuid(),
                             DataRichiesta = new DateTime(2024, 9, 17),
                             Tipologia = "Trasferta",
-                            DataInizio = new DateTime(2024, 11, 20, 0, 0, 0),
-                            DataFine = new DateTime(2024, 11, 20, 23, 59, 59),
+                            DataInizio = new DateTime(2024, 11, 20),
+                            DataFine = new DateTime(2024, 11, 20),
                             Durata = new TimeSpan(1, 0, 0, 0),  // 1 day
                             Stato = "Accettata",
                         },

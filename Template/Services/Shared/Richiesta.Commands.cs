@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using Template.Infrastructure;
 
@@ -66,30 +62,30 @@ namespace Template.Services.Shared
 
             if (tipologia == "Ferie")
             {
-                // Verifica che le date siano valide
+                // Check that the dates are valid
                 if (dataInizio > dataFine)
                 {
                     throw new ArgumentException("La data di inizio non può essere successiva alla data di fine.");
                 }
 
-                // Inizializza la data corrente per l'iterazione
+                // Initializes the current date for iteration
                 var dataCorrente = dataInizio.Date;
 
-            
-                // Itera per tutti i giorni tra la data di inizio e la data di fine
+
+                // Iterate for all days between start and end date
                 while (dataCorrente <= dataFine.Date)
                 {
-                    // Se il giorno corrente non è un weekend (sabato o domenica)
+                    // If the current day is not a weekend (Saturday or Sunday)
                     if (dataCorrente.DayOfWeek != DayOfWeek.Saturday && dataCorrente.DayOfWeek != DayOfWeek.Sunday)
                     {
                         durata += TimeSpan.FromDays(1);
                     }
-                    dataCorrente = dataCorrente.AddDays(1); // Passa al giorno successivo
+                    dataCorrente = dataCorrente.AddDays(1); // Go to the next day
                 }
             }
             else if (tipologia == "Permessi")
             {
-                // Verifica che le ore siano valide
+                // Check that the hours are valid
                 if (oraInizio.HasValue && oraFine.HasValue)
                 {
                     if (oraInizio.Value > oraFine.Value)
@@ -97,12 +93,12 @@ namespace Template.Services.Shared
                         throw new ArgumentException("L'ora di inizio non può essere successiva all'ora di fine.");
                     }
 
-                    // Calcola la durata come differenza tra oraFine e oraInizio
-                    durata = oraFine.Value - oraInizio.Value;  // durata in ore e minuti
+                    // Calculate the duration as difference between oraFine and oraInizio
+                    durata = oraFine.Value - oraInizio.Value;  // hours and minutes
                 }
                 else
                 {
-                    // Se non sono fornite le ore, restituisce TimeSpan.Zero
+                    // If no hours are given, returns TimeSpan.Zero
                     durata = TimeSpan.Zero;
                 }
             }
@@ -111,7 +107,7 @@ namespace Template.Services.Shared
                 throw new ArgumentException("Tipologia non valida. Deve essere 'Ferie' o 'Permessi'.");
             }
 
-            // Restituisce sempre la durata come TimeSpan
+            // "Durata" as TimeSpan
             return durata;
         }
 
