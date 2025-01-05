@@ -9,8 +9,6 @@ using System.Security.Claims;
 using Template.Services.Shared;
 using System.Threading.Tasks;
 using Template.Infrastructure;
-using System.Data;
-using System.Diagnostics;
 
 namespace Template.Web.Features.Login
 {

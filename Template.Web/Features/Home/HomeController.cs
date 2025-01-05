@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Template.Infrastructure;
 using Template.Services;
 using Template.Services.Shared;
-using Template.Web.Features.History;
 using Template.Web.Infrastructure;
 
 namespace Template.Web.Features.Home

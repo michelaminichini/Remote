@@ -3,10 +3,8 @@ using System;
 using System.Linq;
 using Template.Services;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 using System.Collections;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Template.Infrastructure
 {

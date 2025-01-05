@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Dynamic.Core;
-using System.Threading.Tasks;
-using System.Linq;
-using Template.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace Template.Services.Shared
 {
     public partial class SharedService

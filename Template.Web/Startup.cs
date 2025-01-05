@@ -1,5 +1,4 @@
-﻿//using Template.Web.Hubs;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -13,7 +12,6 @@ using System.Linq;
 using Template.Services;
 using Template.Services.Shared;
 using Template.Web.Infrastructure;
-using Template.Web.SignalR.Hubs;
 
 namespace Template.Web
 {
