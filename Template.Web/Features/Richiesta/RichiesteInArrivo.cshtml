@@ -31,6 +31,7 @@
                         <th>Data Fine</th>
                         <th>Ora Inizio</th>
                         <th>Ora Fine</th>
+                        <th>Durata</th>
                         <th>Stato</th>
                         <th v-if="(isCEO || (isManager && richieste.some(r => r.role !== 'Manager' && r.userName !== currentUserName && r.stato === 'Da Approvare'))) && hasPendingRequests">Azioni</th>
                     </tr>
@@ -41,8 +42,11 @@
                         <td>{{ richiesta.tipologia }}</td>
                         <td class="text-center">{{ formatDate(richiesta.dataInizio) }}</td>
                         <td class="text-center">{{ formatDate(richiesta.dataFine) }}</td>
-                        <td class="text-center">{{ richiesta.oraInizio === '00:00:00' ? '' : richiesta.oraInizio }}</td>
-                        <td class="text-center">{{ richiesta.oraFine === '00:00:00' ? '' : richiesta.oraFine }}</td>
+                        <td class="text-center">{{ formatOra(richiesta.oraInizio) }}</td>
+                        <td class="text-center">{{ formatOra(richiesta.oraFine) }}</td>
+                        <td class="text-center">
+                            {{ formatDurata(richiesta.durata, richiesta.tipologia) }}
+                        </td>
                         <td class="text-center">
                             <span class="badge" :class="getBadgeClass(richiesta.stato)">
                                 {{ richiesta.stato }}
@@ -123,6 +127,28 @@
                 formatDate(date) {
                     return new Date(date).toLocaleDateString('it-IT');
                 },
+                formatOra(ora) {
+                    if (ora === "00:00:00" || !ora) {
+                      return "";
+                    }
+                    const [ore, minuti] = ora.split(":"); 
+                    return `${parseInt(ore, 10)}:${minuti}`; 
+                },
+                formatDurata(durata, tipologia) {
+                  if (tipologia === 'Permessi') {
+                    const [ore, minuti] = durata.split(':').map(Number);
+                    if (minuti === 0) {
+                      return `${ore} h`; 
+                    } else {
+                      return `${ore}:${minuti} h`; 
+                    }
+                  } else if (tipologia === 'Ferie') {
+                    const giorni = parseInt(durata, 10);
+                    return `${giorni} gg`; 
+                  }
+                  return durata; 
+                },
+
                 getBadgeClass(stato) {
                     switch (stato) {
                         case 'Accettata': return 'bg-success';

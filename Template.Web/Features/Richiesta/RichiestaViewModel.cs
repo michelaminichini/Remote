@@ -36,9 +36,15 @@ namespace Template.Web.Features.Richiesta
         [Display(Name = "Ora Fine")]
         public TimeSpan? OraFine { get; set; }
 
+        [Display(Name = "Durata")]
+        public TimeSpan Durata { get; set; }
+
         // Request status
         [Required]
         [Display(Name = "Stato")]
         public string Stato { get; set; } = "Da Approvare";
+
+
+
     }
 }

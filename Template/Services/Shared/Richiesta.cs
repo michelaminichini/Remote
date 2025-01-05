@@ -20,6 +20,7 @@ namespace Template.Services.Shared
 
         public TimeSpan? OraInizio { get; set; }
         public TimeSpan? OraFine { get; set; }
+        public TimeSpan? Durata { get; set; }
         public string Stato { get; set; }
         public string LogoPath { get; set; }
         public string Role { get; set; }

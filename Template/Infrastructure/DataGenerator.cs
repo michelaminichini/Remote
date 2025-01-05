@@ -29,7 +29,7 @@ namespace Template.Infrastructure
                     Tipologia = richiesta.Tipologia,
                     DataInizio = richiesta.DataInizio,
                     DataFine = richiesta.DataFine,
-                    Durata = richiesta.DataFine - richiesta.DataInizio,
+                    Durata = richiesta.Durata,
                     Stato = richiesta.Stato
                 };
 
