@@ -5,12 +5,9 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/History.css" />
 
 <div class="container">
-    <head>
-        <link rel="stylesheet" href="/css/History.css" />
-    </head>
-
     <a href="/" class="text-decoration-none">
         <i class="bi bi-house-door"></i> Torna alla Home
     </a>
@@ -64,36 +61,10 @@
                 {
                     <tr class="historyRow" data-stato="@eventItem.Stato">
                         <td>@(eventItem.DataRichiesta?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td>@(string.IsNullOrEmpty(eventItem.Tipologia?.Trim()) ? "N/A" : eventItem.Tipologia)</td>
+                        <td data-tipologia="@eventItem.Tipologia">@(string.IsNullOrEmpty(eventItem.Tipologia?.Trim()) ? "N/A" : eventItem.Tipologia)</td>
                         <td>@(eventItem.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                         <td>@(eventItem.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td class="durata-column">
-                            @if (eventItem.Durata.HasValue)
-                            {
-                                if (eventItem.Tipologia == "Ferie" || eventItem.Tipologia == "Smartworking" || eventItem.Tipologia == "Presenza")
-                                {
-                                    // If the event lasts 1 day
-                                    if (eventItem.DataInizio?.Date == eventItem.DataFine?.Date)
-                                    {
-                                        @:Tutto il giorno
-                                    }
-                                    else
-                                    {
-                                        // if the event lasts more than 1 day
-                                        var giorniDurata = (eventItem.DataFine?.Date - eventItem.DataInizio?.Date).Value.Days + 1;
-                                        @:@giorniDurata giorni
-                                    }
-                                }
-                                else
-                                {
-                                    @eventItem.Durata?.ToString(@"hh\:mm")
-                                }
-                            }
-                            else
-                            {
-                                @:N/A
-                            }
-                        </td>
+                        <td class="durata-column" data-durata="@eventItem.Durata">@eventItem.Durata</td>
                         <td>@eventItem.Stato</td>
                     </tr>
                 }
@@ -111,7 +82,6 @@
         <div class="no-request-text">Non ci sono richieste passate</div>
     }
 
-
     <script>
         function applyFilter() {
             const selectedStatus = document.getElementById('filterStatus').value;
@@ -128,33 +98,44 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const rows = document.querySelectorAll('.historyRow');
+
+            // Show/hide Durata column dynamically
             const durataHeader = document.getElementById('durata-header');
             let showDurata = false;
 
             rows.forEach(row => {
-                const tipologia = row.cells[1].innerText.trim();
+                const tipologia = row.querySelector('[data-tipologia]').getAttribute('data-tipologia');
                 if (["Permessi", "Trasferta", "Ferie", "Smartworking", "Presenza"].includes(tipologia)) {
                     showDurata = true;
                 }
             });
 
-            if (showDurata) {
-                durataHeader.style.display = '';
-            } else {
-                durataHeader.style.display = 'none';
-            }
+            durataHeader.style.display = showDurata ? '' : 'none';
 
             rows.forEach(row => {
-                const tipologia = row.cells[1].innerText.trim();
-                const durataColumn = row.querySelector('.durata-column');
+                const tipologia = row.querySelector('[data-tipologia]').getAttribute('data-tipologia');
+                const durataCell = row.querySelector('.durata-column');
+                const durata = durataCell.getAttribute('data-durata');
 
-                if (["Permessi", "Trasferta", "Ferie", "Smartworking", "Presenza"].includes(tipologia)) {
-                    durataColumn.style.display = '';
-                } else {
-                    durataColumn.style.display = 'none';
+                if (durata && tipologia) {
+                    durataCell.textContent = formatDurata(durata, tipologia);
                 }
             });
         });
-    </script>
 
+        function formatDurata(durata, tipologia) {
+            if (tipologia === 'Permessi') {
+                const [ore, minuti] = durata.split(':').map(Number);
+                if (minuti === 0) {
+                    return `${ore} h`;
+                } else {
+                    return `${ore}:${minuti} h`;
+                }
+            } else if (tipologia === 'Ferie') {
+                const giorni = parseInt(durata, 10);
+                return `${giorni} gg`;
+            }
+            return durata;
+        }
+    </script>
 </div>
