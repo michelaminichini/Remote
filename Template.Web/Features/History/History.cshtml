@@ -1,4 +1,5 @@
 @model List<Template.Web.Features.History.HistoryViewModel>
+@inject Template.Services.Shared.SharedService SharedService
 @{
     ViewData["Title"] = "Storico delle richieste";
 }
@@ -64,7 +65,46 @@
                         <td data-tipologia="@eventItem.Tipologia">@(string.IsNullOrEmpty(eventItem.Tipologia?.Trim()) ? "N/A" : eventItem.Tipologia)</td>
                         <td>@(eventItem.DataInizio?.ToString("dd/MM/yyyy") ?? "N/A")</td>
                         <td>@(eventItem.DataFine?.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                        <td class="durata-column" data-durata="@eventItem.Durata">@eventItem.Durata</td>
+                        <td class="durata-column">
+                            @if (eventItem.Durata.HasValue)
+                            {
+                                if (eventItem.Tipologia == "Ferie" || eventItem.Tipologia == "Smartworking" || eventItem.Tipologia == "Presenza")
+                                {
+                                    // If the event is of type "Ferie"
+                                    if (eventItem.Tipologia == "Ferie")
+                                    {
+                                        // Calculate the duration excluding weekends
+                                        var giorniDurata = SharedService.GetDuration(
+                                        eventItem.DataInizio.Value,
+                                        eventItem.DataFine.Value,
+                                        null,
+                                        null,
+                                        "Ferie").Days;
+
+                                        @:@giorniDurata giorni
+                                    }
+                                    else if (eventItem.DataInizio?.Date == eventItem.DataFine?.Date)
+                                    {
+                                        @:Tutto il giorno
+                                    }
+                                    else
+                                    {
+                                        // if the event lasts more than 1 day
+                                        var giorniDurata = (eventItem.DataFine?.Date - eventItem.DataInizio?.Date).Value.Days + 1;
+                                        @:@giorniDurata giorni
+                                    }
+                                }
+                                else
+                                {
+                                    @eventItem.Durata?.ToString(@"hh\:mm")
+                                }
+                            }
+                            else
+                            {
+                                @:N/A
+                            }
+
+                        </td>
                         <td>@eventItem.Stato</td>
                     </tr>
                 }
