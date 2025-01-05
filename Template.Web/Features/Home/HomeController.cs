@@ -172,6 +172,7 @@ namespace Template.Web.Features.Home
                 {
                     DateTime eventStartDate = selectedDate.Date;
                     DateTime eventEndDate = selectedDate.Date;
+                    TimeSpan? duration = null;
 
                     // Logic for Smartworking, Travel, Presence (managed via DataGenerator)
                     if (eventType.Equals("Smartworking", StringComparison.OrdinalIgnoreCase))
@@ -180,8 +181,9 @@ namespace Template.Web.Features.Home
                         {
                             eventStartDate = eventStartDate.Date;
                             eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
+                            duration = eventEndDate - eventStartDate;
 
-                            var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role, duration);
                             DataGenerator.AddEventForUser(_dbContext, richiesta);
                         }
                         else
@@ -196,29 +198,30 @@ namespace Template.Web.Features.Home
                         {
                             eventStartDate = selectedDate.Date.Add(startTime.Value);
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
+                            duration = endTime - startTime;
 
-                            var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role, duration);
                             DataGenerator.AddEventForUser(_dbContext, richiesta);
                         }
                     }
                     else if (eventType.Equals("Presenza", StringComparison.OrdinalIgnoreCase))
                     {
-                        // "Presence" event management as an all-day event like smartworking and holidays
                         eventStartDate = selectedDate.Date;
-                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1); // Covers the whole day
+                        eventEndDate = selectedDate.Date.AddDays(1).AddSeconds(-1);
+                        duration = eventEndDate - eventStartDate;
 
-                        var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                        var richiesta = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role, duration);
                         DataGenerator.AddEventForUser(_dbContext, richiesta);
                     }
-                    // Logic for Holidays and Permits
                     else if (eventType.Equals("Ferie", StringComparison.OrdinalIgnoreCase))
                     {
                         if (ValidateFerieAvailability(userEmail, eventStartDate))
                         {
                             eventStartDate = eventStartDate.Date;
                             eventEndDate = eventStartDate.AddDays(1).AddSeconds(-1);
+                            duration = TimeSpan.FromDays(1); // Fixed duration for "Tutto il giorno"
 
-                            var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role, duration);
 
                             if (currentUser.Role.Equals("ceo", StringComparison.OrdinalIgnoreCase))
                             {
@@ -244,8 +247,9 @@ namespace Template.Web.Features.Home
                         {
                             eventStartDate = selectedDate.Date.Add(startTime.Value);
                             eventEndDate = selectedDate.Date.Add(endTime.Value);
+                            duration = endTime - startTime;
 
-                            var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role);
+                            var request = CreateRequest(userEmail, eventType, eventStartDate, eventEndDate, startTime, endTime, currentUser.Role, duration);
 
                             if (currentUser.Role.Equals("ceo", StringComparison.OrdinalIgnoreCase))
                             {
@@ -320,7 +324,7 @@ namespace Template.Web.Features.Home
         }
 
         private Request CreateRequest(string userEmail, string eventType, DateTime eventStartDate, DateTime eventEndDate,
-                              TimeSpan? startTime, TimeSpan? endTime, string userRole)
+                              TimeSpan? startTime, TimeSpan? endTime, string userRole, TimeSpan? duration)
         {
             return new Request
             {
@@ -333,6 +337,7 @@ namespace Template.Web.Features.Home
                          eventType.ToLower() == "trasferta") ? "Accettata" : "Da Approvare",
                 OraInizio = startTime, // Set the start time
                 OraFine = endTime, // Set the end time
+                Durata = duration,
                 LogoPath = GetEventIcon(eventType),
                 Role = userRole
             };
