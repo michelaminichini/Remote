@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Template.Services.Shared;
-using Template.Web.Features.History;
 using System.Linq;
 using System.Threading.Tasks;
 using Template.Services;
 using System;
-using Microsoft.Extensions.Logging;
 
 namespace Template.Web.Features.History
 {
