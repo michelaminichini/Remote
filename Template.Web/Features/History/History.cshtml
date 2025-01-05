@@ -81,8 +81,14 @@
                                         null,
                                         "Ferie").Days;
 
-                                        // plural and singular day management
-                                        @:@giorniDurata (giorniDurata == 1 ? "giorno" : "giorni")
+                                        if (giorniDurata == 1)
+                                        {
+                                            @:@giorniDurata giorno
+                                        }
+                                        else
+                                        {
+                                            @:@giorniDurata giorni
+                                        }
                                     }
                                     else if (eventItem.DataInizio?.Date == eventItem.DataFine?.Date)
                                     {
