@@ -128,12 +128,15 @@
                                 <div class="events mt-2">
                                     @foreach (var eventItem in day.Events.GroupBy(e => e.Icon))
                                     {
-                                        var eventIcon = Url.Content(eventItem.Key);
-                                        var userName = string.Join(", ", eventItem.Select(e => e.UserName).Distinct());
-                                        <div class="events">
-                                            <!-- Show the event icon -->
-                                            <img src="@eventIcon" alt="Event Icon" class="event-icon" title="Eventi di: @userName" />
-                                        </div>
+                                        if (day.Date.DayOfWeek != DayOfWeek.Saturday && day.Date.DayOfWeek != DayOfWeek.Sunday)
+                                        {
+                                            var eventIcon = Url.Content(eventItem.Key);
+                                            var userName = string.Join(", ", eventItem.Select(e => e.UserName).Distinct());
+                                            <div class="events">
+                                                <!-- Show the event icon -->
+                                                <img src="@eventIcon" alt="Event Icon" class="event-icon" title="Eventi di: @userName" />
+                                            </div>
+                                        }
                                     }
 
                                     <!-- Pop-up that shows the events of the day -->
@@ -148,7 +151,7 @@
                                             }
                                         </ul>
                                     </div>
-                                 </div>
+                                </div>
                             </td>
                         }
                     </tr>
@@ -156,9 +159,6 @@
             </tbody>
         </table>
     </div>
-
-</div>
-
     <script>
         function toggleEventMenu(button, date) {
             const eventMenu = document.getElementById('event-menu-' + date);
@@ -172,7 +172,7 @@
             var selectedEventType = select.value;
             var timeFields = document.getElementById('timeFields-' + date);
 
-        // Show or hide time fields by event type
+            // Show or hide time fields by event type
             if (selectedEventType === 'Trasferta' || selectedEventType === 'Permessi') {
                 timeFields.style.display = 'block';
             } else {
@@ -196,3 +196,4 @@
             }
         }
     </script>
+</div>
